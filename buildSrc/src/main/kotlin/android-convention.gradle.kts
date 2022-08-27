@@ -7,14 +7,16 @@ plugins {
 }
 
 configure<BaseExtension> {
-    compileSdkVersion(33)
+    compileSdkVersion(32)
 
     defaultConfig {
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 32
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    buildFeatures.compose = true
 
     buildTypes {
         getByName("release") {
@@ -33,6 +35,8 @@ configure<BaseExtension> {
             jvmTarget = JavaVersion.VERSION_11.toString()
         }
     }
+
+    composeOptions.kotlinCompilerExtensionVersion = "1.3.0"
 }
 
 codeCheck {
@@ -42,10 +46,22 @@ codeCheck {
 
 dependencies {
     add("implementation", versionCatalog.findLibrary("androidx-core-ktx").get())
-    add("implementation", versionCatalog.findLibrary("androidx-appcompat").get())
-    add("implementation", versionCatalog.findLibrary("material").get())
+    add("implementation", versionCatalog.findLibrary("android-lifecycle").get())
+
+    add("implementation", versionCatalog.findLibrary("compose-ui").get())
+    add("implementation", versionCatalog.findLibrary("compose-tooling-preview").get())
+    add("implementation", versionCatalog.findLibrary("compose-material").get())
+    add("implementation", versionCatalog.findLibrary("compose-animation").get())
+
+    add("implementation", versionCatalog.findLibrary("compose-activity").get())
+    add("implementation", versionCatalog.findLibrary("compose-viewmodel").get())
+
+    add("debugImplementation", versionCatalog.findLibrary("compose-tooling").get())
+    add("debugImplementation", versionCatalog.findLibrary("compose-ui-test-manifest").get())
 
     add("testImplementation", versionCatalog.findLibrary("junit").get())
+
     add("androidTestImplementation", versionCatalog.findLibrary("androidx-junit").get())
+    add("androidTestImplementation", versionCatalog.findLibrary("compose-junit").get())
     add("androidTestImplementation", versionCatalog.findLibrary("espresso").get())
 }

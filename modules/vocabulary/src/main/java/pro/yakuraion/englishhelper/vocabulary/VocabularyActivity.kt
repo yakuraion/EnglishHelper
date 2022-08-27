@@ -1,12 +1,11 @@
 package pro.yakuraion.englishhelper.vocabulary
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
 
-class VocabularyActivity : AppCompatActivity() {
+class VocabularyActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.vocabulary_activity_vocabulary)
     }
 }
