@@ -17,6 +17,7 @@ dependencyResolutionManagement {
 rootProject.name = "EnglishHelper"
 
 include(":app")
+include(":modules:vocabulary")
 
 includeBuild("plugins/code-check") {
     dependencySubstitution {
