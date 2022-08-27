@@ -1,3 +1,3 @@
 plugins {
-    id("application-convention")
+    id("library-convention")
 }
