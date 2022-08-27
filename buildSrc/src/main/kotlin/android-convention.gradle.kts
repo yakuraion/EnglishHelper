@@ -48,16 +48,13 @@ dependencies {
     add("implementation", versionCatalog.findLibrary("androidx-core-ktx").get())
     add("implementation", versionCatalog.findLibrary("android-lifecycle").get())
 
-    add("implementation", versionCatalog.findLibrary("compose-ui").get())
-    add("implementation", versionCatalog.findLibrary("compose-tooling-preview").get())
     add("implementation", versionCatalog.findLibrary("compose-material").get())
-    add("implementation", versionCatalog.findLibrary("compose-animation").get())
+    add("implementation", versionCatalog.findLibrary("compose-tooling-preview").get())
 
     add("implementation", versionCatalog.findLibrary("compose-activity").get())
     add("implementation", versionCatalog.findLibrary("compose-viewmodel").get())
 
     add("debugImplementation", versionCatalog.findLibrary("compose-tooling").get())
-    add("debugImplementation", versionCatalog.findLibrary("compose-ui-test-manifest").get())
 
     add("testImplementation", versionCatalog.findLibrary("junit").get())
 
