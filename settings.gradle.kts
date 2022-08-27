@@ -17,3 +17,9 @@ dependencyResolutionManagement {
 rootProject.name = "EnglishHelper"
 
 include(":app")
+
+includeBuild("plugins/code-check") {
+    dependencySubstitution {
+        substitute(module("pro.yakuraion.plugins.codecheck:code-check")).using(project(":"))
+    }
+}
