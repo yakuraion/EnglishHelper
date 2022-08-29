@@ -3,6 +3,7 @@ android = "7.2.1"
 kotlin = "1.7.10"
 dagger = "2.33"
 compose = "1.2.1"
+room = "2.4.3"
 
 [libraries]
 android-application-plugin = { module = "com.android.application:com.android.application.gradle.plugin", version.ref = "android" }
@@ -23,6 +24,10 @@ compose-material = { module = "androidx.compose.material:material", version.ref 
 compose-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 compose-junit = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
+
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 
 volley = { module = "com.android.volley:volley", version = "1.2.1" }
 
