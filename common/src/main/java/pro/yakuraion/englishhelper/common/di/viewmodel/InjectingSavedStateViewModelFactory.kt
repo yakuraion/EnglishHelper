@@ -17,7 +17,7 @@ import kotlin.reflect.KClass
  */
 @Reusable
 class InjectingSavedStateViewModelFactory @Inject constructor(
-    private val assistedFactoryProviders: Map<Class<out ViewModel>, AssistedFactoryProvider>
+    private val assistedFactoryProviders: Map<Class<out ViewModel>, @JvmSuppressWildcards AssistedFactoryProvider>
 ) {
 
     @Suppress("UNCHECKED_CAST")

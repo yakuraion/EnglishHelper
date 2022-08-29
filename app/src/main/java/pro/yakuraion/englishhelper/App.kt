@@ -5,14 +5,19 @@ import androidx.room.Room
 import pro.yakuraion.englishhelper.data.AppDatabase
 import pro.yakuraion.englishhelper.di.AppComponent
 import pro.yakuraion.englishhelper.di.DaggerAppComponent
+import pro.yakuraion.englishhelper.vocabulary.di.VocabularyDependencies
 
-class App : Application() {
+class App : Application(), VocabularyDependencies.Provider {
 
     private lateinit var appComponent: AppComponent
 
     override fun onCreate() {
         super.onCreate()
         initDI()
+    }
+
+    override fun provideVocabularyDependencies(): VocabularyDependencies {
+        return appComponent
     }
 
     private fun createAppDatabase(): AppDatabase {
