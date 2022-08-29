@@ -1,6 +1,7 @@
 [versions]
 android = "7.2.1"
 kotlin = "1.7.10"
+dagger = "2.33"
 compose = "1.2.1"
 
 [libraries]
@@ -8,6 +9,9 @@ android-application-plugin = { module = "com.android.application:com.android.app
 android-library-plugin = { module = "com.android.library:com.android.library.gradle.plugin", version.ref = "android" }
 
 kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
+dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
+dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 
 androidx-core-ktx = { module = "androidx.core:core-ktx", version = "1.8.0" }
 android-lifecycle = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version = "2.3.1" }

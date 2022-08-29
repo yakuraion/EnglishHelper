@@ -2,7 +2,8 @@ import com.android.build.gradle.BaseExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.jetbrains.kotlin.android")
+    id("kotlin-android")
+    id("kotlin-kapt")
     id("pro.yakuraion.plugins.codecheck.code-check")
 }
 
@@ -45,6 +46,9 @@ codeCheck {
 }
 
 dependencies {
+    add("implementation", versionCatalog.findLibrary("dagger").get())
+    add("kapt", versionCatalog.findLibrary("dagger-compiler").get())
+
     add("implementation", versionCatalog.findLibrary("androidx-core-ktx").get())
     add("implementation", versionCatalog.findLibrary("android-lifecycle").get())
 
