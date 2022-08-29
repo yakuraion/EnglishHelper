@@ -25,6 +25,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".vocabulary.ui.vocabulary.VocabularyActivity" />
+
     </application>
 
 </manifest>
