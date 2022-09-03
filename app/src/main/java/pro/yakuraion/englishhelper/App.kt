@@ -1,13 +1,12 @@
 package pro.yakuraion.englishhelper
 
 import android.app.Application
-import androidx.room.Room
-import pro.yakuraion.englishhelper.data.AppDatabase
 import pro.yakuraion.englishhelper.di.AppComponent
 import pro.yakuraion.englishhelper.di.DaggerAppComponent
 import pro.yakuraion.englishhelper.vocabulary.di.VocabularyDependencies
+import pro.yakuraion.englishhelper.vocabulary.di.VocabularyDependenciesProvider
 
-class App : Application(), VocabularyDependencies.Provider {
+class App : Application(), VocabularyDependenciesProvider {
 
     private lateinit var appComponent: AppComponent
 
@@ -20,24 +19,9 @@ class App : Application(), VocabularyDependencies.Provider {
         return appComponent
     }
 
-    private fun createAppDatabase(): AppDatabase {
-        // todo remove allowMainThreadQueries
-        // todo remove fallbackToDestructiveMigration
-        return Room
-            .databaseBuilder(applicationContext, AppDatabase::class.java, DATABASE_NAME)
-            .allowMainThreadQueries()
-            .fallbackToDestructiveMigration()
-            .build()
-    }
-
     private fun initDI() {
         appComponent = DaggerAppComponent.builder()
-            .appDatabase(createAppDatabase())
+            .context(applicationContext)
             .build()
-    }
-
-    companion object {
-
-        private const val DATABASE_NAME = "database"
     }
 }

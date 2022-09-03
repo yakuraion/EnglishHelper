@@ -1,13 +1,16 @@
 package pro.yakuraion.englishhelper.di
 
+import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
-import pro.yakuraion.englishhelper.data.AppDatabase
+import pro.yakuraion.englishhelper.di.modules.DaosModule
+import pro.yakuraion.englishhelper.di.modules.DatabaseModule
+import pro.yakuraion.englishhelper.di.modules.SharedPreferencesModule
 import pro.yakuraion.englishhelper.vocabulary.di.VocabularyDependencies
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [DaosModule::class])
+@Component(modules = [DatabaseModule::class, DaosModule::class, SharedPreferencesModule::class])
 interface AppComponent : VocabularyDependencies {
 
     @Component.Builder
@@ -16,6 +19,6 @@ interface AppComponent : VocabularyDependencies {
         fun build(): AppComponent
 
         @BindsInstance
-        fun appDatabase(database: AppDatabase): Builder
+        fun context(context: Context): Builder
     }
 }

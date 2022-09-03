@@ -1,4 +1,4 @@
-package pro.yakuraion.englishhelper.di
+package pro.yakuraion.englishhelper.di.modules
 
 import dagger.Module
 import dagger.Provides

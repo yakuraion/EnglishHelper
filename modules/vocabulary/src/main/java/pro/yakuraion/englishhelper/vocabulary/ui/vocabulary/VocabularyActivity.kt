@@ -19,6 +19,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,7 +29,7 @@ import pro.yakuraion.englishhelper.vocabulary.data.entities.LearningWordEntity
 import pro.yakuraion.englishhelper.vocabulary.data.entities.MemorizationLevel
 import pro.yakuraion.englishhelper.vocabulary.data.entities.Word
 import pro.yakuraion.englishhelper.vocabulary.di.VocabularyComponent
-import pro.yakuraion.englishhelper.vocabulary.di.VocabularyDependencies
+import pro.yakuraion.englishhelper.vocabulary.di.VocabularyDependenciesProvider
 import javax.inject.Inject
 
 class VocabularyActivity : MVVMActivity<VocabularyViewModel>(VocabularyViewModel::class) {
@@ -37,7 +38,7 @@ class VocabularyActivity : MVVMActivity<VocabularyViewModel>(VocabularyViewModel
     override lateinit var abstractViewModelFactory: InjectingSavedStateViewModelFactory
 
     override fun inject() {
-        val dependencies = (application as VocabularyDependencies.Provider).provideVocabularyDependencies()
+        val dependencies = (application as VocabularyDependenciesProvider).provideVocabularyDependencies()
         VocabularyComponent.create(dependencies).inject(this)
     }
 
@@ -50,8 +51,11 @@ class VocabularyActivity : MVVMActivity<VocabularyViewModel>(VocabularyViewModel
 
     @Composable
     private fun VocabularyScreen() {
+        val learningDay by viewModel.learningDay.collectAsState()
         val words by viewModel.words.collectAsState(initial = emptyList())
         VocabularyContent(
+            learningDay = learningDay,
+            onLearningDaySet = { viewModel.onLearningDaySet(it) },
             words = words,
             onAddClick = { viewModel.onAddNameClick(it) }
         )
@@ -59,10 +63,16 @@ class VocabularyActivity : MVVMActivity<VocabularyViewModel>(VocabularyViewModel
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
-    private fun VocabularyContent(words: List<LearningWordEntity>, onAddClick: (name: String) -> Unit) {
+    private fun VocabularyContent(
+        learningDay: Int,
+        onLearningDaySet: (day: Int) -> Unit,
+        words: List<LearningWordEntity>,
+        onAddClick: (name: String) -> Unit
+    ) {
         Scaffold {
             Column {
-                AddNameView(onAddClick = onAddClick)
+                LearningDayView(learningDay, onLearningDaySet)
+                AddNameView(onAddClick)
                 WordsListView(words)
             }
         }
@@ -72,6 +82,8 @@ class VocabularyActivity : MVVMActivity<VocabularyViewModel>(VocabularyViewModel
     @Composable
     private fun VocabularyContentPreview() {
         VocabularyContent(
+            learningDay = 12,
+            onLearningDaySet = {},
             words = listOf(
                 LearningWordEntity(Word("Butter"), MemorizationLevel.new()),
                 LearningWordEntity(Word("Population"), MemorizationLevel.new()),
@@ -82,14 +94,25 @@ class VocabularyActivity : MVVMActivity<VocabularyViewModel>(VocabularyViewModel
     }
 
     @Composable
+    private fun LearningDayView(learningDay: Int, onLearningDaySet: (day: Int) -> Unit) {
+        var day by rememberSaveable { mutableStateOf(learningDay.toString()) }
+        Row {
+            TextField(value = day, onValueChange = { day = it })
+            TextButton(onClick = { onLearningDaySet.invoke(day.toInt()) }) {
+                Text(text = "change day")
+            }
+        }
+    }
+
+    @Composable
     private fun AddNameView(onAddClick: (name: String) -> Unit) {
-        val name = rememberSaveable { mutableStateOf("") }
+        var name by rememberSaveable { mutableStateOf("") }
         Column {
             TextField(
-                value = name.value,
-                onValueChange = { name.value = it },
+                value = name,
+                onValueChange = { name = it },
             )
-            TextButton(onClick = { onAddClick.invoke(name.value) }) {
+            TextButton(onClick = { onAddClick.invoke(name) }) {
                 Text(text = "add word")
             }
         }
