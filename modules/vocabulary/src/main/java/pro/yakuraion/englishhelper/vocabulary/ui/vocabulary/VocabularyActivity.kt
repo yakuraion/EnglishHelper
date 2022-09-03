@@ -49,7 +49,7 @@ class VocabularyActivity : MVVMActivity<VocabularyViewModel>(VocabularyViewModel
     }
 
     @Composable
-    fun VocabularyScreen() {
+    private fun VocabularyScreen() {
         val words by viewModel.words.collectAsState(initial = emptyList())
         VocabularyContent(
             words = words,
@@ -59,7 +59,7 @@ class VocabularyActivity : MVVMActivity<VocabularyViewModel>(VocabularyViewModel
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
-    fun VocabularyContent(words: List<LearningWordEntity>, onAddClick: (name: String) -> Unit) {
+    private fun VocabularyContent(words: List<LearningWordEntity>, onAddClick: (name: String) -> Unit) {
         Scaffold {
             Column {
                 AddNameView(onAddClick = onAddClick)
@@ -70,7 +70,7 @@ class VocabularyActivity : MVVMActivity<VocabularyViewModel>(VocabularyViewModel
 
     @Preview
     @Composable
-    fun VocabularyContentPreview() {
+    private fun VocabularyContentPreview() {
         VocabularyContent(
             words = listOf(
                 LearningWordEntity(Word("Butter"), MemorizationLevel.new()),
@@ -82,7 +82,7 @@ class VocabularyActivity : MVVMActivity<VocabularyViewModel>(VocabularyViewModel
     }
 
     @Composable
-    fun AddNameView(onAddClick: (name: String) -> Unit) {
+    private fun AddNameView(onAddClick: (name: String) -> Unit) {
         val name = rememberSaveable { mutableStateOf("") }
         Column {
             TextField(
@@ -96,7 +96,7 @@ class VocabularyActivity : MVVMActivity<VocabularyViewModel>(VocabularyViewModel
     }
 
     @Composable
-    fun WordsListView(words: List<LearningWordEntity>) {
+    private fun WordsListView(words: List<LearningWordEntity>) {
         Column {
             LazyColumn {
                 items(words) { word ->
@@ -107,7 +107,7 @@ class VocabularyActivity : MVVMActivity<VocabularyViewModel>(VocabularyViewModel
     }
 
     @Composable
-    fun WordView(word: LearningWordEntity) {
+    private fun WordView(word: LearningWordEntity) {
         Row {
             Text(text = word.word.name, modifier = Modifier.padding(end = 8.dp))
             Text(text = word.memorizationLevel.level.toString())

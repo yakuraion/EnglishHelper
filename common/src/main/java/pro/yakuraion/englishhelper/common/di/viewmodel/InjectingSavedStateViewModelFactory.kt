@@ -13,13 +13,12 @@ import javax.inject.Provider
 import kotlin.reflect.KClass
 
 /**
- * Fabric for creating all ViewModel's in the application
+ * Fabric for creating all ViewModel's in the application.
  */
 @Reusable
 class InjectingSavedStateViewModelFactory @Inject constructor(
     private val assistedFactoryProviders: Map<Class<out ViewModel>, @JvmSuppressWildcards AssistedFactoryProvider>
 ) {
-
     @Suppress("UNCHECKED_CAST")
     fun <VM : ViewModel, Owner> create(
         viewModelClass: KClass<out ViewModel>,
@@ -34,20 +33,11 @@ class InjectingSavedStateViewModelFactory @Inject constructor(
                 modelClass: Class<T>,
                 handle: SavedStateHandle
             ): T {
-                assistedFactoryProviders[modelClass]?.get()?.let { factory ->
-                    try {
-                        return factory.create(handle) as T
-                    } catch (e: Exception) {
-                        throw RuntimeException(e)
-                    }
-                } ?: throw IllegalArgumentException("Unknown model class $modelClass")
+                return assistedFactoryProviders[modelClass]?.get()?.let { factory -> factory.create(handle) as T }
+                    ?: throw IllegalArgumentException("Unknown model class $modelClass")
             }
         }
-        try {
-            return ViewModelProvider(owner, factory)[viewModelClass.java] as VM
-        } catch (e: Exception) {
-            throw RuntimeException(e)
-        }
+        return ViewModelProvider(owner, factory)[viewModelClass.java] as VM
     }
 }
 

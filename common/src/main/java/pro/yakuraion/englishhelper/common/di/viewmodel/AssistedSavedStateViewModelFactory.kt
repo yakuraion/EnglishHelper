@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 
 /**
- * Fabric for create the specific ViewModel
+ * Fabric for create the specific ViewModel.
  */
 interface AssistedSavedStateViewModelFactory<T : ViewModel> {
 

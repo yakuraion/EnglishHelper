@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 import com.android.build.gradle.BaseExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -42,7 +44,7 @@ configure<BaseExtension> {
 
 codeCheck {
     jvmTarget.set(JavaVersion.VERSION_11.toString())
-    detektConfig.from(files("${configsDir}/detekt/detekt.yml"))
+    detektConfig.from(files("$configsDir/detekt/detekt.yml"))
 }
 
 dependencies {
