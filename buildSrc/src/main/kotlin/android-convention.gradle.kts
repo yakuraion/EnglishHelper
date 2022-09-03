@@ -60,6 +60,9 @@ dependencies {
 
     add("debugImplementation", versionCatalog.findLibrary("compose-tooling").get())
 
+    add("debugImplementation", versionCatalog.findLibrary("custom-view").get())
+    add("debugImplementation", versionCatalog.findLibrary("custom-view-pooling-container").get())
+
     add("testImplementation", versionCatalog.findLibrary("junit").get())
 
     add("androidTestImplementation", versionCatalog.findLibrary("androidx-junit").get())

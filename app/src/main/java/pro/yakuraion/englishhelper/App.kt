@@ -21,7 +21,13 @@ class App : Application(), VocabularyDependencies.Provider {
     }
 
     private fun createAppDatabase(): AppDatabase {
-        return Room.databaseBuilder(applicationContext, AppDatabase::class.java, DATABASE_NAME).build()
+        // todo remove allowMainThreadQueries
+        // todo remove fallbackToDestructiveMigration
+        return Room
+            .databaseBuilder(applicationContext, AppDatabase::class.java, DATABASE_NAME)
+            .allowMainThreadQueries()
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     private fun initDI() {

@@ -2,7 +2,7 @@ package pro.yakuraion.englishhelper.vocabulary.di
 
 import dagger.BindsInstance
 import dagger.Component
-import pro.yakuraion.englishhelper.vocabulary.data.daos.WordsDao
+import pro.yakuraion.englishhelper.vocabulary.data.daos.LearningWordsDao
 import pro.yakuraion.englishhelper.vocabulary.di.viewmodel.ViewModelFactoriesModule
 import pro.yakuraion.englishhelper.vocabulary.ui.vocabulary.VocabularyActivity
 
@@ -19,7 +19,7 @@ interface VocabularyComponent {
         fun build(): VocabularyComponent
 
         @BindsInstance
-        fun wordsDao(dao: WordsDao): Builder
+        fun wordsDao(dao: LearningWordsDao): Builder
     }
 
     companion object {

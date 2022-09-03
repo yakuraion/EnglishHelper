@@ -25,6 +25,10 @@ compose-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "co
 compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 compose-junit = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
 
+# https://stackoverflow.com/questions/71812710/can-no-longer-view-jetpack-compose-previews-failed-to-instantiate-one-or-more-c
+custom-view = { module = "androidx.customview:customview", version = "1.2.0-alpha01"}
+custom-view-pooling-container = { module = "androidx.customview:customview-poolingcontainer", version = "1.0.0-alpha01"}
+
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }

@@ -1,10 +1,10 @@
 package pro.yakuraion.englishhelper.vocabulary.di
 
-import pro.yakuraion.englishhelper.vocabulary.data.daos.WordsDao
+import pro.yakuraion.englishhelper.vocabulary.data.daos.LearningWordsDao
 
 interface VocabularyDependencies {
 
-    fun wordsDao(): WordsDao
+    fun wordsDao(): LearningWordsDao
 
     interface Provider {
 
