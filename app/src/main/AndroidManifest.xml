@@ -27,6 +27,8 @@
 
         <activity android:name=".vocabulary.ui.vocabulary.VocabularyActivity" />
 
+        <activity android:name=".vocabulary.ui.addwords.AddWordsActivity" />
+
     </application>
 
 </manifest>

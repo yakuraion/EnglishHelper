@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Button
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
@@ -28,8 +29,8 @@ import pro.yakuraion.englishhelper.common.mvvm.MVVMActivity
 import pro.yakuraion.englishhelper.vocabulary.data.entities.LearningWordEntity
 import pro.yakuraion.englishhelper.vocabulary.data.entities.MemorizationLevel
 import pro.yakuraion.englishhelper.vocabulary.data.entities.Word
-import pro.yakuraion.englishhelper.vocabulary.di.VocabularyComponent
-import pro.yakuraion.englishhelper.vocabulary.di.VocabularyDependenciesProvider
+import pro.yakuraion.englishhelper.vocabulary.di.diComponent
+import pro.yakuraion.englishhelper.vocabulary.ui.addwords.AddWordsActivity
 import javax.inject.Inject
 
 class VocabularyActivity : MVVMActivity<VocabularyViewModel>(VocabularyViewModel::class) {
@@ -38,41 +39,40 @@ class VocabularyActivity : MVVMActivity<VocabularyViewModel>(VocabularyViewModel
     override lateinit var abstractViewModelFactory: InjectingSavedStateViewModelFactory
 
     override fun inject() {
-        val dependencies = (application as VocabularyDependenciesProvider).provideVocabularyDependencies()
-        VocabularyComponent.create(dependencies).inject(this)
+        diComponent.inject(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            VocabularyScreen()
+            ScreenView()
         }
     }
 
     @Composable
-    private fun VocabularyScreen() {
+    private fun ScreenView() {
         val learningDay by viewModel.learningDay.collectAsState()
         val words by viewModel.words.collectAsState(initial = emptyList())
-        VocabularyContent(
+        ScreenContentView(
             learningDay = learningDay,
             onLearningDaySet = { viewModel.onLearningDaySet(it) },
-            words = words,
-            onAddClick = { viewModel.onAddNameClick(it) }
+            onAddWordsClick = { openAddWordsActivity() },
+            words = words
         )
     }
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
-    private fun VocabularyContent(
+    private fun ScreenContentView(
         learningDay: Int,
         onLearningDaySet: (day: Int) -> Unit,
-        words: List<LearningWordEntity>,
-        onAddClick: (name: String) -> Unit
+        onAddWordsClick: () -> Unit,
+        words: List<LearningWordEntity>
     ) {
         Scaffold {
             Column {
                 LearningDayView(learningDay, onLearningDaySet)
-                AddNameView(onAddClick)
+                AddWordsView(onAddWordsClick)
                 WordsListView(words)
             }
         }
@@ -80,16 +80,16 @@ class VocabularyActivity : MVVMActivity<VocabularyViewModel>(VocabularyViewModel
 
     @Preview
     @Composable
-    private fun VocabularyContentPreview() {
-        VocabularyContent(
+    private fun ScreenContentPreview() {
+        ScreenContentView(
             learningDay = 12,
             onLearningDaySet = {},
+            onAddWordsClick = {},
             words = listOf(
                 LearningWordEntity(Word("Butter"), MemorizationLevel.new()),
                 LearningWordEntity(Word("Population"), MemorizationLevel.new()),
                 LearningWordEntity(Word("its_a_very_long_word"), MemorizationLevel.new())
-            ),
-            onAddClick = {}
+            )
         )
     }
 
@@ -105,16 +105,9 @@ class VocabularyActivity : MVVMActivity<VocabularyViewModel>(VocabularyViewModel
     }
 
     @Composable
-    private fun AddNameView(onAddClick: (name: String) -> Unit) {
-        var name by rememberSaveable { mutableStateOf("") }
-        Column {
-            TextField(
-                value = name,
-                onValueChange = { name = it },
-            )
-            TextButton(onClick = { onAddClick.invoke(name) }) {
-                Text(text = "add word")
-            }
+    private fun AddWordsView(onAddWordsClick: () -> Unit) {
+        Button(onClick = { onAddWordsClick.invoke() }) {
+            Text(text = "add words")
         }
     }
 
@@ -135,6 +128,10 @@ class VocabularyActivity : MVVMActivity<VocabularyViewModel>(VocabularyViewModel
             Text(text = word.word.name, modifier = Modifier.padding(end = 8.dp))
             Text(text = word.memorizationLevel.level.toString())
         }
+    }
+
+    private fun openAddWordsActivity() {
+        startActivity(AddWordsActivity.createIntent(this))
     }
 
     companion object {

@@ -10,8 +10,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import pro.yakuraion.englishhelper.common.di.viewmodel.AssistedSavedStateViewModelFactory
 import pro.yakuraion.englishhelper.vocabulary.data.daos.LearningWordsDao
 import pro.yakuraion.englishhelper.vocabulary.data.entities.LearningWordEntity
-import pro.yakuraion.englishhelper.vocabulary.data.entities.MemorizationLevel
-import pro.yakuraion.englishhelper.vocabulary.data.entities.Word
 import pro.yakuraion.englishhelper.vocabulary.data.preferences.VocabularyPreferences
 
 class VocabularyViewModel @AssistedInject constructor(
@@ -27,14 +25,6 @@ class VocabularyViewModel @AssistedInject constructor(
     fun onLearningDaySet(day: Int) {
         vocabularyPreferences.learningDay = day
         learningDay.value = day
-    }
-
-    fun onAddNameClick(name: String) {
-        val learningWord = LearningWordEntity(
-            word = Word(name),
-            memorizationLevel = MemorizationLevel.new()
-        )
-        learningWordsDao.insert(learningWord)
     }
 
     @AssistedFactory
