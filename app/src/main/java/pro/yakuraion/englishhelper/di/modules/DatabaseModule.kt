@@ -13,11 +13,9 @@ class DatabaseModule {
     @Singleton
     @Provides
     fun provideDatabase(context: Context): AppDatabase {
-        // todo remove allowMainThreadQueries
         // todo remove fallbackToDestructiveMigration
         return Room
             .databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
-            .allowMainThreadQueries()
             .fallbackToDestructiveMigration()
             .build()
     }

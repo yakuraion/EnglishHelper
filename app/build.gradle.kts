@@ -11,5 +11,6 @@ android {
 }
 
 dependencies {
+    implementation(project(":common"))
     implementation(project(":modules:vocabulary"))
 }

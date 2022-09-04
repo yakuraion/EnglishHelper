@@ -7,6 +7,8 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flowOn
+import pro.yakuraion.englishhelper.common.coroutines.Dispatchers
 import pro.yakuraion.englishhelper.common.di.viewmodel.AssistedSavedStateViewModelFactory
 import pro.yakuraion.englishhelper.vocabulary.data.daos.LearningWordsDao
 import pro.yakuraion.englishhelper.vocabulary.data.entities.LearningWordEntity
@@ -14,13 +16,14 @@ import pro.yakuraion.englishhelper.vocabulary.data.preferences.VocabularyPrefere
 
 class VocabularyViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
+    private val dispatchers: Dispatchers,
     private val learningWordsDao: LearningWordsDao,
     private val vocabularyPreferences: VocabularyPreferences
 ) : ViewModel() {
 
     val learningDay: MutableStateFlow<Int> = MutableStateFlow(vocabularyPreferences.learningDay)
 
-    val words: Flow<List<LearningWordEntity>> = learningWordsDao.getAll()
+    val words: Flow<List<LearningWordEntity>> = learningWordsDao.getAll().flowOn(dispatchers.ioDispatcher)
 
     fun onLearningDaySet(day: Int) {
         vocabularyPreferences.learningDay = day
