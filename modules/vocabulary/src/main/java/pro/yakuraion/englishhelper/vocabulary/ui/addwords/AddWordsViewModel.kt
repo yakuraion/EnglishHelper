@@ -1,5 +1,6 @@
 package pro.yakuraion.englishhelper.vocabulary.ui.addwords
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,16 +22,59 @@ class AddWordsViewModel @AssistedInject constructor(
     private val learningWordsDao: LearningWordsDao,
 ) : ViewModel() {
 
+    val uiState = mutableStateOf<UIState>(UIState.EnteringWords)
+
     fun onAddWordsClick(wordsText: String) {
         val learningWords = wordsText
             .split(SEPARATOR)
             .map { it.trim() }
-            .map { LearningWordEntity(Word(it), MemorizationLevel.new()) }
+        addWords(learningWords)
+    }
+
+    private fun addWords(words: List<String>) {
         viewModelScope.launch {
-            withContext(dispatchers.ioDispatcher) {
-                learningWords.forEach { learningWordsDao.insert(it) }
-            }
+            val uniqueWords = distinctWords(words)
+            if (!validateAlreadyExistsWords(uniqueWords)) return@launch
+            writeWordsToDatabase(uniqueWords)
+            uiState.value = UIState.WordsAdded
         }
+    }
+
+    private fun distinctWords(words: List<String>): List<String> {
+        return words.map { it.lowercase() }.distinct()
+    }
+
+    private suspend fun validateAlreadyExistsWords(words: List<String>): Boolean {
+        val alreadyExistsWords = withContext(dispatchers.ioDispatcher) {
+            words.filter { learningWordsDao.getByName(it) != null }
+        }
+        return if (alreadyExistsWords.isNotEmpty()) {
+            uiState.value = UIState.Error("This words already in learning: $alreadyExistsWords")
+            false
+        } else {
+            true
+        }
+    }
+
+    private suspend fun writeWordsToDatabase(words: List<String>) {
+        withContext(dispatchers.ioDispatcher) {
+            words
+                .map { word ->
+                    LearningWordEntity(
+                        Word(word),
+                        MemorizationLevel.new()
+                    )
+                }
+                .forEach {
+                    learningWordsDao.insert(it)
+                }
+        }
+    }
+
+    sealed class UIState {
+        object EnteringWords : UIState()
+        class Error(val message: String) : UIState()
+        object WordsAdded : UIState()
     }
 
     @AssistedFactory

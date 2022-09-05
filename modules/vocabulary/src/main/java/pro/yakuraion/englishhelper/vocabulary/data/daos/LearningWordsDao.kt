@@ -13,7 +13,7 @@ interface LearningWordsDao {
     fun getAll(): Flow<List<LearningWordEntity>>
 
     @Query("SELECT * FROM learning_word WHERE word_name = :name")
-    fun getByName(name: String): LearningWordEntity
+    fun getByName(name: String): LearningWordEntity?
 
     @Insert
     fun insert(word: LearningWordEntity)

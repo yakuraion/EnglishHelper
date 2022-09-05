@@ -13,8 +13,10 @@ import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import pro.yakuraion.englishhelper.common.di.viewmodel.InjectingSavedStateViewModelFactory
 import pro.yakuraion.englishhelper.common.mvvm.MVVMActivity
@@ -39,20 +41,25 @@ class AddWordsActivity : MVVMActivity<AddWordsViewModel>(AddWordsViewModel::clas
 
     @Composable
     private fun ScreenView() {
+        val uiState by remember { viewModel.uiState }
         ScreenContentView(
+            uiState = uiState,
             onAddWordsClick = { viewModel.onAddWordsClick(it) }
         )
+        // todo replace with Navigation
+        if (uiState is AddWordsViewModel.UIState.WordsAdded) {
+            finish()
+        }
     }
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
-    private fun ScreenContentView(onAddWordsClick: (words: String) -> Unit) {
-        var text by rememberSaveable { mutableStateOf("") }
+    private fun ScreenContentView(uiState: AddWordsViewModel.UIState, onAddWordsClick: (words: String) -> Unit) {
         Scaffold {
             Column {
-                TextField(value = text, onValueChange = { text = it })
-                Button(onClick = { onAddWordsClick.invoke(text) }) {
-                    Text(text = "add words")
+                AddWordsView(onAddWordsClick = onAddWordsClick)
+                if (uiState is AddWordsViewModel.UIState.Error) {
+                    ErrorView(message = uiState.message)
                 }
             }
         }
@@ -61,7 +68,26 @@ class AddWordsActivity : MVVMActivity<AddWordsViewModel>(AddWordsViewModel::clas
     @Preview
     @Composable
     private fun ScreenContentPreview() {
-        ScreenContentView(onAddWordsClick = {})
+        ScreenContentView(
+            uiState = AddWordsViewModel.UIState.EnteringWords,
+            onAddWordsClick = {}
+        )
+    }
+
+    @Composable
+    private fun AddWordsView(onAddWordsClick: (words: String) -> Unit) {
+        var text by rememberSaveable { mutableStateOf("") }
+        Column {
+            TextField(value = text, onValueChange = { text = it })
+            Button(onClick = { onAddWordsClick.invoke(text) }) {
+                Text(text = "add words")
+            }
+        }
+    }
+
+    @Composable
+    private fun ErrorView(message: String) {
+        Text(text = message, color = Color.Red)
     }
 
     companion object {
