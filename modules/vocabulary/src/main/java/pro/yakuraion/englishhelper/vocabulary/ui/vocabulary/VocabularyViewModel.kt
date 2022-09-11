@@ -7,26 +7,22 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flowOn
-import pro.yakuraion.englishhelper.common.coroutines.Dispatchers
 import pro.yakuraion.englishhelper.common.di.viewmodel.AssistedSavedStateViewModelFactory
-import pro.yakuraion.englishhelper.vocabulary.data.daos.LearningWordsDao
-import pro.yakuraion.englishhelper.vocabulary.data.entities.LearningWordEntity
-import pro.yakuraion.englishhelper.vocabulary.data.preferences.VocabularyPreferences
+import pro.yakuraion.englishhelper.domain.entities.LearningWord
+import pro.yakuraion.englishhelper.domain.interactors.WordsInteractor
 
 class VocabularyViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
-    private val dispatchers: Dispatchers,
-    private val learningWordsDao: LearningWordsDao,
-    private val vocabularyPreferences: VocabularyPreferences
+    private val wordsInteractor: WordsInteractor
 ) : ViewModel() {
 
-    val learningDay: MutableStateFlow<Int> = MutableStateFlow(vocabularyPreferences.learningDay)
+    // todo get value from interactor
+    val learningDay: MutableStateFlow<Int> = MutableStateFlow(0)
 
-    val words: Flow<List<LearningWordEntity>> = learningWordsDao.getAll().flowOn(dispatchers.ioDispatcher)
+    val words: Flow<List<LearningWord>> = wordsInteractor.getWords()
 
     fun onLearningDaySet(day: Int) {
-        vocabularyPreferences.learningDay = day
+        // todo set learning dat in interactor
         learningDay.value = day
     }
 

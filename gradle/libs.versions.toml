@@ -1,7 +1,7 @@
 [versions]
 android = "7.2.1"
 kotlin = "1.7.10"
-dagger = "2.33"
+dagger = "2.43.2"
 compose = "1.2.1"
 room = "2.4.3"
 
@@ -10,6 +10,8 @@ android-application-plugin = { module = "com.android.application:com.android.app
 android-library-plugin = { module = "com.android.library:com.android.library.gradle.plugin", version.ref = "android" }
 
 kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
+kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version = "1.3.9" }
 
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }

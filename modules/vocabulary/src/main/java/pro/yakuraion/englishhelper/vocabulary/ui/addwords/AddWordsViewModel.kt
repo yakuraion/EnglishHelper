@@ -8,18 +8,12 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import pro.yakuraion.englishhelper.common.coroutines.Dispatchers
 import pro.yakuraion.englishhelper.common.di.viewmodel.AssistedSavedStateViewModelFactory
-import pro.yakuraion.englishhelper.vocabulary.data.daos.LearningWordsDao
-import pro.yakuraion.englishhelper.vocabulary.data.entities.LearningWordEntity
-import pro.yakuraion.englishhelper.vocabulary.data.entities.MemorizationLevel
-import pro.yakuraion.englishhelper.vocabulary.data.entities.Word
+import pro.yakuraion.englishhelper.domain.interactors.WordsInteractor
 
 class AddWordsViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
-    private val dispatchers: Dispatchers,
-    private val learningWordsDao: LearningWordsDao,
+    private val wordsInteractor: WordsInteractor
 ) : ViewModel() {
 
     val uiState = mutableStateOf<UIState>(UIState.EnteringWords)
@@ -35,7 +29,7 @@ class AddWordsViewModel @AssistedInject constructor(
         viewModelScope.launch {
             val uniqueWords = distinctWords(words)
             if (!validateAlreadyExistsWords(uniqueWords)) return@launch
-            writeWordsToDatabase(uniqueWords)
+            uniqueWords.forEach { wordsInteractor.addWord(it) }
             uiState.value = UIState.WordsAdded
         }
     }
@@ -45,29 +39,12 @@ class AddWordsViewModel @AssistedInject constructor(
     }
 
     private suspend fun validateAlreadyExistsWords(words: List<String>): Boolean {
-        val alreadyExistsWords = withContext(dispatchers.ioDispatcher) {
-            words.filter { learningWordsDao.getByName(it) != null }
-        }
+        val alreadyExistsWords = words.filter { wordsInteractor.isWordAlreadyExist(it) }
         return if (alreadyExistsWords.isNotEmpty()) {
             uiState.value = UIState.Error("This words already in learning: $alreadyExistsWords")
             false
         } else {
             true
-        }
-    }
-
-    private suspend fun writeWordsToDatabase(words: List<String>) {
-        withContext(dispatchers.ioDispatcher) {
-            words
-                .map { word ->
-                    LearningWordEntity(
-                        Word(word),
-                        MemorizationLevel.new()
-                    )
-                }
-                .forEach {
-                    learningWordsDao.insert(it)
-                }
         }
     }
 

@@ -26,9 +26,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import pro.yakuraion.englishhelper.common.di.viewmodel.InjectingSavedStateViewModelFactory
 import pro.yakuraion.englishhelper.common.mvvm.MVVMActivity
-import pro.yakuraion.englishhelper.vocabulary.data.entities.LearningWordEntity
-import pro.yakuraion.englishhelper.vocabulary.data.entities.MemorizationLevel
-import pro.yakuraion.englishhelper.vocabulary.data.entities.Word
+import pro.yakuraion.englishhelper.domain.entities.LearningWord
+import pro.yakuraion.englishhelper.domain.entities.MemorizationLevel
+import pro.yakuraion.englishhelper.domain.entities.Word
 import pro.yakuraion.englishhelper.vocabulary.di.diComponent
 import pro.yakuraion.englishhelper.vocabulary.ui.addwords.AddWordsActivity
 import javax.inject.Inject
@@ -67,7 +67,7 @@ class VocabularyActivity : MVVMActivity<VocabularyViewModel>(VocabularyViewModel
         learningDay: Int,
         onLearningDaySet: (day: Int) -> Unit,
         onAddWordsClick: () -> Unit,
-        words: List<LearningWordEntity>
+        words: List<LearningWord>
     ) {
         Scaffold {
             Column {
@@ -86,9 +86,9 @@ class VocabularyActivity : MVVMActivity<VocabularyViewModel>(VocabularyViewModel
             onLearningDaySet = {},
             onAddWordsClick = {},
             words = listOf(
-                LearningWordEntity(Word("Butter"), MemorizationLevel.new()),
-                LearningWordEntity(Word("Population"), MemorizationLevel.new()),
-                LearningWordEntity(Word("its_a_very_long_word"), MemorizationLevel.new())
+                LearningWord(Word("Butter"), MemorizationLevel.new()),
+                LearningWord(Word("Population"), MemorizationLevel.new()),
+                LearningWord(Word("its_a_very_long_word"), MemorizationLevel.new())
             )
         )
     }
@@ -112,7 +112,7 @@ class VocabularyActivity : MVVMActivity<VocabularyViewModel>(VocabularyViewModel
     }
 
     @Composable
-    private fun WordsListView(words: List<LearningWordEntity>) {
+    private fun WordsListView(words: List<LearningWord>) {
         Column {
             LazyColumn {
                 items(words) { word ->
@@ -123,7 +123,7 @@ class VocabularyActivity : MVVMActivity<VocabularyViewModel>(VocabularyViewModel
     }
 
     @Composable
-    private fun WordView(word: LearningWordEntity) {
+    private fun WordView(word: LearningWord) {
         Row {
             Text(text = word.word.name, modifier = Modifier.padding(end = 8.dp))
             Text(text = word.memorizationLevel.level.toString())

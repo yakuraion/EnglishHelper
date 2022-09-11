@@ -17,6 +17,8 @@ dependencyResolutionManagement {
 rootProject.name = "EnglishHelper"
 
 include(":app")
+include(":data")
+include(":domain")
 include(":common")
 include(":modules:vocabulary")
 
