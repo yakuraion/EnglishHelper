@@ -86,9 +86,9 @@ class VocabularyActivity : MVVMActivity<VocabularyViewModel>(VocabularyViewModel
             onLearningDaySet = {},
             onAddWordsClick = {},
             words = listOf(
-                LearningWord(Word("Butter"), MemorizationLevel.new()),
-                LearningWord(Word("Population"), MemorizationLevel.new()),
-                LearningWord(Word("its_a_very_long_word"), MemorizationLevel.new())
+                LearningWord(Word("Butter", null), MemorizationLevel.new()),
+                LearningWord(Word("Population", null), MemorizationLevel.new()),
+                LearningWord(Word("its_a_very_long_word", null), MemorizationLevel.new())
             )
         )
     }
