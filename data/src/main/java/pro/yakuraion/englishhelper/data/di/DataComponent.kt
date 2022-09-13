@@ -7,7 +7,14 @@ import pro.yakuraion.englishhelper.domain.di.RepositoriesProvider
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [DatabaseModule::class, DaosModule::class, RepositoriesModule::class])
+@Component(
+    modules = [
+        SharedPreferencesModule::class,
+        DatabaseModule::class,
+        DaosModule::class,
+        RepositoriesModule::class
+    ]
+)
 interface DataComponent : RepositoriesProvider {
 
     @Component.Builder

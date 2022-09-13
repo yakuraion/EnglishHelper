@@ -2,8 +2,10 @@ package pro.yakuraion.englishhelper.data.di
 
 import dagger.Binds
 import dagger.Module
+import pro.yakuraion.englishhelper.data.repositories.LearningWordsRepositoryImpl
 import pro.yakuraion.englishhelper.data.repositories.WordsRepositoryImpl
 import pro.yakuraion.englishhelper.data.repositories.WordsSoundsRepositoryImpl
+import pro.yakuraion.englishhelper.domain.repositories.LearningWordsRepository
 import pro.yakuraion.englishhelper.domain.repositories.WordsRepository
 import pro.yakuraion.englishhelper.domain.repositories.WordsSoundsRepository
 import javax.inject.Singleton
@@ -18,4 +20,8 @@ internal interface RepositoriesModule {
     @Singleton
     @Binds
     fun bindsWordsSoundsRepository(impl: WordsSoundsRepositoryImpl): WordsSoundsRepository
+
+    @Singleton
+    @Binds
+    fun bindsLearningWordsRepository(impl: LearningWordsRepositoryImpl): LearningWordsRepository
 }

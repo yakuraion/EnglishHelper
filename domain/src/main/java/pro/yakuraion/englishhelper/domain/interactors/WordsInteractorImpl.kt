@@ -1,7 +1,5 @@
 package pro.yakuraion.englishhelper.domain.interactors
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import pro.yakuraion.englishhelper.common.coroutines.Dispatchers
 import pro.yakuraion.englishhelper.domain.entities.LearningWord
@@ -37,10 +35,5 @@ class WordsInteractorImpl @Inject constructor(
         val word = Word(name, soundFile)
         val memorizationLevel = MemorizationLevel.new()
         return LearningWord(word, memorizationLevel)
-    }
-
-    override fun getWords(): Flow<List<LearningWord>> {
-        return wordsRepository.getWords()
-            .flowOn(dispatchers.ioDispatcher)
     }
 }
