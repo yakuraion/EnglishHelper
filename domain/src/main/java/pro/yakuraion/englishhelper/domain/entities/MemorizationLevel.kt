@@ -1,6 +1,6 @@
 package pro.yakuraion.englishhelper.domain.entities
 
-class MemorizationLevel(val level: Int) {
+data class MemorizationLevel(val level: Int) {
 
     val maxDeviation: Int by lazy { Integer.max(level - 1, 0) }
 

@@ -9,6 +9,13 @@ import androidx.room.Entity
     primaryKeys = ["word_name"],
 )
 internal data class LearningWordEntity(
-    @Embedded(prefix = "word_") val word: WordEntity,
-    @ColumnInfo(name = "memorization_level") val memorizationLevel: Int
-)
+    @Embedded(prefix = "word_") val word: Word,
+    @ColumnInfo(name = "memorization_level") val memorizationLevel: Int,
+    @ColumnInfo(name = "next_day_to_learn") val nextDayToLearn: Int
+) {
+
+    data class Word(
+        val name: String,
+        val soundFile: String?
+    )
+}

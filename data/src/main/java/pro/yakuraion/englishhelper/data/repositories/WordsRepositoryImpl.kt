@@ -1,7 +1,5 @@
 package pro.yakuraion.englishhelper.data.repositories
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import pro.yakuraion.englishhelper.data.converters.getLearningWord
 import pro.yakuraion.englishhelper.data.converters.getLearningWordEntity
 import pro.yakuraion.englishhelper.data.database.daos.LearningWordsDao
@@ -18,13 +16,13 @@ internal class WordsRepositoryImpl @Inject constructor(
         return entity?.let { getLearningWord(it) }
     }
 
+    override suspend fun getWordsByMaxLearningDay(maxLearningDay: Int): List<LearningWord> {
+        return learningWordsDao.getByMaxLearningDay(maxLearningDay)
+            .map { getLearningWord(it) }
+    }
+
     override suspend fun addWord(learningWord: LearningWord) {
         val entity = getLearningWordEntity(learningWord)
         learningWordsDao.insert(entity)
-    }
-
-    override fun getWords(): Flow<List<LearningWord>> {
-        return learningWordsDao.getAll()
-            .map { list -> list.map { getLearningWord(it) } }
     }
 }

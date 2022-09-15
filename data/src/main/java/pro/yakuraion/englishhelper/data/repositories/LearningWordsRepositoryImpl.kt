@@ -1,27 +1,28 @@
 package pro.yakuraion.englishhelper.data.repositories
 
-import pro.yakuraion.englishhelper.data.preferences.Preferences
+import pro.yakuraion.englishhelper.data.converters.getLearningWord
+import pro.yakuraion.englishhelper.data.converters.getTodayLearningWordEntity
+import pro.yakuraion.englishhelper.data.database.daos.TodayLearningWordsDao
+import pro.yakuraion.englishhelper.domain.entities.LearningWord
 import pro.yakuraion.englishhelper.domain.repositories.LearningWordsRepository
-import java.util.*
 import javax.inject.Inject
 
 internal class LearningWordsRepositoryImpl @Inject constructor(
-    private val preferences: Preferences
+    private val todayLearningWordsDao: TodayLearningWordsDao
 ) : LearningWordsRepository {
 
-    override suspend fun getLearningDay(): Int {
-        return preferences.learningDay
+    override suspend fun getTodayWords(): List<LearningWord> {
+        return todayLearningWordsDao.getTodayWords()
+            .map { getLearningWord(it) }
     }
 
-    override suspend fun increaseLearningDay() {
-        preferences.learningDay += 1
+    override suspend fun setTodayWords(words: List<LearningWord>) {
+        val wordsEntities = words.map { getTodayLearningWordEntity(it) }
+        todayLearningWordsDao.reset(wordsEntities)
     }
 
-    override suspend fun getLastLearningDate(): Calendar {
-        return preferences.lastLearningDate
-    }
-
-    override suspend fun setLastLearningDate(calendar: Calendar) {
-        preferences.lastLearningDate = calendar
+    override suspend fun addTodayWord(word: LearningWord) {
+        val wordEntity = getTodayLearningWordEntity(word)
+        todayLearningWordsDao.insert(wordEntity)
     }
 }

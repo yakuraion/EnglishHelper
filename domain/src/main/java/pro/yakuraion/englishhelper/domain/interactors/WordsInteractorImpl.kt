@@ -5,6 +5,7 @@ import pro.yakuraion.englishhelper.common.coroutines.Dispatchers
 import pro.yakuraion.englishhelper.domain.entities.LearningWord
 import pro.yakuraion.englishhelper.domain.entities.MemorizationLevel
 import pro.yakuraion.englishhelper.domain.entities.Word
+import pro.yakuraion.englishhelper.domain.repositories.LearningRepository
 import pro.yakuraion.englishhelper.domain.repositories.WordsRepository
 import pro.yakuraion.englishhelper.domain.repositories.WordsSoundsRepository
 import java.io.File
@@ -13,7 +14,8 @@ import javax.inject.Inject
 class WordsInteractorImpl @Inject constructor(
     private val dispatchers: Dispatchers,
     private val wordsRepository: WordsRepository,
-    private val wordsSoundsRepository: WordsSoundsRepository
+    private val wordsSoundsRepository: WordsSoundsRepository,
+    private val learningRepository: LearningRepository
 ) : WordsInteractor {
 
     override suspend fun isWordAlreadyExist(name: String): Boolean {
@@ -31,9 +33,10 @@ class WordsInteractorImpl @Inject constructor(
         }
     }
 
-    private fun createLearningWord(name: String, soundFile: File?): LearningWord {
+    private suspend fun createLearningWord(name: String, soundFile: File?): LearningWord {
         val word = Word(name, soundFile)
         val memorizationLevel = MemorizationLevel.new()
-        return LearningWord(word, memorizationLevel)
+        val nextDayToLearn = learningRepository.getLearningDay()
+        return LearningWord(word, memorizationLevel, nextDayToLearn)
     }
 }

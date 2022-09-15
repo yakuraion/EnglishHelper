@@ -9,6 +9,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
 import pro.yakuraion.englishhelper.common.di.viewmodel.AssistedSavedStateViewModelFactory
+import pro.yakuraion.englishhelper.domain.entities.LearningWord
 import pro.yakuraion.englishhelper.domain.interactors.GetWordsToLearnInteractor
 
 class TestingViewModel @AssistedInject constructor(
@@ -16,12 +17,11 @@ class TestingViewModel @AssistedInject constructor(
     private val getWordsToLearnInteractor: GetWordsToLearnInteractor
 ) : ViewModel() {
 
-    val day = mutableStateOf(0)
+    val words = mutableStateOf<List<LearningWord>>(emptyList())
 
-    fun onButtonClick() {
+    init {
         viewModelScope.launch {
-            getWordsToLearnInteractor.getWordsToLearnToday()
-            day.value = getWordsToLearnInteractor.getCurrentDay()
+            words.value = getWordsToLearnInteractor.getWordsToLearnToday()
         }
     }
 
