@@ -44,9 +44,11 @@ codeCheck {
 
 dependencies {
     add("implementation", versionCatalog.findLibrary("kotlin-coroutines").get())
+    add("testImplementation", versionCatalog.findLibrary("kotlin-coroutines-test").get())
 
     add("implementation", versionCatalog.findLibrary("dagger").get())
     add("kapt", versionCatalog.findLibrary("dagger-compiler").get())
 
     add("testImplementation", versionCatalog.findLibrary("junit").get())
+    add("testImplementation", versionCatalog.findLibrary("mockk").get())
 }

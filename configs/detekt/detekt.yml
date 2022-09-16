@@ -603,6 +603,7 @@ style:
     active: true
   OptionalUnit:
     active: true
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
   OptionalWhenBraces:
     active: false
   PreferToOverPairSyntax:

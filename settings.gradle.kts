@@ -20,6 +20,7 @@ include(":app")
 include(":data")
 include(":domain")
 include(":common")
+include(":common-tests")
 include(":modules:vocabulary")
 
 includeBuild("plugins/code-check") {
