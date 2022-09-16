@@ -18,13 +18,6 @@ class MemorizationLevelTest {
     }
 
     @Test
-    fun getMaxDeviation() {
-        assertEquals(MemorizationLevel(0).maxDeviation, 0)
-        assertEquals(MemorizationLevel(1).maxDeviation, 0)
-        assertEquals(MemorizationLevel(2).maxDeviation, 1)
-    }
-
-    @Test
     fun isMaxLevel() {
         assertFalse(MemorizationLevel(0).isMaxLevel())
         assertTrue(MemorizationLevel(MAX_LEVEL).isMaxLevel())

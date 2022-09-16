@@ -2,10 +2,17 @@ package pro.yakuraion.englishhelper.domain.entities
 
 data class MemorizationLevel(val level: Int) {
 
-    val maxDeviation: Int by lazy { Integer.max(level - 1, 0) }
-
     init {
         require(level in 0..MAX_LEVEL) { "Invalid level = $level" }
+    }
+
+    val maxDeviation: Int = when (level) {
+        0 -> 0
+        1 -> 0
+        2 -> 1
+        3 -> 3
+        4 -> 7
+        else -> error("Illegal level = $level")
     }
 
     fun isMaxLevel() = level == MAX_LEVEL
