@@ -58,20 +58,35 @@ class GetWordsToLearnInteractorImplTest {
 
     private fun setUpMockk() {
         coEvery { wordsRepository.getWordsByMaxLearningDay(any()) } returns LEARNING_WORDS
-        coEvery { learningRepository.getLearningDay() } returns CURRENT_LEARNING_DAY + 1
+    }
 
+    @Test
+    fun getWordsToLearnToday() = runTest {
+        coEvery { learningRepository.getLastLearningDate() } returns Calendar.getInstance()
+
+        val expectedWords = listOf(LearningWord(Word("name", null), MemorizationLevel(1), 1))
+        coEvery { learningWordsRepository.getTodayWords() } returns expectedWords
+
+        val words = interactor.getWordsToLearnToday()
+
+        assertEquals(expectedWords, words)
+
+        coVerify(exactly = 0) { learningRepository.increaseLearningDay() }
+        coVerify(exactly = 0) { learningWordsRepository.setTodayWords(any()) }
+    }
+
+    @Test
+    fun getWordsToLearnTodayWithUpdateLearningDate() = runTest {
         val lastLearningDate = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, -1) }
         coEvery { learningRepository.getLastLearningDate() } returns lastLearningDate
+        coEvery { learningRepository.getLearningDay() } returns CURRENT_LEARNING_DAY
 
         val todayWords = slot<List<LearningWord>>()
         coEvery { learningWordsRepository.setTodayWords(capture(todayWords)) } answers {
             coEvery { learningWordsRepository.getTodayWords() } returns todayWords.captured
             Unit
         }
-    }
 
-    @Test
-    fun getWordsToLearnToday() = runTest {
         val calendarSlot = slot<Calendar>()
         coJustRun { learningRepository.setLastLearningDate(capture(calendarSlot)) }
 
@@ -102,7 +117,7 @@ class GetWordsToLearnInteractorImplTest {
 
     companion object {
 
-        private const val CURRENT_LEARNING_DAY = 1
+        private const val CURRENT_LEARNING_DAY = 2
 
         private val LEARNING_WORDS = listOf(
             List(20) { index -> LearningWord(Word("AA_$index", null), MemorizationLevel(0), 0) },
