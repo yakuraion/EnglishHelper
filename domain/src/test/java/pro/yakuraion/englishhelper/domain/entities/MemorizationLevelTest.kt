@@ -18,9 +18,27 @@ class MemorizationLevelTest {
     }
 
     @Test
+    fun daysBeforeLearning() {
+        assertEquals(MemorizationLevel(0).daysBeforeLearning, 0)
+        assertEquals(MemorizationLevel(1).daysBeforeLearning, 1)
+        assertEquals(MemorizationLevel(2).daysBeforeLearning, 2)
+        assertEquals(MemorizationLevel(3).daysBeforeLearning, 4)
+        assertEquals(MemorizationLevel(4).daysBeforeLearning, 8)
+    }
+
+    @Test
+    fun maxDeviation() {
+        assertEquals(MemorizationLevel(0).maxDeviation, 0)
+        assertEquals(MemorizationLevel(1).maxDeviation, 0)
+        assertEquals(MemorizationLevel(2).maxDeviation, 1)
+        assertEquals(MemorizationLevel(3).maxDeviation, 3)
+        assertEquals(MemorizationLevel(4).maxDeviation, 7)
+    }
+
+    @Test
     fun isMaxLevel() {
-        assertFalse(MemorizationLevel(0).isMaxLevel())
-        assertTrue(MemorizationLevel(MAX_LEVEL).isMaxLevel())
+        assertFalse(MemorizationLevel(0).isMax())
+        assertTrue(MemorizationLevel(MAX_LEVEL).isMax())
     }
 
     @Test

@@ -1,24 +1,21 @@
 package pro.yakuraion.englishhelper.domain.entities
 
+import pro.yakuraion.englishhelper.common.pow
+
 data class MemorizationLevel(val level: Int) {
 
     init {
         require(level in 0..MAX_LEVEL) { "Invalid level = $level" }
     }
 
-    val maxDeviation: Int = when (level) {
-        0 -> 0
-        1 -> 0
-        2 -> 1
-        3 -> 3
-        4 -> 7
-        else -> error("Illegal level = $level")
-    }
+    val daysBeforeLearning: Int = if (level == 0) 0 else 2 pow (level - 1)
 
-    fun isMaxLevel() = level == MAX_LEVEL
+    val maxDeviation: Int = if (level == 0) 0 else (2 pow (level - 1)) - 1
+
+    fun isMax() = level == MAX_LEVEL
 
     fun increase(): MemorizationLevel {
-        check(!isMaxLevel()) { "Cannot increase Memorization with maximum level ($MAX_LEVEL)" }
+        check(!isMax()) { "Cannot increase Memorization with maximum level ($MAX_LEVEL)" }
         return MemorizationLevel(level + 1)
     }
 
