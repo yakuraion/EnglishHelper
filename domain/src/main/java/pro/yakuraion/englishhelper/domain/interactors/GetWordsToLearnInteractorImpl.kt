@@ -1,11 +1,12 @@
 package pro.yakuraion.englishhelper.domain.interactors
 
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import pro.yakuraion.englishhelper.common.coroutines.Dispatchers
 import pro.yakuraion.englishhelper.domain.entities.LearningWord
 import pro.yakuraion.englishhelper.domain.entities.MemorizationLevel
 import pro.yakuraion.englishhelper.domain.repositories.LearningRepository
-import pro.yakuraion.englishhelper.domain.repositories.LearningWordsRepository
+import pro.yakuraion.englishhelper.domain.repositories.TodayLearningWordsRepository
 import pro.yakuraion.englishhelper.domain.repositories.WordsRepository
 import java.util.*
 import javax.inject.Inject
@@ -15,16 +16,16 @@ class GetWordsToLearnInteractorImpl @Inject constructor(
     private val dispatchers: Dispatchers,
     private val wordsRepository: WordsRepository,
     private val learningRepository: LearningRepository,
-    private val learningWordsRepository: LearningWordsRepository
+    private val todayLearningWordsRepository: TodayLearningWordsRepository
 ) : GetWordsToLearnInteractor {
 
-    override suspend fun getWordsToLearnToday(): List<LearningWord> {
+    override suspend fun getWordsToLearnToday(): Flow<List<LearningWord>> {
         return withContext(dispatchers.ioDispatcher) {
             checkIsNewLearningDay { now ->
                 increaseLearningDay(now)
                 resetWordsToLearn()
             }
-            learningWordsRepository.getTodayWords()
+            todayLearningWordsRepository.getTodayWords()
         }
     }
 
@@ -64,7 +65,7 @@ class GetWordsToLearnInteractorImpl @Inject constructor(
                 )
             }
             .shuffled()
-        learningWordsRepository.setTodayWords(words)
+        todayLearningWordsRepository.setTodayWords(words)
     }
 
     private data class WordGroupIdentifier(val memorizationLevel: MemorizationLevel, val nextDayToLearn: Int)

@@ -6,6 +6,8 @@ import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit4.MockKRule
 import io.mockk.slot
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Assert.assertEquals
@@ -18,7 +20,7 @@ import pro.yakuraion.englishhelper.domain.entities.LearningWord
 import pro.yakuraion.englishhelper.domain.entities.MemorizationLevel
 import pro.yakuraion.englishhelper.domain.entities.Word
 import pro.yakuraion.englishhelper.domain.repositories.LearningRepository
-import pro.yakuraion.englishhelper.domain.repositories.LearningWordsRepository
+import pro.yakuraion.englishhelper.domain.repositories.TodayLearningWordsRepository
 import pro.yakuraion.englishhelper.domain.repositories.WordsRepository
 import java.util.*
 
@@ -39,7 +41,7 @@ class GetWordsToLearnInteractorImplTest {
     lateinit var learningRepository: LearningRepository
 
     @MockK
-    lateinit var learningWordsRepository: LearningWordsRepository
+    lateinit var todayLearningWordsRepository: TodayLearningWordsRepository
 
     lateinit var interactor: GetWordsToLearnInteractorImpl
 
@@ -52,8 +54,12 @@ class GetWordsToLearnInteractorImplTest {
         )
         setUpMockk()
 
-        interactor =
-            GetWordsToLearnInteractorImpl(dispatchers, wordsRepository, learningRepository, learningWordsRepository)
+        interactor = GetWordsToLearnInteractorImpl(
+            dispatchers,
+            wordsRepository,
+            learningRepository,
+            todayLearningWordsRepository
+        )
     }
 
     private fun setUpMockk() {
@@ -65,14 +71,14 @@ class GetWordsToLearnInteractorImplTest {
         coEvery { learningRepository.getLastLearningDate() } returns Calendar.getInstance()
 
         val expectedWords = listOf(LearningWord(Word("name", null), MemorizationLevel(1), 1))
-        coEvery { learningWordsRepository.getTodayWords() } returns expectedWords
+        coEvery { todayLearningWordsRepository.getTodayWords() } returns flowOf(expectedWords)
 
-        val words = interactor.getWordsToLearnToday()
+        val words = interactor.getWordsToLearnToday().first()
 
         assertEquals(expectedWords, words)
 
         coVerify(exactly = 0) { learningRepository.increaseLearningDay() }
-        coVerify(exactly = 0) { learningWordsRepository.setTodayWords(any()) }
+        coVerify(exactly = 0) { todayLearningWordsRepository.setTodayWords(any()) }
     }
 
     @Test
@@ -82,15 +88,15 @@ class GetWordsToLearnInteractorImplTest {
         coEvery { learningRepository.getLearningDay() } returns CURRENT_LEARNING_DAY
 
         val todayWords = slot<List<LearningWord>>()
-        coEvery { learningWordsRepository.setTodayWords(capture(todayWords)) } answers {
-            coEvery { learningWordsRepository.getTodayWords() } returns todayWords.captured
+        coEvery { todayLearningWordsRepository.setTodayWords(capture(todayWords)) } answers {
+            coEvery { todayLearningWordsRepository.getTodayWords() } returns flowOf(todayWords.captured)
             Unit
         }
 
         val calendarSlot = slot<Calendar>()
         coJustRun { learningRepository.setLastLearningDate(capture(calendarSlot)) }
 
-        val words = interactor.getWordsToLearnToday()
+        val words = interactor.getWordsToLearnToday().first()
 
         assertThat(
             "Not actual calendar is set to the learningRepository",

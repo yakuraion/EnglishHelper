@@ -21,7 +21,9 @@ class TestingViewModel @AssistedInject constructor(
 
     init {
         viewModelScope.launch {
-            words.value = getWordsToLearnInteractor.getWordsToLearnToday()
+            getWordsToLearnInteractor.getWordsToLearnToday().collect { words ->
+                this@TestingViewModel.words.value = words
+            }
         }
     }
 
