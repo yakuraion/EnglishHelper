@@ -11,11 +11,8 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import pro.yakuraion.englishhelper.common.coroutines.Dispatchers
-import pro.yakuraion.englishhelper.commontests.MainDispatcherRule
 import pro.yakuraion.englishhelper.domain.entities.LearningWord
 import pro.yakuraion.englishhelper.domain.entities.MemorizationLevel
 import pro.yakuraion.englishhelper.domain.entities.Word
@@ -24,15 +21,10 @@ import pro.yakuraion.englishhelper.domain.repositories.TodayLearningWordsReposit
 import pro.yakuraion.englishhelper.domain.repositories.WordsRepository
 import java.util.*
 
-class GetWordsToLearnInteractorImplTest {
+class GetWordsToLearnInteractorImplTest : InteractorTest() {
 
     @get:Rule
     val mockkRule = MockKRule(this)
-
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
-
-    lateinit var dispatchers: Dispatchers
 
     @MockK
     lateinit var wordsRepository: WordsRepository
@@ -45,15 +37,9 @@ class GetWordsToLearnInteractorImplTest {
 
     lateinit var interactor: GetWordsToLearnInteractorImpl
 
-    @Before
-    fun setUp() {
-        dispatchers = Dispatchers(
-            mainDispatcherRule.testDispatcher,
-            mainDispatcherRule.testDispatcher,
-            mainDispatcherRule.testDispatcher
-        )
+    override fun setUp() {
+        super.setUp()
         setUpMockk()
-
         interactor = GetWordsToLearnInteractorImpl(
             dispatchers,
             wordsRepository,
