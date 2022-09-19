@@ -15,6 +15,7 @@ import pro.yakuraion.englishhelper.common.di.viewmodel.InjectingSavedStateViewMo
 import pro.yakuraion.englishhelper.common.mvvm.MVVMActivity
 import pro.yakuraion.englishhelper.vocabulary.di.diComponent
 import pro.yakuraion.englishhelper.vocabulary.ui.addwords.AddWordsActivity
+import pro.yakuraion.englishhelper.vocabulary.ui.testing.TestingActivity
 import javax.inject.Inject
 
 class VocabularyActivity : MVVMActivity<VocabularyViewModel>(VocabularyViewModel::class) {
@@ -36,7 +37,8 @@ class VocabularyActivity : MVVMActivity<VocabularyViewModel>(VocabularyViewModel
     @Composable
     private fun ScreenView() {
         ScreenContentView(
-            onAddWordsClick = { openAddWordsActivity() }
+            onAddWordsClick = { openAddWordsActivity() },
+            onStartTestingClick = { openTestingActivity() }
         )
     }
 
@@ -44,10 +46,16 @@ class VocabularyActivity : MVVMActivity<VocabularyViewModel>(VocabularyViewModel
     @Composable
     private fun ScreenContentView(
         onAddWordsClick: () -> Unit,
+        onStartTestingClick: () -> Unit
     ) {
         Scaffold {
             Column {
-                AddWordsView(onAddWordsClick)
+                Button(onClick = { onAddWordsClick.invoke() }) {
+                    Text(text = "add words")
+                }
+                Button(onClick = { onStartTestingClick.invoke() }) {
+                    Text(text = "start testing")
+                }
             }
         }
     }
@@ -55,20 +63,15 @@ class VocabularyActivity : MVVMActivity<VocabularyViewModel>(VocabularyViewModel
     @Preview
     @Composable
     private fun ScreenContentPreview() {
-        ScreenContentView(
-            onAddWordsClick = {}
-        )
-    }
-
-    @Composable
-    private fun AddWordsView(onAddWordsClick: () -> Unit) {
-        Button(onClick = { onAddWordsClick.invoke() }) {
-            Text(text = "add words")
-        }
+        ScreenContentView({}, {})
     }
 
     private fun openAddWordsActivity() {
         startActivity(AddWordsActivity.createIntent(this))
+    }
+
+    private fun openTestingActivity() {
+        startActivity(TestingActivity.createIntent(this))
     }
 
     companion object {

@@ -11,19 +11,36 @@ import kotlinx.coroutines.launch
 import pro.yakuraion.englishhelper.common.di.viewmodel.AssistedSavedStateViewModelFactory
 import pro.yakuraion.englishhelper.domain.entities.LearningWord
 import pro.yakuraion.englishhelper.domain.interactors.GetWordsToLearnInteractor
+import pro.yakuraion.englishhelper.domain.interactors.LearningWordInteractor
 
 class TestingViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
-    private val getWordsToLearnInteractor: GetWordsToLearnInteractor
+    private val getWordsToLearnInteractor: GetWordsToLearnInteractor,
+    private val learningWordInteractor: LearningWordInteractor
 ) : ViewModel() {
 
-    val words = mutableStateOf<List<LearningWord>>(emptyList())
+    val isLoading = mutableStateOf(true)
+
+    val word = mutableStateOf<LearningWord?>(null)
 
     init {
         viewModelScope.launch {
-            getWordsToLearnInteractor.getWordsToLearnToday().collect { words ->
-                this@TestingViewModel.words.value = words
+            getWordsToLearnInteractor.getWordsToLearnToday().collect { list ->
+                isLoading.value = false
+                word.value = list.firstOrNull()
             }
+        }
+    }
+
+    fun onKnowClick(word: LearningWord) {
+        viewModelScope.launch {
+            learningWordInteractor.moveWordToNextLevel(word)
+        }
+    }
+
+    fun onDoNotKnowClick(word: LearningWord) {
+        viewModelScope.launch {
+            learningWordInteractor.moveWordToPreviousLevel(word)
         }
     }
 

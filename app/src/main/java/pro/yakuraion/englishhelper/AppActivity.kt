@@ -2,12 +2,12 @@ package pro.yakuraion.englishhelper
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import pro.yakuraion.englishhelper.vocabulary.ui.testing.TestingActivity
+import pro.yakuraion.englishhelper.vocabulary.ui.vocabulary.VocabularyActivity
 
 class AppActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        startActivity(TestingActivity.createIntent(this))
+        startActivity(VocabularyActivity.createIntent(this))
     }
 }
