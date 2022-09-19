@@ -9,4 +9,6 @@ interface WordsRepository {
     suspend fun getWordsByMaxLearningDay(maxLearningDay: Int): List<LearningWord>
 
     suspend fun addWord(learningWord: LearningWord)
+
+    suspend fun updateWord(learningWord: LearningWord)
 }

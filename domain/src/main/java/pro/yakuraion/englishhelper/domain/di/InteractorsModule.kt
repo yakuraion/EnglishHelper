@@ -4,6 +4,8 @@ import dagger.Binds
 import dagger.Module
 import pro.yakuraion.englishhelper.domain.interactors.GetWordsToLearnInteractor
 import pro.yakuraion.englishhelper.domain.interactors.GetWordsToLearnInteractorImpl
+import pro.yakuraion.englishhelper.domain.interactors.LearningWordInteractor
+import pro.yakuraion.englishhelper.domain.interactors.LearningWordInteractorImpl
 import pro.yakuraion.englishhelper.domain.interactors.WordsInteractor
 import pro.yakuraion.englishhelper.domain.interactors.WordsInteractorImpl
 import javax.inject.Singleton
@@ -18,4 +20,8 @@ interface InteractorsModule {
     @Singleton
     @Binds
     fun bindsGetWordsToLearnInteractor(impl: GetWordsToLearnInteractorImpl): GetWordsToLearnInteractor
+
+    @Singleton
+    @Binds
+    fun bindsLearningWordInteractor(impl: LearningWordInteractorImpl): LearningWordInteractor
 }

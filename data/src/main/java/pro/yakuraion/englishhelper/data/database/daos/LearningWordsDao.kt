@@ -3,6 +3,7 @@ package pro.yakuraion.englishhelper.data.database.daos
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import pro.yakuraion.englishhelper.data.database.entities.LearningWordEntity
 
 @Dao
@@ -16,6 +17,9 @@ internal interface LearningWordsDao {
 
     @Insert
     suspend fun insert(word: LearningWordEntity)
+
+    @Update
+    suspend fun update(word: LearningWordEntity)
 
     @Query("DELETE FROM learning_word WHERE word_name = :name")
     suspend fun delete(name: String)

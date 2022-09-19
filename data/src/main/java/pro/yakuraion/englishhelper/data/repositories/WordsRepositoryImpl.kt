@@ -25,4 +25,9 @@ internal class WordsRepositoryImpl @Inject constructor(
         val entity = getLearningWordEntity(learningWord)
         learningWordsDao.insert(entity)
     }
+
+    override suspend fun updateWord(learningWord: LearningWord) {
+        val entity = getLearningWordEntity(learningWord)
+        learningWordsDao.update(entity)
+    }
 }
