@@ -7,19 +7,19 @@ import org.junit.runners.Parameterized
 
 @RunWith(Parameterized::class)
 class LearningWordTest(
-    private val origin: LearningWord,
-    private val expectedIncreased: LearningWord,
-    private val expectedDecreased: LearningWord
+    private val word: LearningWord,
+    private val expectedIncreasedWord: LearningWord,
+    private val expectedDecreasedWord: LearningWord
 ) {
 
     @Test
     fun increaseLevel() {
-        assertEquals(expectedIncreased, origin.increaseLevel(CURRENT_DAY))
+        assertEquals(expectedIncreasedWord, word.increaseLevel(CURRENT_DAY))
     }
 
     @Test
     fun decreaseLevel() {
-        assertEquals(expectedDecreased, origin.decreaseLevel(CURRENT_DAY))
+        assertEquals(expectedDecreasedWord, word.decreaseLevel(CURRENT_DAY))
     }
 
     companion object {
