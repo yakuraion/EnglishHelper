@@ -49,6 +49,8 @@ dependencies {
     add("implementation", versionCatalog.findLibrary("dagger").get())
     add("kapt", versionCatalog.findLibrary("dagger-compiler").get())
 
+    add("implementation", versionCatalog.findLibrary("timber").get())
+
     add("testImplementation", versionCatalog.findLibrary("junit").get())
     add("testImplementation", versionCatalog.findLibrary("mockk").get())
 }

@@ -1,6 +1,6 @@
 package pro.yakuraion.englishhelper.common
 
-import android.util.Log
+import timber.log.Timber
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -38,16 +38,16 @@ fun downloadFile(downloadUrl: String, outputFile: File): Boolean {
         input.close()
         true
     } catch (e: IOException) {
-        Log.e("downloadFile", e.message, e)
+        Timber.e(e.message)
         false
     } catch (e: MalformedURLException) {
-        Log.e("downloadFile", e.message, e)
+        Timber.e(e.message)
         false
     } catch (e: SocketTimeoutException) {
-        Log.e("downloadFile", e.message, e)
+        Timber.e(e.message)
         false
     } catch (e: SecurityException) {
-        Log.e("downloadFile", e.message, e)
+        Timber.e(e.message)
         false
     }
 }

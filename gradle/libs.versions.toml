@@ -18,6 +18,8 @@ kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-te
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 
+timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
+
 androidx-core-ktx = { module = "androidx.core:core-ktx", version = "1.8.0" }
 android-lifecycle = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version = "2.3.1" }
 
