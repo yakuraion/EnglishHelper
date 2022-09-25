@@ -17,8 +17,7 @@ import pro.yakuraion.englishhelper.domain.entities.LearningWord
 import pro.yakuraion.englishhelper.domain.entities.MemorizationLevel
 import pro.yakuraion.englishhelper.domain.entities.Word
 import pro.yakuraion.englishhelper.domain.repositories.LearningRepository
-import pro.yakuraion.englishhelper.domain.repositories.TodayLearningWordsRepository
-import pro.yakuraion.englishhelper.domain.repositories.WordsRepository
+import pro.yakuraion.englishhelper.domain.repositories.LearningWordsRepository
 import java.util.*
 
 class GetWordsToLearnInteractorImplTest : InteractorTest() {
@@ -27,13 +26,10 @@ class GetWordsToLearnInteractorImplTest : InteractorTest() {
     val mockkRule = MockKRule(this)
 
     @MockK
-    lateinit var wordsRepository: WordsRepository
+    lateinit var learningWordsRepository: LearningWordsRepository
 
     @MockK
     lateinit var learningRepository: LearningRepository
-
-    @MockK
-    lateinit var todayLearningWordsRepository: TodayLearningWordsRepository
 
     lateinit var interactor: GetWordsToLearnInteractorImpl
 
@@ -42,14 +38,13 @@ class GetWordsToLearnInteractorImplTest : InteractorTest() {
         setUpMockk()
         interactor = GetWordsToLearnInteractorImpl(
             dispatchers,
-            wordsRepository,
-            learningRepository,
-            todayLearningWordsRepository
+            learningWordsRepository,
+            learningRepository
         )
     }
 
     private fun setUpMockk() {
-        coEvery { wordsRepository.getWordsByMaxLearningDay(any()) } returns LEARNING_WORDS
+        coEvery { learningWordsRepository.getWordsByMaxLearningDay(any()) } returns LEARNING_WORDS
     }
 
     @Test
@@ -57,14 +52,14 @@ class GetWordsToLearnInteractorImplTest : InteractorTest() {
         coEvery { learningRepository.getLastLearningDate() } returns Calendar.getInstance()
 
         val expectedWords = listOf(LearningWord(Word("name", null), MemorizationLevel(1), 1))
-        coEvery { todayLearningWordsRepository.getTodayWords() } returns flowOf(expectedWords)
+        coEvery { learningWordsRepository.getTodayWords() } returns flowOf(expectedWords)
 
         val words = interactor.getWordsToLearnToday().first()
 
         assertEquals(expectedWords, words)
 
         coVerify(exactly = 0) { learningRepository.increaseLearningDay() }
-        coVerify(exactly = 0) { todayLearningWordsRepository.setTodayWords(any()) }
+        coVerify(exactly = 0) { learningWordsRepository.setTodayWords(any()) }
     }
 
     @Test
@@ -74,8 +69,8 @@ class GetWordsToLearnInteractorImplTest : InteractorTest() {
         coEvery { learningRepository.getLearningDay() } returns CURRENT_LEARNING_DAY
 
         val todayWords = slot<List<LearningWord>>()
-        coEvery { todayLearningWordsRepository.setTodayWords(capture(todayWords)) } answers {
-            coEvery { todayLearningWordsRepository.getTodayWords() } returns flowOf(todayWords.captured)
+        coEvery { learningWordsRepository.setTodayWords(capture(todayWords)) } answers {
+            coEvery { learningWordsRepository.getTodayWords() } returns flowOf(todayWords.captured)
             Unit
         }
 

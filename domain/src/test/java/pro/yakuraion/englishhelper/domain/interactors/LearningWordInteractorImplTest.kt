@@ -13,8 +13,7 @@ import pro.yakuraion.englishhelper.domain.entities.LearningWord
 import pro.yakuraion.englishhelper.domain.entities.MemorizationLevel
 import pro.yakuraion.englishhelper.domain.entities.Word
 import pro.yakuraion.englishhelper.domain.repositories.LearningRepository
-import pro.yakuraion.englishhelper.domain.repositories.TodayLearningWordsRepository
-import pro.yakuraion.englishhelper.domain.repositories.WordsRepository
+import pro.yakuraion.englishhelper.domain.repositories.LearningWordsRepository
 
 @RunWith(Parameterized::class)
 class LearningWordInteractorImplTest(
@@ -27,13 +26,10 @@ class LearningWordInteractorImplTest(
     val mockkRule = MockKRule(this)
 
     @MockK
-    lateinit var wordsRepository: WordsRepository
+    lateinit var learningWordsRepository: LearningWordsRepository
 
     @MockK
     lateinit var learningRepository: LearningRepository
-
-    @MockK
-    lateinit var todayLearningWordsRepository: TodayLearningWordsRepository
 
     lateinit var interactor: LearningWordInteractorImpl
 
@@ -41,9 +37,8 @@ class LearningWordInteractorImplTest(
         super.setUp()
         setUpMockk()
         interactor = LearningWordInteractorImpl(
-            wordsRepository,
-            learningRepository,
-            todayLearningWordsRepository
+            learningWordsRepository,
+            learningRepository
         )
     }
 
@@ -55,10 +50,11 @@ class LearningWordInteractorImplTest(
     fun moveWordToNextLevel() = runTest {
         interactor.moveWordToNextLevel(word)
 
-        coVerify { todayLearningWordsRepository.removeFromTodayWords(word) }
-        coVerify { wordsRepository.updateWord(nextLevelParams.updatedWord) }
-        if (nextLevelParams.addToTodayLearning) {
-            coVerify { todayLearningWordsRepository.addToTodayWords(nextLevelParams.updatedWord) }
+        coVerify {
+            learningWordsRepository.updateTodayWord(
+                nextLevelParams.updatedWord,
+                nextLevelParams.removeFromToday
+            )
         }
     }
 
@@ -66,14 +62,15 @@ class LearningWordInteractorImplTest(
     fun moveWordToPreviousLevel() = runTest {
         interactor.moveWordToPreviousLevel(word)
 
-        coVerify { todayLearningWordsRepository.removeFromTodayWords(word) }
-        coVerify { wordsRepository.updateWord(previousLevelParams.updatedWord) }
-        if (previousLevelParams.addToTodayLearning) {
-            coVerify { todayLearningWordsRepository.addToTodayWords(previousLevelParams.updatedWord) }
+        coVerify {
+            learningWordsRepository.updateTodayWord(
+                previousLevelParams.updatedWord,
+                previousLevelParams.removeFromToday
+            )
         }
     }
 
-    class UpdatedWordParams(val updatedWord: LearningWord, val addToTodayLearning: Boolean)
+    class UpdatedWordParams(val updatedWord: LearningWord, val removeFromToday: Boolean)
 
     companion object {
 
@@ -84,18 +81,18 @@ class LearningWordInteractorImplTest(
         fun data() = listOf(
             arrayOf(
                 LearningWord(Word("name", null), MemorizationLevel(0), 0),
-                UpdatedWordParams(LearningWord(Word("name", null), MemorizationLevel(1), 1), false),
-                UpdatedWordParams(LearningWord(Word("name", null), MemorizationLevel(0), 0), true)
+                UpdatedWordParams(LearningWord(Word("name", null), MemorizationLevel(1), 1), true),
+                UpdatedWordParams(LearningWord(Word("name", null), MemorizationLevel(0), 0), false)
             ),
             arrayOf(
                 LearningWord(Word("name", null), MemorizationLevel(1), 0),
-                UpdatedWordParams(LearningWord(Word("name", null), MemorizationLevel(2), 2), false),
-                UpdatedWordParams(LearningWord(Word("name", null), MemorizationLevel(1), 1), false)
+                UpdatedWordParams(LearningWord(Word("name", null), MemorizationLevel(2), 2), true),
+                UpdatedWordParams(LearningWord(Word("name", null), MemorizationLevel(1), 1), true)
             ),
             arrayOf(
                 LearningWord(Word("name", null), MemorizationLevel(2), 0),
-                UpdatedWordParams(LearningWord(Word("name", null), MemorizationLevel(3), 4), false),
-                UpdatedWordParams(LearningWord(Word("name", null), MemorizationLevel(1), 1), false)
+                UpdatedWordParams(LearningWord(Word("name", null), MemorizationLevel(3), 4), true),
+                UpdatedWordParams(LearningWord(Word("name", null), MemorizationLevel(1), 1), true)
             ),
         )
     }

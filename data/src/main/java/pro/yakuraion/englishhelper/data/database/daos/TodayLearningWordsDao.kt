@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import pro.yakuraion.englishhelper.data.database.entities.LearningWordEntity
 import pro.yakuraion.englishhelper.data.database.entities.TodayLearningWordEntity
@@ -15,6 +16,7 @@ internal interface TodayLearningWordsDao {
         """
         SELECT * FROM learning_word
         INNER JOIN today_learning_word ON today_learning_word.name = learning_word.word_name
+        ORDER BY today_learning_word.createdAtMillis
         """
     )
     fun getTodayWords(): Flow<List<LearningWordEntity>>
@@ -24,6 +26,9 @@ internal interface TodayLearningWordsDao {
 
     @Insert
     suspend fun insert(words: List<TodayLearningWordEntity>)
+
+    @Update
+    suspend fun update(word: TodayLearningWordEntity)
 
     @Query("DELETE FROM today_learning_word WHERE name = :name")
     suspend fun delete(name: String)

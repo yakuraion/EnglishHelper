@@ -5,5 +5,7 @@ import pro.yakuraion.englishhelper.domain.entities.LearningWord
 
 interface GetWordsToLearnInteractor {
 
+    suspend fun getNextWordToLearnToday(): Flow<LearningWord?>
+
     suspend fun getWordsToLearnToday(): Flow<List<LearningWord>>
 }
