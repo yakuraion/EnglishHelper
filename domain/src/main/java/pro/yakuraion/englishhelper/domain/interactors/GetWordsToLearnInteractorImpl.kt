@@ -25,7 +25,7 @@ class GetWordsToLearnInteractorImpl @Inject constructor(
     override suspend fun getNextWordToLearnToday(): Flow<LearningWord?> {
         return getWordsToLearnToday()
             .flowOn(dispatchers.ioDispatcher)
-            .flatMapLatest { if (it.isEmpty()) flowOf(null) else it.asFlow() }
+            .flatMapLatest { flowOf(it.firstOrNull()) }
             .distinctUntilChanged()
     }
 

@@ -12,6 +12,7 @@ import pro.yakuraion.englishhelper.common.di.viewmodel.AssistedSavedStateViewMod
 import pro.yakuraion.englishhelper.domain.entities.LearningWord
 import pro.yakuraion.englishhelper.domain.interactors.GetWordsToLearnInteractor
 import pro.yakuraion.englishhelper.domain.interactors.LearningWordInteractor
+import timber.log.Timber
 
 class TestingViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
@@ -25,9 +26,10 @@ class TestingViewModel @AssistedInject constructor(
 
     init {
         viewModelScope.launch {
-            getWordsToLearnInteractor.getWordsToLearnToday().collect { list ->
+            getWordsToLearnInteractor.getNextWordToLearnToday().collect { word ->
+                Timber.d("newWord = ${word?.word?.name}")
                 isLoading.value = false
-                word.value = list.firstOrNull()
+                this@TestingViewModel.word.value = word
             }
         }
     }
