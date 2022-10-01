@@ -2,6 +2,6 @@ package pro.yakuraion.englishhelper.data.siteparsers.wooordhunt
 
 import android.net.Uri
 
-class WooordhuntWord(
+internal class WooordhuntWord(
     val soundUri: Uri?
 )

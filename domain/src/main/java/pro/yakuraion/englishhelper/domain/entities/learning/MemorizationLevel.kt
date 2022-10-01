@@ -1,4 +1,4 @@
-package pro.yakuraion.englishhelper.domain.entities
+package pro.yakuraion.englishhelper.domain.entities.learning
 
 import pro.yakuraion.englishhelper.common.pow
 

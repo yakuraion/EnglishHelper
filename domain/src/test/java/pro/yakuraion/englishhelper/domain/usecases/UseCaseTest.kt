@@ -1,23 +1,29 @@
-package pro.yakuraion.englishhelper.domain.interactors
+package pro.yakuraion.englishhelper.domain.usecases
 
 import org.junit.Before
 import org.junit.Rule
 import pro.yakuraion.englishhelper.common.coroutines.Dispatchers
 import pro.yakuraion.englishhelper.commontests.MainDispatcherRule
 
-abstract class InteractorTest {
+abstract class UseCaseTest<T : Any> {
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    lateinit var dispatchers: Dispatchers
+    lateinit var useCase: T
+
+    abstract fun setUpMocks()
+
+    abstract fun createUseCase(dispatchers: Dispatchers): T
 
     @Before
     open fun setUp() {
-        dispatchers = Dispatchers(
+        val dispatchers = Dispatchers(
             mainDispatcherRule.testDispatcher,
             mainDispatcherRule.testDispatcher,
             mainDispatcherRule.testDispatcher
         )
+        setUpMocks()
+        useCase = createUseCase(dispatchers)
     }
 }

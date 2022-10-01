@@ -7,7 +7,7 @@ import pro.yakuraion.englishhelper.domain.repositories.WordsSoundsRepository
 import java.io.File
 import javax.inject.Inject
 
-class WordsSoundsRepositoryImpl @Inject constructor(
+internal class WordsSoundsRepositoryImpl @Inject constructor(
     private val context: Context,
     private val wooordhuntParser: WooordhuntParser
 ) : WordsSoundsRepository {

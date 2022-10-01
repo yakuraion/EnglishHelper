@@ -1,8 +1,8 @@
-package pro.yakuraion.englishhelper.domain.entities
+package pro.yakuraion.englishhelper.domain.entities.learning
 
-import junit.framework.Assert.assertEquals
-import junit.framework.Assert.assertFalse
-import junit.framework.Assert.assertTrue
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class MemorizationLevelTest {

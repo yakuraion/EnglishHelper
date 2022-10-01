@@ -9,24 +9,26 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
 import pro.yakuraion.englishhelper.common.di.viewmodel.AssistedSavedStateViewModelFactory
-import pro.yakuraion.englishhelper.domain.entities.LearningWord
-import pro.yakuraion.englishhelper.domain.interactors.GetWordsToLearnInteractor
-import pro.yakuraion.englishhelper.domain.interactors.LearningWordInteractor
+import pro.yakuraion.englishhelper.domain.entities.learning.LearningWordFull
+import pro.yakuraion.englishhelper.domain.usecases.GetNextWordToLearnTodayUseCase
+import pro.yakuraion.englishhelper.domain.usecases.MoveLearningWordToNextLevelUseCase
+import pro.yakuraion.englishhelper.domain.usecases.MoveLearningWordToPreviousLevelUseCase
 import timber.log.Timber
 
 class TestingViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
-    private val getWordsToLearnInteractor: GetWordsToLearnInteractor,
-    private val learningWordInteractor: LearningWordInteractor
+    private val getNextWordToLearnTodayUseCase: GetNextWordToLearnTodayUseCase,
+    private val moveLearningWordToNextLevelUseCase: MoveLearningWordToNextLevelUseCase,
+    private val moveLearningWordToPreviousLevelUseCase: MoveLearningWordToPreviousLevelUseCase
 ) : ViewModel() {
 
     val isLoading = mutableStateOf(true)
 
-    val word = mutableStateOf<LearningWord?>(null)
+    val word = mutableStateOf<LearningWordFull?>(null)
 
     init {
         viewModelScope.launch {
-            getWordsToLearnInteractor.getNextWordToLearnToday().collect { word ->
+            getNextWordToLearnTodayUseCase.getNextWordToLearnToday().collect { word ->
                 Timber.d("newWord = ${word?.word?.name}")
                 isLoading.value = false
                 this@TestingViewModel.word.value = word
@@ -34,15 +36,15 @@ class TestingViewModel @AssistedInject constructor(
         }
     }
 
-    fun onKnowClick(word: LearningWord) {
+    fun onKnowClick(word: LearningWordFull) {
         viewModelScope.launch {
-            learningWordInteractor.moveWordToNextLevel(word)
+            moveLearningWordToNextLevelUseCase.moveLearningWordToNextLevel(word.learningWord)
         }
     }
 
-    fun onDoNotKnowClick(word: LearningWord) {
+    fun onDoNotKnowClick(word: LearningWordFull) {
         viewModelScope.launch {
-            learningWordInteractor.moveWordToPreviousLevel(word)
+            moveLearningWordToPreviousLevelUseCase.moveLearningWordToPreviousLevel(word.learningWord)
         }
     }
 

@@ -12,7 +12,7 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 @Singleton
-class WooordhuntParser @Inject constructor(context: Context) {
+internal class WooordhuntParser @Inject constructor(context: Context) {
 
     private val queue = Volley.newRequestQueue(context)
 

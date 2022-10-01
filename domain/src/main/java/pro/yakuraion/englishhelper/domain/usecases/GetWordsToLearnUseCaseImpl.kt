@@ -1,48 +1,38 @@
-package pro.yakuraion.englishhelper.domain.interactors
+package pro.yakuraion.englishhelper.domain.usecases
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import pro.yakuraion.englishhelper.common.coroutines.Dispatchers
-import pro.yakuraion.englishhelper.domain.entities.LearningWord
-import pro.yakuraion.englishhelper.domain.entities.MemorizationLevel
+import pro.yakuraion.englishhelper.domain.entities.learning.LearningWord
+import pro.yakuraion.englishhelper.domain.entities.learning.MemorizationLevel
 import pro.yakuraion.englishhelper.domain.repositories.LearningRepository
 import pro.yakuraion.englishhelper.domain.repositories.LearningWordsRepository
+import pro.yakuraion.englishhelper.domain.repositories.TodayLearningWordsRepository
 import java.util.*
 import javax.inject.Inject
 import kotlin.math.max
 
-class GetWordsToLearnInteractorImpl @Inject constructor(
+internal class GetWordsToLearnUseCaseImpl @Inject constructor(
     private val dispatchers: Dispatchers,
     private val learningWordsRepository: LearningWordsRepository,
+    private val todayLearningWordsRepository: TodayLearningWordsRepository,
     private val learningRepository: LearningRepository
-) : GetWordsToLearnInteractor {
-
-    override suspend fun getNextWordToLearnToday(): Flow<LearningWord?> {
-        return getWordsToLearnToday()
-            .flowOn(dispatchers.ioDispatcher)
-            .flatMapLatest { flowOf(it.firstOrNull()) }
-            .distinctUntilChanged()
-    }
+) : GetWordsToLearnUseCase {
 
     override suspend fun getWordsToLearnToday(): Flow<List<LearningWord>> {
         return withContext(dispatchers.ioDispatcher) {
-            checkIsNewLearningDay { now ->
+            runIfNewLearningDay { now ->
                 increaseLearningDay(now)
                 resetWordsToLearn()
             }
-            learningWordsRepository.getTodayWords()
+            todayLearningWordsRepository.getTodayLearningWords()
         }
     }
 
-    private suspend fun checkIsNewLearningDay(onNewLearningDay: suspend (now: Calendar) -> Unit) {
+    private suspend fun runIfNewLearningDay(action: suspend (now: Calendar) -> Unit) {
         val now = Calendar.getInstance()
         if (isNewLearningDay(now)) {
-            onNewLearningDay.invoke(now)
+            action.invoke(now)
         }
     }
 
@@ -58,13 +48,15 @@ class GetWordsToLearnInteractorImpl @Inject constructor(
     }
 
     private suspend fun increaseLearningDay(now: Calendar) {
-        learningRepository.setLastLearningDate(now)
-        learningRepository.increaseLearningDay()
+        learningRepository.apply {
+            setLastLearningDate(now)
+            increaseLearningDay()
+        }
     }
 
     private suspend fun resetWordsToLearn() {
         val currentLearningDay = learningRepository.getLearningDay()
-        val words = learningWordsRepository.getWordsByMaxLearningDay(currentLearningDay)
+        val words = learningWordsRepository.getWordsAvailableToLearnBy(currentLearningDay)
             .groupBy { WordGroupIdentifier(it.memorizationLevel, it.nextDayToLearn) }
             .flatMap { entry ->
                 getSelectionOfWordsForToday(
@@ -75,7 +67,7 @@ class GetWordsToLearnInteractorImpl @Inject constructor(
                 )
             }
             .shuffled()
-        learningWordsRepository.setTodayWords(words)
+        todayLearningWordsRepository.setTodayLearningWords(words)
     }
 
     private data class WordGroupIdentifier(val memorizationLevel: MemorizationLevel, val nextDayToLearn: Int)

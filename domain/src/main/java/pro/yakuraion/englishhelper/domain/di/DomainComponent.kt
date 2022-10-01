@@ -8,9 +8,9 @@ import javax.inject.Singleton
 @Singleton
 @Component(
     dependencies = [RepositoriesProvider::class],
-    modules = [InteractorsModule::class]
+    modules = [UseCasesModule::class]
 )
-interface DomainComponent : InteractorsProvider {
+interface DomainComponent : UseCasesProvider {
 
     @Component.Builder
     interface Builder {

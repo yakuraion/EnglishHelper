@@ -1,7 +1,7 @@
-package pro.yakuraion.englishhelper.domain.entities
+package pro.yakuraion.englishhelper.domain.entities.learning
 
 data class LearningWord(
-    val word: Word,
+    val name: String,
     val memorizationLevel: MemorizationLevel,
     val nextDayToLearn: Int
 ) {
@@ -20,7 +20,7 @@ data class LearningWord(
 
     private fun copyWithNewLevel(currentDay: Int, newLevel: MemorizationLevel): LearningWord {
         return LearningWord(
-            word = word,
+            name = name,
             memorizationLevel = newLevel,
             nextDayToLearn = currentDay + newLevel.daysBeforeLearning
         )

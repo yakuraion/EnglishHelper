@@ -9,11 +9,13 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
 import pro.yakuraion.englishhelper.common.di.viewmodel.AssistedSavedStateViewModelFactory
-import pro.yakuraion.englishhelper.domain.interactors.WordsInteractor
+import pro.yakuraion.englishhelper.domain.usecases.AddWordUseCase
+import pro.yakuraion.englishhelper.domain.usecases.IsWordAlreadyExistUseCase
 
 class AddWordsViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
-    private val wordsInteractor: WordsInteractor
+    private val addWordUseCase: AddWordUseCase,
+    private val isWordAlreadyExistUseCase: IsWordAlreadyExistUseCase
 ) : ViewModel() {
 
     val uiState = mutableStateOf<UIState>(UIState.EnteringWords)
@@ -29,7 +31,7 @@ class AddWordsViewModel @AssistedInject constructor(
         viewModelScope.launch {
             val uniqueWords = distinctWords(words)
             if (!validateAlreadyExistsWords(uniqueWords)) return@launch
-            uniqueWords.forEach { wordsInteractor.addWord(it) }
+            uniqueWords.forEach { addWordUseCase.addWord(it) }
             uiState.value = UIState.WordsAdded
         }
     }
@@ -39,7 +41,7 @@ class AddWordsViewModel @AssistedInject constructor(
     }
 
     private suspend fun validateAlreadyExistsWords(words: List<String>): Boolean {
-        val alreadyExistsWords = words.filter { wordsInteractor.isWordAlreadyExist(it) }
+        val alreadyExistsWords = words.filter { isWordAlreadyExistUseCase.isWordAlreadyExist(it) }
         return if (alreadyExistsWords.isNotEmpty()) {
             uiState.value = UIState.Error("This words already in learning: $alreadyExistsWords")
             false

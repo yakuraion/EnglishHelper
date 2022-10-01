@@ -14,8 +14,8 @@ internal interface TodayLearningWordsDao {
 
     @Query(
         """
-        SELECT * FROM learning_word
-        INNER JOIN today_learning_word ON today_learning_word.name = learning_word.word_name
+        SELECT * FROM today_learning_word
+        INNER JOIN learning_word ON today_learning_word.name = learning_word.name
         ORDER BY today_learning_word.createdAtMillis
         """
     )
@@ -37,8 +37,8 @@ internal interface TodayLearningWordsDao {
     suspend fun deleteAll()
 
     @Transaction
-    suspend fun reset(words: List<TodayLearningWordEntity>) {
+    suspend fun reset(newWords: List<TodayLearningWordEntity>) {
         deleteAll()
-        insert(words)
+        insert(newWords)
     }
 }

@@ -7,13 +7,13 @@ import pro.yakuraion.englishhelper.data.di.DaggerDataComponent
 import pro.yakuraion.englishhelper.data.di.DataComponent
 import pro.yakuraion.englishhelper.domain.di.DaggerDomainComponent
 import pro.yakuraion.englishhelper.domain.di.DomainComponent
-import pro.yakuraion.englishhelper.domain.di.InteractorsProvider
 import pro.yakuraion.englishhelper.domain.di.RepositoriesProvider
+import pro.yakuraion.englishhelper.domain.di.UseCasesProvider
 import javax.inject.Singleton
 
 @Singleton
-@Component(dependencies = [InteractorsProvider::class])
-interface AppComponent : InteractorsProvider {
+@Component(dependencies = [UseCasesProvider::class])
+interface AppComponent : UseCasesProvider {
 
     companion object {
 
@@ -22,7 +22,7 @@ interface AppComponent : InteractorsProvider {
             val dataComponent = getDataComponent(context)
             val domainComponent = getDomainComponent(dataComponent, dispatchers)
             return DaggerAppComponent.builder()
-                .interactorsProvider(domainComponent)
+                .useCasesProvider(domainComponent)
                 .build()
         }
 

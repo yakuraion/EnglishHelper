@@ -31,9 +31,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import pro.yakuraion.englishhelper.common.di.viewmodel.InjectingSavedStateViewModelFactory
 import pro.yakuraion.englishhelper.common.mvvm.MVVMActivity
-import pro.yakuraion.englishhelper.domain.entities.LearningWord
-import pro.yakuraion.englishhelper.domain.entities.MemorizationLevel
 import pro.yakuraion.englishhelper.domain.entities.Word
+import pro.yakuraion.englishhelper.domain.entities.learning.LearningWord
+import pro.yakuraion.englishhelper.domain.entities.learning.LearningWordFull
+import pro.yakuraion.englishhelper.domain.entities.learning.MemorizationLevel
 import pro.yakuraion.englishhelper.vocabulary.di.diComponent
 import java.io.File
 import javax.inject.Inject
@@ -69,10 +70,10 @@ class TestingActivity : MVVMActivity<TestingViewModel>(TestingViewModel::class) 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     @Composable
     private fun ScreenContentView(
-        word: LearningWord?,
+        word: LearningWordFull?,
         isLoading: Boolean,
-        onKnowClick: (LearningWord) -> Unit,
-        onDoNotKnowClick: (LearningWord) -> Unit
+        onKnowClick: (LearningWordFull) -> Unit,
+        onDoNotKnowClick: (LearningWordFull) -> Unit
     ) {
         Scaffold {
             Box(
@@ -92,9 +93,9 @@ class TestingActivity : MVVMActivity<TestingViewModel>(TestingViewModel::class) 
 
     @Composable
     private fun TestingView(
-        word: LearningWord,
-        onKnowClick: (LearningWord) -> Unit,
-        onDoNotKnowClick: (LearningWord) -> Unit
+        word: LearningWordFull,
+        onKnowClick: (LearningWordFull) -> Unit,
+        onDoNotKnowClick: (LearningWordFull) -> Unit
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(text = "Do you know this word?")
@@ -109,10 +110,12 @@ class TestingActivity : MVVMActivity<TestingViewModel>(TestingViewModel::class) 
     }
 
     @Composable
-    private fun WordView(word: LearningWord) {
+    private fun WordView(word: LearningWordFull) {
         word.word.soundFile?.let { soundFile ->
             Image(
-                imageVector = ImageVector.vectorResource(id = pro.yakuraion.englishhelper.common.R.drawable.ic_baseline_volume_up_24),
+                imageVector = ImageVector.vectorResource(
+                    id = pro.yakuraion.englishhelper.common.R.drawable.ic_baseline_volume_up_24
+                ),
                 contentDescription = "",
                 modifier = Modifier.clickable { playSound(soundFile) },
             )
@@ -150,7 +153,10 @@ class TestingActivity : MVVMActivity<TestingViewModel>(TestingViewModel::class) 
     @Composable
     private fun ScreenContentPreviewTestingWord() {
         ScreenContentView(
-            word = LearningWord(Word("Mother", null), MemorizationLevel(0), 0),
+            word = LearningWordFull(
+                Word("Mother", null),
+                LearningWord("Mother", MemorizationLevel.new(), 0)
+            ),
             isLoading = false,
             {},
             {}
@@ -161,7 +167,10 @@ class TestingActivity : MVVMActivity<TestingViewModel>(TestingViewModel::class) 
     @Composable
     private fun ScreenContentPreviewTestingSound() {
         ScreenContentView(
-            word = LearningWord(Word("Mother", File("")), MemorizationLevel(0), 0),
+            word = LearningWordFull(
+                Word("Mother", File("")),
+                LearningWord("Mother", MemorizationLevel.new(), 0)
+            ),
             isLoading = false,
             {},
             {}

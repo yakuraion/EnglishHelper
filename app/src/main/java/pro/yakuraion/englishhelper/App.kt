@@ -2,11 +2,11 @@ package pro.yakuraion.englishhelper
 
 import android.app.Application
 import pro.yakuraion.englishhelper.di.AppComponent
-import pro.yakuraion.englishhelper.domain.di.InteractorsProvider
-import pro.yakuraion.englishhelper.domain.di.InteractorsProviderHolder
+import pro.yakuraion.englishhelper.domain.di.UseCasesProvider
+import pro.yakuraion.englishhelper.domain.di.UseCasesProviderHolder
 import timber.log.Timber
 
-class App : Application(), InteractorsProviderHolder {
+class App : Application(), UseCasesProviderHolder {
 
     private lateinit var appComponent: AppComponent
 
@@ -22,7 +22,7 @@ class App : Application(), InteractorsProviderHolder {
         }
     }
 
-    override fun getInteractorsProvider(): InteractorsProvider {
+    override fun getUseCasesProvider(): UseCasesProvider {
         return appComponent
     }
 }
