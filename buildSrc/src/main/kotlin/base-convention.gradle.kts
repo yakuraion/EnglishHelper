@@ -1,8 +1,7 @@
 import com.android.build.gradle.BaseExtension
-import org.gradle.api.JavaVersion
-import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.dependencies
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import utils.configsDir
+import utils.versionCatalog
 
 plugins {
     id("kotlin-android")

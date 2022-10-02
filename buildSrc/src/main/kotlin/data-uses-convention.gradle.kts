@@ -1,4 +1,4 @@
-import org.gradle.kotlin.dsl.dependencies
+import utils.versionCatalog
 
 dependencies {
     add("implementation", versionCatalog.findLibrary("room-runtime").get())
