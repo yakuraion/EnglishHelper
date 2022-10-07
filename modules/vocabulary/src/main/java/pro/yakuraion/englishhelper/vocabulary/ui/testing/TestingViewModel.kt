@@ -36,15 +36,19 @@ class TestingViewModel @AssistedInject constructor(
         }
     }
 
-    fun onKnowClick(word: LearningWordFull) {
-        viewModelScope.launch {
-            moveLearningWordToNextLevelUseCase.moveLearningWordToNextLevel(word.learningWord)
+    fun onKnowClick() {
+        word.value?.let { wordNotNull ->
+            viewModelScope.launch {
+                moveLearningWordToNextLevelUseCase.moveLearningWordToNextLevel(wordNotNull.learningWord)
+            }
         }
     }
 
-    fun onDoNotKnowClick(word: LearningWordFull) {
-        viewModelScope.launch {
-            moveLearningWordToPreviousLevelUseCase.moveLearningWordToPreviousLevel(word.learningWord)
+    fun onDoNotKnowClick() {
+        word.value?.let { wordNotNull ->
+            viewModelScope.launch {
+                moveLearningWordToPreviousLevelUseCase.moveLearningWordToPreviousLevel(wordNotNull.learningWord)
+            }
         }
     }
 

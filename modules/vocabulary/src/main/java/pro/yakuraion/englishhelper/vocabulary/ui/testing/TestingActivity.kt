@@ -6,6 +6,7 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -21,9 +22,12 @@ import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -69,8 +73,8 @@ class TestingActivity : MVVMActivity<TestingViewModel>(TestingViewModel::class) 
         ScreenContentView(
             word = word,
             isLoading = isLoading,
-            onKnowClick = { viewModel.onKnowClick(it) },
-            onDoNotKnowClick = { viewModel.onDoNotKnowClick(it) }
+            onKnowClick = { viewModel.onKnowClick() },
+            onDoNotKnowClick = { viewModel.onDoNotKnowClick() }
         )
     }
 
@@ -79,8 +83,8 @@ class TestingActivity : MVVMActivity<TestingViewModel>(TestingViewModel::class) 
     private fun ScreenContentView(
         word: LearningWordFull?,
         isLoading: Boolean,
-        onKnowClick: (LearningWordFull) -> Unit,
-        onDoNotKnowClick: (LearningWordFull) -> Unit
+        onKnowClick: () -> Unit,
+        onDoNotKnowClick: () -> Unit
     ) {
         Scaffold {
             Box(
@@ -101,38 +105,120 @@ class TestingActivity : MVVMActivity<TestingViewModel>(TestingViewModel::class) 
     @Composable
     private fun TestingView(
         word: LearningWordFull,
-        onKnowClick: (LearningWordFull) -> Unit,
-        onDoNotKnowClick: (LearningWordFull) -> Unit
+        onKnowClick: () -> Unit,
+        onDoNotKnowClick: () -> Unit
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(text = "Do you know this word?")
             Spacer(modifier = Modifier.height(20.dp))
-            WordView(word = word)
-            Spacer(modifier = Modifier.height(20.dp))
-            LinkView(word = word.word.name)
-            Spacer(modifier = Modifier.height(20.dp))
-            AnswersButtons(
-                onKnowClick = { onKnowClick(word) },
-                onDoNotKnowClick = { onDoNotKnowClick(word) }
-            )
+            val soundFile = word.word.soundFile
+            if (soundFile != null) {
+                WordWithSoundTestingView(
+                    word = word.word.name,
+                    soundFile = soundFile,
+                    onKnowClick = { onKnowClick.invoke() },
+                    onDoNotKnowClick = { onDoNotKnowClick.invoke() }
+                )
+            } else {
+                WordOnlyTextTestingView(
+                    word = word.word.name,
+                    onKnowClick = { onKnowClick.invoke() },
+                    onDoNotKnowClick = { onDoNotKnowClick.invoke() }
+                )
+            }
         }
     }
 
     @Composable
-    private fun WordView(word: LearningWordFull) {
-        word.word.soundFile?.let { soundFile ->
+    private fun WordWithSoundTestingView(
+        word: String,
+        soundFile: File,
+        onKnowClick: () -> Unit,
+        onDoNotKnowClick: () -> Unit
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            var writtenWord by remember { mutableStateOf("") }
             Image(
                 imageVector = ImageVector.vectorResource(
                     id = pro.yakuraion.englishhelper.common.R.drawable.ic_baseline_volume_up_24
                 ),
                 contentDescription = "",
-                modifier = Modifier.clickable { playSound(soundFile) }.size(60.dp),
+                modifier = Modifier
+                    .clickable { playSound(soundFile) }
+                    .size(60.dp),
             )
-        } ?: Text(text = word.word.name, fontSize = 24.sp)
+            Spacer(modifier = Modifier.height(10.dp))
+            TextField(value = writtenWord, onValueChange = { writtenWord = it })
+            Spacer(modifier = Modifier.height(20.dp))
+            LinkView(word = word)
+            Spacer(modifier = Modifier.height(20.dp))
+            WordWithSoundTestingAnswersButtons(
+                onCheckClick = {
+                    if (writtenWord.lowercase().trim() == word.lowercase()) {
+                        Toast.makeText(
+                            this@TestingActivity,
+                            "Right answer",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        writtenWord = ""
+                        onKnowClick.invoke()
+                    } else {
+                        Toast.makeText(
+                            this@TestingActivity,
+                            "Wrong answer",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                },
+                onDoNotKnowClick = {
+                    Toast.makeText(
+                        this@TestingActivity,
+                        "It was \"$word\"",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    writtenWord = ""
+                    onDoNotKnowClick.invoke()
+                }
+            )
+        }
+    }
+
+    @Composable
+    private fun WordWithSoundTestingAnswersButtons(
+        onCheckClick: () -> Unit,
+        onDoNotKnowClick: () -> Unit
+    ) {
+        Row {
+            Button(onClick = { onCheckClick.invoke() }) {
+                Text(text = "Check")
+            }
+            Spacer(modifier = Modifier.width(20.dp))
+            Button(onClick = { onDoNotKnowClick.invoke() }) {
+                Text(text = "I don't know")
+            }
+        }
     }
 
     private fun playSound(file: File) {
         MediaPlayer.create(this, Uri.fromFile(file)).start()
+    }
+
+    @Composable
+    private fun WordOnlyTextTestingView(
+        word: String,
+        onKnowClick: () -> Unit,
+        onDoNotKnowClick: () -> Unit
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(text = word, fontSize = 24.sp)
+            Spacer(modifier = Modifier.height(20.dp))
+            LinkView(word = word)
+            Spacer(modifier = Modifier.height(20.dp))
+            WordOnlyTextTestingAnswersButtons(
+                onKnowClick = { onKnowClick() },
+                onDoNotKnowClick = { onDoNotKnowClick() }
+            )
+        }
     }
 
     @Composable
@@ -146,7 +232,7 @@ class TestingActivity : MVVMActivity<TestingViewModel>(TestingViewModel::class) 
     }
 
     @Composable
-    private fun AnswersButtons(onKnowClick: () -> Unit, onDoNotKnowClick: () -> Unit) {
+    private fun WordOnlyTextTestingAnswersButtons(onKnowClick: () -> Unit, onDoNotKnowClick: () -> Unit) {
         Row {
             Button(onClick = onKnowClick) {
                 Text(text = "I know")
