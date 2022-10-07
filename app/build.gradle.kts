@@ -9,7 +9,13 @@ android {
     defaultConfig {
         applicationId = "pro.yakuraion.englishhelper"
         versionCode = 1
-        versionName = "1.0-SNAPSHOT"
+        versionName = "0.1.0"
+    }
+
+    buildTypes {
+        getByName("debug") {
+            applicationIdSuffix = ".debug"
+        }
     }
 }
 
