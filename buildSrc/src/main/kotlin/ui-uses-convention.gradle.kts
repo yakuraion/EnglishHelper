@@ -18,8 +18,8 @@ dependencies {
     add("implementation", versionCatalog.findLibrary("androidx-core-ktx").get())
     add("implementation", versionCatalog.findLibrary("android-lifecycle").get())
 
-    add("implementation", versionCatalog.findLibrary("compose-material").get())
     add("implementation", versionCatalog.findLibrary("compose-material-icons-extended").get())
+    add("implementation", versionCatalog.findLibrary("compose-material3").get())
     add("implementation", versionCatalog.findLibrary("compose-tooling-preview").get())
 
     add("implementation", versionCatalog.findLibrary("compose-activity").get())

@@ -1,4 +1,5 @@
 import com.android.build.gradle.BaseExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import utils.configsDir
 import utils.versionCatalog
@@ -36,6 +37,12 @@ configure<BaseExtension> {
         kotlinOptions {
             jvmTarget = JavaVersion.VERSION_11.toString()
         }
+    }
+}
+
+configure<KotlinAndroidProjectExtension> {
+    sourceSets.all {
+        languageSettings.optIn("androidx.compose.material3.ExperimentalMaterial3Api")
     }
 }
 
