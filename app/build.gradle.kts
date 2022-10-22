@@ -29,7 +29,7 @@ android {
         create("dev") {
             keyAlias = "dev"
             keyPassword = "password"
-            storeFile = file("dev-keystore.jks")
+            storeFile = rootProject.layout.projectDirectory.file("dev-keystore.jks").asFile
             storePassword = "password"
         }
     }
