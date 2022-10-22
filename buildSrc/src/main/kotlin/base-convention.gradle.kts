@@ -11,11 +11,11 @@ plugins {
 }
 
 configure<BaseExtension> {
-    compileSdkVersion(32)
+    compileSdkVersion(33)
 
     defaultConfig {
         minSdk = 24
-        targetSdk = 32
+        targetSdk = 33
     }
 
     buildTypes {

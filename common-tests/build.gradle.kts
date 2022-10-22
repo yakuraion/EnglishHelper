@@ -3,6 +3,10 @@ plugins {
     id("base-convention")
 }
 
+android {
+    namespace = "pro.yakuraion.englishhelper.commontests"
+}
+
 dependencies {
     implementation(libs.junit)
     implementation(libs.mockk)

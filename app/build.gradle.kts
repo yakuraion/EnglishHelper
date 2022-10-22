@@ -9,6 +9,8 @@ plugins {
 }
 
 android {
+    namespace = "pro.yakuraion.englishhelper"
+
     defaultConfig {
         applicationId = "pro.yakuraion.englishhelper"
         versionCode = 1

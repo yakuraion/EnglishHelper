@@ -4,6 +4,10 @@ plugins {
     id("data-uses-convention")
 }
 
+android {
+    namespace = "pro.yakuraion.englishhelper.data"
+}
+
 dependencies {
     implementation(project(":common"))
     implementation(project(":domain"))
