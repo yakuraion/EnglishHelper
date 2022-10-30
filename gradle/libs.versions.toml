@@ -4,6 +4,7 @@ kotlin = "1.7.10"
 kotlin-coroutines = "1.6.4"
 dagger = "2.43.2"
 compose = "1.2.1"
+navigation = "2.5.2"
 room = "2.4.3"
 
 [libraries]
@@ -31,6 +32,11 @@ compose-material3 = { module = "androidx.compose.material3:material3", version =
 compose-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 compose-junit = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
+
+navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
+navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
+navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
+navigation-testing = { module = "androidx.navigation:navigation-testing", version.ref = "navigation" }
 
 # https://stackoverflow.com/questions/71812710/can-no-longer-view-jetpack-compose-previews-failed-to-instantiate-one-or-more-c
 custom-view = { module = "androidx.customview:customview", version = "1.2.0-alpha01"}
