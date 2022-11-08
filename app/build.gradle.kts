@@ -17,32 +17,39 @@ android {
         versionName = "0.1.0"
     }
 
-    val prodKeystorePropertiesFile = file(
+    val releaseKeystorePropertiesFile = file(
         "${System.getProperty("user.home")}/keystores/EnglishHelper/credentials.properties"
     )
-    val prodKeystoreProperties = Properties().apply { load(FileInputStream(prodKeystorePropertiesFile)) }
+    val releaseKeystoreProperties = Properties().apply { load(FileInputStream(releaseKeystorePropertiesFile)) }
     signingConfigs {
-        create("prod") {
-            keyAlias = prodKeystoreProperties.getProperty("keyAlias")
-            keyPassword = prodKeystoreProperties.getProperty("keyPassword")
-            storeFile = file(prodKeystoreProperties.getProperty("keystorePath"))
-            storePassword = prodKeystoreProperties.getProperty("keystorePassword")
+        create("release") {
+            keyAlias = releaseKeystoreProperties.getProperty("keyAlias")
+            keyPassword = releaseKeystoreProperties.getProperty("keyPassword")
+            storeFile = file(releaseKeystoreProperties.getProperty("keystorePath"))
+            storePassword = releaseKeystoreProperties.getProperty("keystorePassword")
         }
-        create("dev") {
-            keyAlias = "dev"
+        create("debug") {
+            keyAlias = "debug"
             keyPassword = "password"
-            storeFile = rootProject.layout.projectDirectory.file("dev-keystore.jks").asFile
+            storeFile = rootProject.layout.projectDirectory.file("debug-keystore.jks").asFile
             storePassword = "password"
         }
     }
 
     buildTypes {
         getByName("release") {
+            isMinifyEnabled = true
             signingConfig = signingConfigs.getByName("prod")
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+
+            resValue("string", "app_name", "EnglishHelper")
         }
         getByName("debug") {
+            isDebuggable = true
+            signingConfig = signingConfigs.getByName("debug")
             applicationIdSuffix = ".debug"
-            signingConfig = signingConfigs.getByName("dev")
+
+            resValue("string", "app_name", "EnglishHelper (debug)")
         }
     }
 }
