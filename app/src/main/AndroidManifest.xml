@@ -13,8 +13,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.EnglishHelper"
-        tools:targetApi="32">
+        tools:targetApi="33">
 
         <activity
             android:name="pro.yakuraion.englishhelper.AppActivity"
