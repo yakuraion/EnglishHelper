@@ -28,25 +28,18 @@ android {
             storeFile = file(releaseKeystoreProperties.getProperty("keystorePath"))
             storePassword = releaseKeystoreProperties.getProperty("keystorePassword")
         }
-        create("debug") {
-            keyAlias = "debug"
-            keyPassword = "password"
-            storeFile = rootProject.layout.projectDirectory.file("debug-keystore.jks").asFile
-            storePassword = "password"
-        }
     }
 
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
-            signingConfig = signingConfigs.getByName("prod")
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
 
             resValue("string", "app_name", "EnglishHelper")
         }
         getByName("debug") {
             isDebuggable = true
-            signingConfig = signingConfigs.getByName("debug")
             applicationIdSuffix = ".debug"
 
             resValue("string", "app_name", "EnglishHelper (debug)")
