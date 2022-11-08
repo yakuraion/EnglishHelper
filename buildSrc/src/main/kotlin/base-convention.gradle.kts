@@ -2,6 +2,8 @@ import com.android.build.gradle.BaseExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import utils.configsDir
+import utils.enableComposeCompilerMetrics
+import utils.enableComposeCompilerReports
 import utils.versionCatalog
 
 plugins {
@@ -36,6 +38,13 @@ configure<BaseExtension> {
     tasks.withType(KotlinCompile::class.java).configureEach {
         kotlinOptions {
             jvmTarget = JavaVersion.VERSION_11.toString()
+
+            if (project.findProperty("composeCompilerReports") == "true") {
+                enableComposeCompilerReports(project.buildDir.absolutePath + "/compose_compiler")
+            }
+            if (project.findProperty("composeCompilerMetrics") == "true") {
+                enableComposeCompilerMetrics(project.buildDir.absolutePath + "/compose_compiler")
+            }
         }
     }
 }
