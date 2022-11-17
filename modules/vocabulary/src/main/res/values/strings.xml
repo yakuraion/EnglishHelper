@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="vocabulary_overview_screen_start_testing">Testing</string>
+    <string name="vocabulary_overview_screen_current_learning_words">You are currently learning %d words!</string>
+    <string name="vocabulary_overview_screen_add_words">Add more</string>
 </resources>
