@@ -2,7 +2,6 @@ package pro.yakuraion.englishhelper.common.ui.compose
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Start
@@ -10,7 +9,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -57,35 +55,5 @@ fun FloatingButtonWithIconAndTextPreview() {
             text = "Start",
             onClick = {}
         )
-    }
-}
-
-@Composable
-fun InContentFullWidthButton(
-    text: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    OutlinedButton(
-        onClick = onClick,
-        modifier = modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.extraSmall,
-        colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.onBackground)
-    ) {
-        Text(
-            text = text,
-            color = MaterialTheme.colorScheme.onBackground,
-            fontWeight = FontWeight.Medium,
-            style = MaterialTheme.typography.bodyLarge
-        )
-    }
-}
-
-@Preview
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun InContentButtonPreview() {
-    AppTheme {
-        InContentFullWidthButton(text = "Push me", onClick = {})
     }
 }
