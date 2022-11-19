@@ -3,4 +3,6 @@
     <string name="vocabulary_overview_screen_testing_title">The number of words to check today:</string>
     <string name="vocabulary_overview_screen_testing_button">Go testing</string>
     <string name="vocabulary_overview_screen_add_words">Add words</string>
+
+    <string name="vocabulary_add_words_screen_type_word">Type word…</string>
 </resources>

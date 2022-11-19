@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import pro.yakuraion.englishhelper.vocabulary.ui.addwords.AddWordsScreen
 import pro.yakuraion.englishhelper.vocabulary.ui.overview.OverviewScreen
 
 private enum class SCREEN(val route: String) {
@@ -23,7 +24,9 @@ fun VocabularyScreen() {
                 onStartTestingClick = { navController.navigate(SCREEN.TESTING.route) }
             )
         }
-        composable(SCREEN.ADD_WORDS.route) { Text(text = "add_words") }
+        composable(SCREEN.ADD_WORDS.route) {
+            AddWordsScreen()
+        }
         composable(SCREEN.TESTING.route) { Text(text = "testing") }
     }
 }
