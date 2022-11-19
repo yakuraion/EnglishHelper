@@ -22,6 +22,7 @@ dependencies {
     add("implementation", versionCatalog.findLibrary("compose-material-icons-extended").get())
     add("implementation", versionCatalog.findLibrary("compose-material3").get())
     add("implementation", versionCatalog.findLibrary("compose-tooling-preview").get())
+    add("implementation", versionCatalog.findLibrary("compose-constraint-layout").get())
     add("implementation", versionCatalog.findLibrary("compose-activity").get())
     add("implementation", versionCatalog.findLibrary("compose-viewmodel").get())
     add("debugImplementation", versionCatalog.findLibrary("compose-tooling").get())

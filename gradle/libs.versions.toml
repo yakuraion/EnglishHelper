@@ -14,7 +14,7 @@ android-library-plugin = { module = "com.android.library:com.android.library.gra
 kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 
 kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlin-coroutines" }
-kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlin-coroutines"}
+kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlin-coroutines" }
 
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
@@ -27,8 +27,9 @@ android-lifecycle = { module = "androidx.lifecycle:lifecycle-runtime-ktx", versi
 compose-activity = { module = "androidx.activity:activity-compose", version = "1.5.1" }
 compose-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version = "2.5.1" }
 
-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose"}
+compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
 compose-material3 = { module = "androidx.compose.material3:material3", version = "1.0.0" }
+compose-constraint-layout = { module = "androidx.constraintlayout:constraintlayout-compose", version = "1.0.1" }
 compose-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 compose-junit = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
@@ -39,8 +40,8 @@ navigation-compose = { module = "androidx.navigation:navigation-compose", versio
 navigation-testing = { module = "androidx.navigation:navigation-testing", version.ref = "navigation" }
 
 # https://stackoverflow.com/questions/71812710/can-no-longer-view-jetpack-compose-previews-failed-to-instantiate-one-or-more-c
-custom-view = { module = "androidx.customview:customview", version = "1.2.0-alpha01"}
-custom-view-pooling-container = { module = "androidx.customview:customview-poolingcontainer", version = "1.0.0-alpha01"}
+custom-view = { module = "androidx.customview:customview", version = "1.2.0-alpha01" }
+custom-view-pooling-container = { module = "androidx.customview:customview-poolingcontainer", version = "1.0.0-alpha01" }
 
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
