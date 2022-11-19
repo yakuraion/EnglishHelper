@@ -1,12 +1,14 @@
-package pro.yakuraion.englishhelper.vocabulary.ui.addwords
+package pro.yakuraion.englishhelper.vocabulary.ui.testing
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.VolumeUp
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,34 +24,33 @@ import pro.yakuraion.englishhelper.common.ui.theme.AppTheme
 import pro.yakuraion.englishhelper.vocabulary.R
 
 @Composable
-fun AddWordsScreen() {
-    Scaffold { paddingValues ->
-        Box(
+fun TestingWordWithAudio() {
+    Box(modifier = Modifier.fillMaxSize()) {
+        Icon(
+            imageVector = Icons.Filled.VolumeUp,
+            contentDescription = null,
             modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
-            Column(modifier = Modifier.align(Alignment.Center)) {
-                var word by remember { mutableStateOf("") }
-                CustomTextField(
-                    value = word,
-                    onValueChange = { word = it },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    placeholder = stringResource(id = R.string.vocabulary_add_words_screen_type_word),
-                    maxLines = 1
-                )
-            }
-        }
+                .size(100.dp)
+                .align(Alignment.Center)
+        )
+        var answer by remember { mutableStateOf("") }
+        CustomTextField(
+            value = answer,
+            onValueChange = { answer = it },
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .padding(16.dp),
+            placeholder = stringResource(id = R.string.vocabulary_testing_answer_placeholder)
+        )
     }
 }
 
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun AddWordsScreenPreview() {
+private fun TestingWordWithAudioPreview() {
     AppTheme {
-        AddWordsScreen()
+        TestingWordWithAudio()
     }
 }
