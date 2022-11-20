@@ -56,7 +56,8 @@ private fun AddWordsButton(onAddWordsClick: () -> Unit) {
     TertiaryIconTextButton(
         icon = Icons.Filled.Add,
         text = stringResource(R.string.vocabulary_overview_screen_add_words),
-        onClick = onAddWordsClick
+        onClick = onAddWordsClick,
+        modifier = Modifier.height(48.dp)
     )
 }
 
@@ -94,6 +95,7 @@ private fun TestingBlock(wordsNumber: Int, onStartTestingClick: () -> Unit) {
             Text(
                 text = wordsNumber.toString(),
                 modifier = Modifier.align(Alignment.CenterHorizontally),
+                fontWeight = FontWeight.Medium,
                 style = MaterialTheme.typography.displaySmall
             )
             Spacer(modifier = Modifier.height(8.dp))
