@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import pro.yakuraion.englishhelper.common.ui.compose.PrimaryOutlineButton
@@ -45,7 +46,10 @@ fun TestingLayout(content: @Composable () -> Unit) {
             ) {
                 Icon(imageVector = Icons.Filled.HelpOutline, contentDescription = null)
                 Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
-                Text(text = stringResource(id = R.string.vocabulary_testing_help_button))
+                Text(
+                    text = stringResource(id = R.string.vocabulary_testing_help_button),
+                    fontWeight = FontWeight.Bold
+                )
             }
             content()
         }
