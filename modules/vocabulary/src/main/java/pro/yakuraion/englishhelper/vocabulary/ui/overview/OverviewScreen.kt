@@ -25,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import pro.yakuraion.englishhelper.common.ui.compose.FloatingButtonWithIconAndText
+import pro.yakuraion.englishhelper.common.ui.compose.TertiaryIconTextButton
 import pro.yakuraion.englishhelper.common.ui.theme.AppTheme
 import pro.yakuraion.englishhelper.vocabulary.R
 
@@ -53,7 +53,7 @@ fun OverviewScreen(
 
 @Composable
 private fun AddWordsButton(onAddWordsClick: () -> Unit) {
-    FloatingButtonWithIconAndText(
+    TertiaryIconTextButton(
         icon = Icons.Filled.Add,
         text = stringResource(R.string.vocabulary_overview_screen_add_words),
         onClick = onAddWordsClick

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Start
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
@@ -23,26 +24,44 @@ import androidx.compose.ui.unit.dp
 import pro.yakuraion.englishhelper.common.ui.theme.AppTheme
 
 @Composable
-fun FloatingButtonWithIconAndText(
+fun TertiaryIconTextButton(
     icon: ImageVector,
     text: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+) {
+    BaseIconTextButton(
+        icon = icon,
+        text = text,
+        onClick = onClick,
+        modifier = modifier,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+            contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+        )
+    )
+}
+
+@Composable
+private fun BaseIconTextButton(
+    icon: ImageVector,
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    colors: ButtonColors = ButtonDefaults.buttonColors()
 ) {
     Button(
         onClick = { onClick() },
         modifier = modifier,
-        colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.tertiaryContainer)
+        colors = colors
     ) {
         Icon(
             imageVector = icon,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onTertiaryContainer
+            contentDescription = null
         )
         Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
         Text(
             text = text,
-            color = MaterialTheme.colorScheme.onTertiaryContainer,
             fontWeight = FontWeight.Medium,
             style = MaterialTheme.typography.titleMedium
         )
@@ -52,41 +71,51 @@ fun FloatingButtonWithIconAndText(
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun FloatingButtonWithIconAndTextPreview() {
+private fun TertiaryIconTextButtonPreview() {
     AppTheme {
-        FloatingButtonWithIconAndText(
+        TertiaryIconTextButton(
             icon = Icons.Filled.Start,
-            text = "Start",
+            text = "Text",
             onClick = {}
         )
     }
 }
 
 @Composable
-fun SecondaryButton(
+fun PrimaryOutlineButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
-    val contentColor = MaterialTheme.colorScheme.primary
+    CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.primary) {
+        BaseOutlineButton(onClick = onClick, modifier = modifier) {
+            content()
+        }
+    }
+}
+
+@Composable
+private fun BaseOutlineButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
     OutlinedButton(
         onClick = onClick,
         modifier = modifier,
-        border = BorderStroke(2.dp, contentColor)
+        border = BorderStroke(2.dp, LocalContentColor.current)
     ) {
-        CompositionLocalProvider(LocalContentColor provides contentColor) {
-            content()
-        }
+        content()
     }
 }
 
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun SecondaryButtonPreview() {
+private fun PrimaryOutlineButtonPreview() {
     AppTheme {
-        SecondaryButton(onClick = {}) {
-            Text(text = "Secondary button")
+        PrimaryOutlineButton(onClick = {}) {
+            Text(text = "Text")
         }
     }
 }
