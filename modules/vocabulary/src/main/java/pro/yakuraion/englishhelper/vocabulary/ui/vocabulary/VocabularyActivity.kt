@@ -14,7 +14,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import pro.yakuraion.englishhelper.commonui.di.viewmodel.InjectingSavedStateViewModelFactory
 import pro.yakuraion.englishhelper.commonui.mvvm.MVVMActivity
 import pro.yakuraion.englishhelper.vocabulary.di.diComponent
-import pro.yakuraion.englishhelper.vocabulary.ui.addwords.AddWordsActivity
 import pro.yakuraion.englishhelper.vocabulary.ui.testing.TestingActivity
 import javax.inject.Inject
 
@@ -67,7 +66,6 @@ class VocabularyActivity : MVVMActivity<VocabularyViewModel>(VocabularyViewModel
     }
 
     private fun openAddWordsActivity() {
-        startActivity(AddWordsActivity.createIntent(this))
     }
 
     private fun openTestingActivity() {

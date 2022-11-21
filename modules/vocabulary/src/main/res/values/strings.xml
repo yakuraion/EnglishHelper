@@ -5,6 +5,10 @@
     <string name="vocabulary_overview_screen_add_words">Add words</string>
 
     <string name="vocabulary_add_words_screen_type_word">Type word…</string>
+    <plurals name="vocabulary_add_words_screen_already_exists_words_error">
+        <item quantity="one">The word "%s" is already added</item>
+        <item quantity="other">The words "%s" are already added</item>
+    </plurals>
 
     <string name="vocabulary_testing_simple_question">Do you remember this word?</string>
     <string name="vocabulary_testing_simple_tip">If you do not, then go to the dictionary</string>

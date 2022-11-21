@@ -18,10 +18,10 @@ class AddWordsViewModel @AssistedInject constructor(
     private val isWordAlreadyExistUseCase: IsWordAlreadyExistUseCase
 ) : ViewModel() {
 
-    val uiState = mutableStateOf<UIState>(UIState.EnteringWords)
+    val uiState = mutableStateOf<AddWordsUiState>(AddWordsUiState.EnteringWords())
 
-    fun onAddWordsClick(wordsText: String) {
-        val learningWords = wordsText
+    fun onAddWordsClick(words: String) {
+        val learningWords = words
             .split(SEPARATOR)
             .map { it.trim() }
         addWords(learningWords)
@@ -32,7 +32,7 @@ class AddWordsViewModel @AssistedInject constructor(
             val uniqueWords = distinctWords(words)
             if (!validateAlreadyExistsWords(uniqueWords)) return@launch
             uniqueWords.forEach { addWordUseCase.addWord(it) }
-            uiState.value = UIState.WordsAdded
+            uiState.value = AddWordsUiState.WordsAdded
         }
     }
 
@@ -42,18 +42,15 @@ class AddWordsViewModel @AssistedInject constructor(
 
     private suspend fun validateAlreadyExistsWords(words: List<String>): Boolean {
         val alreadyExistsWords = words.filter { isWordAlreadyExistUseCase.isWordAlreadyExist(it) }
-        return if (alreadyExistsWords.isNotEmpty()) {
-            uiState.value = UIState.Error("This words already in learning: $alreadyExistsWords")
-            false
-        } else {
-            true
-        }
-    }
-
-    sealed class UIState {
-        object EnteringWords : UIState()
-        class Error(val message: String) : UIState()
-        object WordsAdded : UIState()
+        val isValid = alreadyExistsWords.isEmpty()
+        uiState.value = AddWordsUiState.EnteringWords(
+            wordsAlreadyExistsError = if (isValid) {
+                null
+            } else {
+                AddWordsUiState.EnteringWords.WordsAlreadyExistsError(alreadyExistsWords)
+            }
+        )
+        return isValid
     }
 
     @AssistedFactory
