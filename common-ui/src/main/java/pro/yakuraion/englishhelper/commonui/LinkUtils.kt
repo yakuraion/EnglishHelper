@@ -1,4 +1,4 @@
-package pro.yakuraion.englishhelper.common
+package pro.yakuraion.englishhelper.commonui
 
 import android.content.Context
 import android.content.Intent

@@ -18,8 +18,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import pro.yakuraion.englishhelper.common.di.viewmodel.InjectingSavedStateViewModelFactory
-import pro.yakuraion.englishhelper.common.mvvm.MVVMActivity
+import pro.yakuraion.englishhelper.commonui.di.viewmodel.InjectingSavedStateViewModelFactory
+import pro.yakuraion.englishhelper.commonui.mvvm.MVVMActivity
 import pro.yakuraion.englishhelper.vocabulary.di.diComponent
 import javax.inject.Inject
 

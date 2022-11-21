@@ -1,4 +1,4 @@
-package pro.yakuraion.englishhelper.common.ui.compose
+package pro.yakuraion.englishhelper.commonui.compose.widgets
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import pro.yakuraion.englishhelper.common.ui.theme.AppTheme
+import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 
 @Composable
 fun CustomTextField(

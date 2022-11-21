@@ -1,4 +1,4 @@
-package pro.yakuraion.englishhelper.common.di.viewmodel
+package pro.yakuraion.englishhelper.commonui.di.viewmodel
 
 import androidx.lifecycle.ViewModel
 import dagger.MapKey

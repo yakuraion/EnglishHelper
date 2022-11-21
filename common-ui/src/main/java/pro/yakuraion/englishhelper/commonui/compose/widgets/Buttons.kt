@@ -1,4 +1,4 @@
-package pro.yakuraion.englishhelper.common.ui.compose
+package pro.yakuraion.englishhelper.commonui.compose.widgets
 
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
@@ -21,7 +21,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import pro.yakuraion.englishhelper.common.ui.theme.AppTheme
+import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 
 @Composable
 fun TertiaryIconTextButton(

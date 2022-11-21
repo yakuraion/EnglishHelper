@@ -1,9 +1,9 @@
-package pro.yakuraion.englishhelper.common.mvvm
+package pro.yakuraion.englishhelper.commonui.mvvm
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModel
-import pro.yakuraion.englishhelper.common.di.viewmodel.InjectingSavedStateViewModelFactory
+import pro.yakuraion.englishhelper.commonui.di.viewmodel.InjectingSavedStateViewModelFactory
 import kotlin.reflect.KClass
 
 abstract class MVVMActivity<VM : ViewModel>(

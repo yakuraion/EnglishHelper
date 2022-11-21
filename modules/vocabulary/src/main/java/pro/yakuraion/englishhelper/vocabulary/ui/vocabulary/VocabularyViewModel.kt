@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import pro.yakuraion.englishhelper.common.di.viewmodel.AssistedSavedStateViewModelFactory
+import pro.yakuraion.englishhelper.commonui.di.viewmodel.AssistedSavedStateViewModelFactory
 
 class VocabularyViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle

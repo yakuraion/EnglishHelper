@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import pro.yakuraion.englishhelper.common.di.viewmodel.AssistedSavedStateViewModelFactory
-import pro.yakuraion.englishhelper.common.di.viewmodel.ViewModelKey
+import pro.yakuraion.englishhelper.commonui.di.viewmodel.AssistedSavedStateViewModelFactory
+import pro.yakuraion.englishhelper.commonui.di.viewmodel.ViewModelKey
 import pro.yakuraion.englishhelper.vocabulary.ui.addwords.AddWordsViewModel
 import pro.yakuraion.englishhelper.vocabulary.ui.testing.TestingViewModel
 import pro.yakuraion.englishhelper.vocabulary.ui.vocabulary.VocabularyViewModel

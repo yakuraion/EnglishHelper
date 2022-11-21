@@ -10,5 +10,6 @@ android {
 
 dependencies {
     add("implementation", project(":common"))
+    add("implementation", project(":common-ui"))
     add("implementation", project(":domain"))
 }

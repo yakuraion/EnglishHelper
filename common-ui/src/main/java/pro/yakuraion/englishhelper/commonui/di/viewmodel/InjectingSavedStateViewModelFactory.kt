@@ -1,4 +1,4 @@
-package pro.yakuraion.englishhelper.common.di.viewmodel
+package pro.yakuraion.englishhelper.commonui.di.viewmodel
 
 import android.os.Bundle
 import androidx.lifecycle.AbstractSavedStateViewModelFactory

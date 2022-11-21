@@ -8,7 +8,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
-import pro.yakuraion.englishhelper.common.di.viewmodel.AssistedSavedStateViewModelFactory
+import pro.yakuraion.englishhelper.commonui.di.viewmodel.AssistedSavedStateViewModelFactory
 import pro.yakuraion.englishhelper.domain.entities.learning.LearningWordFull
 import pro.yakuraion.englishhelper.domain.usecases.GetNextWordToLearnTodayUseCase
 import pro.yakuraion.englishhelper.domain.usecases.MoveLearningWordToNextLevelUseCase

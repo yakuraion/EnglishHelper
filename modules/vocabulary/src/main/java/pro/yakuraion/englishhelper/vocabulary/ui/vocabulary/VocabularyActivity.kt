@@ -11,8 +11,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import pro.yakuraion.englishhelper.common.di.viewmodel.InjectingSavedStateViewModelFactory
-import pro.yakuraion.englishhelper.common.mvvm.MVVMActivity
+import pro.yakuraion.englishhelper.commonui.di.viewmodel.InjectingSavedStateViewModelFactory
+import pro.yakuraion.englishhelper.commonui.mvvm.MVVMActivity
 import pro.yakuraion.englishhelper.vocabulary.di.diComponent
 import pro.yakuraion.englishhelper.vocabulary.ui.addwords.AddWordsActivity
 import pro.yakuraion.englishhelper.vocabulary.ui.testing.TestingActivity

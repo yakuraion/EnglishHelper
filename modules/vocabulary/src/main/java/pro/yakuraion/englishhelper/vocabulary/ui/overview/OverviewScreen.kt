@@ -25,8 +25,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import pro.yakuraion.englishhelper.common.ui.compose.TertiaryIconTextButton
-import pro.yakuraion.englishhelper.common.ui.theme.AppTheme
+import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
+import pro.yakuraion.englishhelper.commonui.compose.widgets.TertiaryIconTextButton
 import pro.yakuraion.englishhelper.vocabulary.R
 
 @Composable

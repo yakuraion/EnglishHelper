@@ -19,8 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import pro.yakuraion.englishhelper.common.ui.compose.PrimaryOutlineButton
-import pro.yakuraion.englishhelper.common.ui.theme.AppTheme
+import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
+import pro.yakuraion.englishhelper.commonui.compose.widgets.PrimaryOutlineButton
 import pro.yakuraion.englishhelper.vocabulary.R
 
 @Composable

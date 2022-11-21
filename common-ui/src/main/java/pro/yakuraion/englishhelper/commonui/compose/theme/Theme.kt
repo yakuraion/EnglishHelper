@@ -1,4 +1,4 @@
-package pro.yakuraion.englishhelper.common.ui.theme
+package pro.yakuraion.englishhelper.commonui.compose.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

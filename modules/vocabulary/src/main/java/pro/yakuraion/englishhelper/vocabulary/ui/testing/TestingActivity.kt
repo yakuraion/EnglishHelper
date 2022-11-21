@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
@@ -31,16 +33,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import pro.yakuraion.englishhelper.common.di.viewmodel.InjectingSavedStateViewModelFactory
-import pro.yakuraion.englishhelper.common.mvvm.MVVMActivity
-import pro.yakuraion.englishhelper.common.openLink
+import pro.yakuraion.englishhelper.commonui.di.viewmodel.InjectingSavedStateViewModelFactory
+import pro.yakuraion.englishhelper.commonui.mvvm.MVVMActivity
+import pro.yakuraion.englishhelper.commonui.openLink
 import pro.yakuraion.englishhelper.domain.entities.Word
 import pro.yakuraion.englishhelper.domain.entities.learning.LearningWord
 import pro.yakuraion.englishhelper.domain.entities.learning.LearningWordFull
@@ -139,9 +139,7 @@ class TestingActivity : MVVMActivity<TestingViewModel>(TestingViewModel::class) 
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             var writtenWord by remember { mutableStateOf("") }
             Image(
-                imageVector = ImageVector.vectorResource(
-                    id = pro.yakuraion.englishhelper.common.R.drawable.ic_baseline_volume_up_24
-                ),
+                imageVector = Icons.Filled.VolumeUp,
                 contentDescription = "",
                 modifier = Modifier
                     .clickable { playSound(soundFile) }
