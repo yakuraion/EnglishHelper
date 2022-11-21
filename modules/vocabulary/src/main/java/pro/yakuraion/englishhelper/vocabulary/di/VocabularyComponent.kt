@@ -1,6 +1,7 @@
 package pro.yakuraion.englishhelper.vocabulary.di
 
 import dagger.Component
+import pro.yakuraion.englishhelper.commonui.di.viewmodel.NewInjectingViewStateViewModelFactory
 import pro.yakuraion.englishhelper.domain.di.UseCasesProvider
 import pro.yakuraion.englishhelper.vocabulary.di.viewmodel.ViewModelFactoriesModule
 import pro.yakuraion.englishhelper.vocabulary.ui.addwords.AddWordsActivity
@@ -18,4 +19,6 @@ interface VocabularyComponent {
     fun inject(d: AddWordsActivity)
 
     fun inject(d: TestingActivity)
+
+    fun getViewModelFactory(): NewInjectingViewStateViewModelFactory
 }

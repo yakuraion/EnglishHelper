@@ -9,6 +9,7 @@ import dagger.multibindings.IntoMap
 import pro.yakuraion.englishhelper.commonui.di.viewmodel.AssistedSavedStateViewModelFactory
 import pro.yakuraion.englishhelper.commonui.di.viewmodel.ViewModelKey
 import pro.yakuraion.englishhelper.vocabulary.ui.addwords.AddWordsViewModel
+import pro.yakuraion.englishhelper.vocabulary.ui.overview.OverviewViewModel
 import pro.yakuraion.englishhelper.vocabulary.ui.testing.TestingViewModel
 import pro.yakuraion.englishhelper.vocabulary.ui.vocabulary.VocabularyViewModel
 
@@ -19,6 +20,11 @@ internal interface ViewModelFactoriesModule {
     @IntoMap
     @ViewModelKey(VocabularyViewModel::class)
     fun bindsVocabulary(impl: VocabularyViewModel.Factory): AssistedSavedStateViewModelFactory<out ViewModel>
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(OverviewViewModel::class)
+    fun bindsOverview(impl: OverviewViewModel.Factory): AssistedSavedStateViewModelFactory<out ViewModel>
 
     @Binds
     @IntoMap

@@ -28,25 +28,37 @@ import androidx.compose.ui.unit.dp
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 import pro.yakuraion.englishhelper.commonui.compose.widgets.TertiaryIconTextButton
 import pro.yakuraion.englishhelper.vocabulary.R
+import pro.yakuraion.englishhelper.vocabulary.di.daggerViewModel
 
 @Composable
 fun OverviewScreen(
+    viewModel: OverviewViewModel = daggerViewModel(),
     onAddWordsClick: () -> Unit,
     onStartTestingClick: () -> Unit
 ) {
-    Scaffold(
-        floatingActionButton = { AddWordsButton(onAddWordsClick = onAddWordsClick) },
-        floatingActionButtonPosition = FabPosition.Center
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier.padding(
-                start = 16.dp,
-                top = 16.dp,
-                end = 16.dp,
-                bottom = paddingValues.calculateBottomPadding()
-            )
-        ) {
-            TestingBlock(wordsNumber = 10, onStartTestingClick = onStartTestingClick)
+    when (val uiState = viewModel.uiState) {
+        OverviewUiState.Loading -> {
+            Text(text = "Loading")
+        }
+        is OverviewUiState.Content -> {
+            Scaffold(
+                floatingActionButton = { AddWordsButton(onAddWordsClick = onAddWordsClick) },
+                floatingActionButtonPosition = FabPosition.Center
+            ) { paddingValues ->
+                Column(
+                    modifier = Modifier.padding(
+                        start = 16.dp,
+                        top = 16.dp,
+                        end = 16.dp,
+                        bottom = paddingValues.calculateBottomPadding()
+                    )
+                ) {
+                    TestingBlock(
+                        wordsNumber = uiState.numberOfWordsToLearnToday,
+                        onStartTestingClick = onStartTestingClick
+                    )
+                }
+            }
         }
     }
 }
