@@ -9,7 +9,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,13 +30,15 @@ import pro.yakuraion.englishhelper.vocabulary.di.daggerViewModel
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 fun AddWordsScreen(
     viewModel: AddWordsViewModel = daggerViewModel(),
+    onBackClick: () -> Unit
 ) {
     AddWordsScreen(
         word = viewModel.word,
         isWordAlreadyExistError = viewModel.isWordAlreadyExistError,
         isLoading = viewModel.isLoading,
         onWordChanged = { viewModel.onWordChanged(it) },
-        onAddWordsClick = { viewModel.onAddWordClick() }
+        onAddWordsClick = { viewModel.onAddWordClick() },
+        onBackClick = onBackClick
     )
 }
 
@@ -41,9 +48,26 @@ fun AddWordsScreen(
     isWordAlreadyExistError: AddWordsViewModel.IsWordAlreadyExistError?,
     isLoading: Boolean,
     onWordChanged: (String) -> Unit,
-    onAddWordsClick: () -> Unit
+    onAddWordsClick: () -> Unit,
+    onBackClick: () -> Unit
 ) {
-    Scaffold { paddingValues ->
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = {
+                    Text(text = stringResource(id = R.string.vocabulary_add_words_screen_title))
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = null
+                        )
+                    }
+                }
+            )
+        }
+    ) { paddingValues ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -85,7 +109,8 @@ private fun AddWordsContentPreview() {
             isWordAlreadyExistError = null,
             isLoading = false,
             onWordChanged = {},
-            onAddWordsClick = {}
+            onAddWordsClick = {},
+            onBackClick = {}
         )
     }
 }

@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="vocabulary_overview_screen_title">Vocabulary</string>
     <string name="vocabulary_overview_screen_testing_title">The number of words to check today:</string>
     <string name="vocabulary_overview_screen_testing_button">Go testing</string>
     <string name="vocabulary_overview_screen_add_words">Add words</string>
 
+    <string name="vocabulary_add_words_screen_title">Add new word</string>
     <string name="vocabulary_add_words_screen_type_word">Type word…</string>
     <string name="vocabulary_add_words_screen_already_exists_words_error">The word \"%s\" is already added</string>
 
-    <string name="vocabulary_testing_simple_question">Do you remember this word?</string>
-    <string name="vocabulary_testing_simple_tip">If you do not, then go to the dictionary</string>
-    <string name="vocabulary_testing_simple_yes">I remember</string>
-    <string name="vocabulary_testing_answer_placeholder">Your answer…</string>
-    <string name="vocabulary_testing_help_button">Go to the dictionary</string>
+    <string name="vocabulary_testing_screen_title">Testing</string>
+    <string name="vocabulary_testing_screen_simple_question">Do you remember this word?</string>
+    <string name="vocabulary_testing_screen_simple_tip">If you do not, then go to the dictionary</string>
+    <string name="vocabulary_testing_screen_simple_yes">I remember</string>
+    <string name="vocabulary_testing_screen_answer_placeholder">Your answer…</string>
+    <string name="vocabulary_testing_screen_help_button">Go to the dictionary</string>
 </resources>

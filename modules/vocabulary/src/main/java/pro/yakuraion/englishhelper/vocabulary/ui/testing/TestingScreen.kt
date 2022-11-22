@@ -47,7 +47,7 @@ fun TestingLayout(content: @Composable () -> Unit) {
                 Icon(imageVector = Icons.Filled.HelpOutline, contentDescription = null)
                 Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
                 Text(
-                    text = stringResource(id = R.string.vocabulary_testing_help_button),
+                    text = stringResource(id = R.string.vocabulary_testing_screen_help_button),
                     fontWeight = FontWeight.Bold
                 )
             }

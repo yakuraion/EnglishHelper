@@ -30,7 +30,7 @@ fun TestingWordSimple() {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.align(Alignment.Center)) {
             Text(
-                text = stringResource(id = R.string.vocabulary_testing_simple_question),
+                text = stringResource(id = R.string.vocabulary_testing_screen_simple_question),
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleMedium
@@ -51,7 +51,7 @@ fun TestingWordSimple() {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = stringResource(id = R.string.vocabulary_testing_simple_tip),
+                text = stringResource(id = R.string.vocabulary_testing_screen_simple_tip),
                 modifier = Modifier
                     .fillMaxWidth()
                     .alpha(0.6f),
@@ -65,7 +65,7 @@ fun TestingWordSimple() {
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 16.dp)
         ) {
-            Text(text = stringResource(id = R.string.vocabulary_testing_simple_yes))
+            Text(text = stringResource(id = R.string.vocabulary_testing_screen_simple_yes))
         }
     }
 }

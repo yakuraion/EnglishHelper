@@ -41,7 +41,7 @@ fun TestingWordWithAudio() {
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
                 .padding(16.dp),
-            placeholder = stringResource(id = R.string.vocabulary_testing_answer_placeholder)
+            placeholder = stringResource(id = R.string.vocabulary_testing_screen_answer_placeholder)
         )
     }
 }

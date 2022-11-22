@@ -25,7 +25,9 @@ fun VocabularyScreen() {
             )
         }
         composable(SCREEN.ADD_WORDS.route) {
-            AddWordsScreen()
+            AddWordsScreen(
+                onBackClick = { navController.popBackStack() }
+            )
         }
         composable(SCREEN.TESTING.route) { Text(text = "testing") }
     }
