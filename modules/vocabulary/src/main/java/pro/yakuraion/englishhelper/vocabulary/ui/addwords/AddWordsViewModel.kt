@@ -1,6 +1,8 @@
 package pro.yakuraion.englishhelper.vocabulary.ui.addwords
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,48 +20,48 @@ class AddWordsViewModel @AssistedInject constructor(
     private val isWordAlreadyExistUseCase: IsWordAlreadyExistUseCase
 ) : ViewModel() {
 
-    val uiState = mutableStateOf<AddWordsUiState>(AddWordsUiState.EnteringWords())
+    var word by mutableStateOf("")
+        private set
 
-    fun onAddWordsClick(words: String) {
-        val learningWords = words
-            .split(SEPARATOR)
-            .map { it.trim() }
-        addWords(learningWords)
+    var isWordAlreadyExistError by mutableStateOf<IsWordAlreadyExistError?>(null)
+        private set
+
+    data class IsWordAlreadyExistError(val word: String)
+
+    var isLoading by mutableStateOf(false)
+        private set
+
+    fun onWordChanged(word: String) {
+        this.word = word
     }
 
-    private fun addWords(words: List<String>) {
+    fun onAddWordClick() {
+        addWord(word.trim())
+    }
+
+    private fun addWord(word: String) {
         viewModelScope.launch {
-            val uniqueWords = distinctWords(words)
-            if (!validateAlreadyExistsWords(uniqueWords)) return@launch
-            uiState.value = AddWordsUiState.EnteringWords(isLoading = true)
-            uniqueWords.forEach { addWordUseCase.addWord(it) }
-            uiState.value = AddWordsUiState.WordsAdded
+            if (!validateIsWordAlreadyExists(word)) return@launch
+            isLoading = true
+            addWordUseCase.addWord(word)
+            isLoading = false
+            this@AddWordsViewModel.word = ""
         }
     }
 
-    private fun distinctWords(words: List<String>): List<String> {
-        return words.map { it.lowercase() }.distinct()
-    }
-
-    private suspend fun validateAlreadyExistsWords(words: List<String>): Boolean {
-        val alreadyExistsWords = words.filter { isWordAlreadyExistUseCase.isWordAlreadyExist(it) }
-        val isValid = alreadyExistsWords.isEmpty()
-        if (!isValid) {
-            uiState.value = AddWordsUiState.EnteringWords(
-                wordsAlreadyExistsError = AddWordsUiState.EnteringWords.WordsAlreadyExistsError(alreadyExistsWords)
-            )
+    private suspend fun validateIsWordAlreadyExists(word: String): Boolean {
+        val isExist = isWordAlreadyExistUseCase.isWordAlreadyExist(word)
+        isWordAlreadyExistError = if (isExist) {
+            IsWordAlreadyExistError(word)
+        } else {
+            null
         }
-        return isValid
+        return !isExist
     }
 
     @AssistedFactory
     interface Factory : AssistedSavedStateViewModelFactory<AddWordsViewModel> {
 
         override fun create(savedStateHandle: SavedStateHandle): AddWordsViewModel
-    }
-
-    companion object {
-
-        private const val SEPARATOR = ";"
     }
 }
