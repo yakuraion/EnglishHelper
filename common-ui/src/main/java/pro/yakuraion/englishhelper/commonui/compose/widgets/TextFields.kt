@@ -183,7 +183,7 @@ private fun ActionContainer(
                     )
                 )
                 .background(MaterialTheme.colorScheme.primary)
-                .clickable { onClick() }
+                .clickable(enabled = enabled) { onClick() }
         )
         content()
     }
