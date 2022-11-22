@@ -51,6 +51,7 @@ fun AddWordsScreen(
                 .padding(paddingValues)
         ) {
             val isError = uiState is AddWordsUiState.EnteringWords && uiState.wordsAlreadyExistsError != null
+            val isLoading = uiState is AddWordsUiState.EnteringWords && uiState.isLoading
             Column(modifier = Modifier.align(Alignment.Center)) {
                 var words by remember { mutableStateOf("") }
                 CustomTextField(
@@ -65,7 +66,8 @@ fun AddWordsScreen(
                     actionIcon = Icons.Default.Add,
                     onActionClick = { onAddWordsClick(words) },
                     isError = isError,
-                    errorMessage = uiState.getFormattedErrorMessage()
+                    errorMessage = uiState.getFormattedErrorMessage(),
+                    isLoading = isLoading
                 )
             }
         }

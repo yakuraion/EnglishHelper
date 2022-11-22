@@ -31,6 +31,7 @@ class AddWordsViewModel @AssistedInject constructor(
         viewModelScope.launch {
             val uniqueWords = distinctWords(words)
             if (!validateAlreadyExistsWords(uniqueWords)) return@launch
+            uiState.value = AddWordsUiState.EnteringWords(isLoading = true)
             uniqueWords.forEach { addWordUseCase.addWord(it) }
             uiState.value = AddWordsUiState.WordsAdded
         }
@@ -43,13 +44,11 @@ class AddWordsViewModel @AssistedInject constructor(
     private suspend fun validateAlreadyExistsWords(words: List<String>): Boolean {
         val alreadyExistsWords = words.filter { isWordAlreadyExistUseCase.isWordAlreadyExist(it) }
         val isValid = alreadyExistsWords.isEmpty()
-        uiState.value = AddWordsUiState.EnteringWords(
-            wordsAlreadyExistsError = if (isValid) {
-                null
-            } else {
-                AddWordsUiState.EnteringWords.WordsAlreadyExistsError(alreadyExistsWords)
-            }
-        )
+        if (!isValid) {
+            uiState.value = AddWordsUiState.EnteringWords(
+                wordsAlreadyExistsError = AddWordsUiState.EnteringWords.WordsAlreadyExistsError(alreadyExistsWords)
+            )
+        }
         return isValid
     }
 

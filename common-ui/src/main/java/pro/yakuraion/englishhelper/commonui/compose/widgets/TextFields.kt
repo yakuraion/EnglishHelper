@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Spacer
@@ -13,10 +14,12 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -51,6 +54,7 @@ fun CustomTextField(
     onActionClick: () -> Unit = {},
     isError: Boolean = false,
     errorMessage: String? = null,
+    isLoading: Boolean = false
 ) {
     Column(modifier = modifier) {
         Box(modifier = Modifier.height(IntrinsicSize.Min)) {
@@ -62,7 +66,9 @@ fun CustomTextField(
                 isError = isError,
                 actionIcon = actionIcon
             )
-            if (actionIcon != null) {
+            if (isLoading) {
+                ActionLoading(modifier = Modifier.align(Alignment.CenterEnd))
+            } else if (actionIcon != null) {
                 ActionIcon(
                     icon = actionIcon,
                     onIconClick = onActionClick,
@@ -123,11 +129,44 @@ private fun InnerTextField(
 }
 
 @Composable
+private fun ActionLoading(
+    modifier: Modifier = Modifier
+) {
+    ActionContainer(modifier = modifier) {
+        CircularProgressIndicator(
+            modifier = Modifier.size(24.dp).align(Alignment.Center),
+            color = MaterialTheme.colorScheme.onPrimary
+        )
+    }
+}
+
+@Composable
 private fun ActionIcon(
     icon: ImageVector,
     onIconClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+) {
+    ActionContainer(
+        modifier = modifier,
+        enabled = enabled,
+        onClick = onIconClick
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            modifier = Modifier.align(Alignment.Center),
+            tint = MaterialTheme.colorScheme.onPrimary
+        )
+    }
+}
+
+@Composable
+private fun ActionContainer(
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    onClick: () -> Unit = {},
+    content: @Composable BoxScope.() -> Unit
 ) {
     val alpha = if (enabled) 1f else 0.4f
     Box(modifier = modifier.alpha(alpha)) {
@@ -144,14 +183,9 @@ private fun ActionIcon(
                     )
                 )
                 .background(MaterialTheme.colorScheme.primary)
-                .clickable { onIconClick() }
+                .clickable { onClick() }
         )
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            modifier = Modifier.align(Alignment.Center),
-            tint = MaterialTheme.colorScheme.onPrimary
-        )
+        content()
     }
 }
 
@@ -181,6 +215,20 @@ private fun CustomTextFieldPreview() {
             onActionClick = {
                 Toast.makeText(content, "On action click", Toast.LENGTH_SHORT).show()
             }
+        )
+    }
+}
+
+@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun CustomTextFieldLoadingPreview() {
+    AppTheme {
+        CustomTextField(
+            value = "",
+            onValueChange = {},
+            modifier = Modifier.padding(16.dp),
+            isLoading = true
         )
     }
 }
