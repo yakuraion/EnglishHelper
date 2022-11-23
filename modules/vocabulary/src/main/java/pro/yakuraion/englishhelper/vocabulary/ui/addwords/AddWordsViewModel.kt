@@ -33,6 +33,7 @@ class AddWordsViewModel @AssistedInject constructor(
 
     fun onWordChanged(word: String) {
         this.word = word
+        isWordAlreadyExistError = null
     }
 
     fun onAddWordClick() {
@@ -51,10 +52,8 @@ class AddWordsViewModel @AssistedInject constructor(
 
     private suspend fun validateIsWordAlreadyExists(word: String): Boolean {
         val isExist = isWordAlreadyExistUseCase.isWordAlreadyExist(word)
-        isWordAlreadyExistError = if (isExist) {
-            IsWordAlreadyExistError(word)
-        } else {
-            null
+        if (isExist) {
+            isWordAlreadyExistError = IsWordAlreadyExistError(word)
         }
         return !isExist
     }
