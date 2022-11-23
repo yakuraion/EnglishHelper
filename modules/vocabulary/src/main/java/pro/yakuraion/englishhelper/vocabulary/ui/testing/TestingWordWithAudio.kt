@@ -15,12 +15,15 @@ import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -91,13 +94,15 @@ fun TestingWordWithAudio(
         } else {
             ""
         }
+        val focusRequester = remember { FocusRequester() }
         CustomTextField(
             value = state.answer,
             onValueChange = { state.onAnswerChanged(it) },
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
-                .padding(16.dp),
+                .padding(16.dp)
+                .focusRequester(focusRequester),
             placeholder = stringResource(id = R.string.vocabulary_testing_screen_answer_placeholder),
             maxLines = 1,
             actionEnabled = state.actionEnabled,
@@ -106,6 +111,9 @@ fun TestingWordWithAudio(
             isError = state.isWrongAnswerError,
             errorMessage = errorMessage
         )
+        LaunchedEffect(Unit) {
+            focusRequester.requestFocus()
+        }
     }
 }
 
