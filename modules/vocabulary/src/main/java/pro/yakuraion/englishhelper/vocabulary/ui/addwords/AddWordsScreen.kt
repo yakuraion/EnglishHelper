@@ -16,8 +16,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -74,12 +78,14 @@ private fun AddWordsScreen(
                 .padding(paddingValues)
         ) {
             Column(modifier = Modifier.align(Alignment.Center)) {
+                val focusRequester = remember { FocusRequester() }
                 CustomTextField(
                     value = word,
                     onValueChange = onWordChanged,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
+                        .padding(horizontal = 16.dp)
+                        .focusRequester(focusRequester),
                     placeholder = stringResource(id = R.string.vocabulary_add_words_screen_type_word),
                     maxLines = 1,
                     actionEnabled = word.length > 2,
@@ -89,6 +95,9 @@ private fun AddWordsScreen(
                     errorMessage = isWordAlreadyExistError?.let { formatIsWordAlreadyExistErrorMessage(it) }.orEmpty(),
                     isLoading = isLoading
                 )
+                LaunchedEffect(Unit) {
+                    focusRequester.requestFocus()
+                }
             }
         }
     }
