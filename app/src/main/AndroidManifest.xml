@@ -18,17 +18,14 @@
         <activity
             android:name="pro.yakuraion.englishhelper.AppActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".vocabulary.ui.vocabulary.VocabularyActivity" />
-
-        <activity android:name=".vocabulary.ui.testing.TestingActivity" />
 
     </application>
 

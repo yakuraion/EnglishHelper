@@ -26,7 +26,10 @@ import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 import pro.yakuraion.englishhelper.vocabulary.R
 
 @Composable
-fun TestingWordSimple() {
+fun TestingWordSimple(
+    word: String,
+    onRememberClick: () -> Unit
+) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.align(Alignment.Center)) {
             Text(
@@ -37,7 +40,7 @@ fun TestingWordSimple() {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "some word",
+                text = word,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .border(
@@ -60,7 +63,7 @@ fun TestingWordSimple() {
             )
         }
         Button(
-            onClick = {},
+            onClick = onRememberClick,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 16.dp)
@@ -75,6 +78,9 @@ fun TestingWordSimple() {
 @Composable
 private fun TestingWordSimplePreview() {
     AppTheme {
-        TestingWordSimple()
+        TestingWordSimple(
+            word = "some word",
+            onRememberClick = {}
+        )
     }
 }

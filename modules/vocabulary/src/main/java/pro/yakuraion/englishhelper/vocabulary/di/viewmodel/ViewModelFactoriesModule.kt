@@ -1,5 +1,3 @@
-@file:Suppress("MaxLineLength")
-
 package pro.yakuraion.englishhelper.vocabulary.di.viewmodel
 
 import androidx.lifecycle.ViewModel
@@ -11,15 +9,9 @@ import pro.yakuraion.englishhelper.commonui.di.viewmodel.ViewModelKey
 import pro.yakuraion.englishhelper.vocabulary.ui.addwords.AddWordsViewModel
 import pro.yakuraion.englishhelper.vocabulary.ui.overview.OverviewViewModel
 import pro.yakuraion.englishhelper.vocabulary.ui.testing.TestingViewModel
-import pro.yakuraion.englishhelper.vocabulary.ui.vocabulary.VocabularyViewModel
 
 @Module
 internal interface ViewModelFactoriesModule {
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(VocabularyViewModel::class)
-    fun bindsVocabulary(impl: VocabularyViewModel.Factory): AssistedSavedStateViewModelFactory<out ViewModel>
 
     @Binds
     @IntoMap

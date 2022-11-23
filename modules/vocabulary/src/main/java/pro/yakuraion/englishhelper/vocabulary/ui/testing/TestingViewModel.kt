@@ -1,6 +1,8 @@
 package pro.yakuraion.englishhelper.vocabulary.ui.testing
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,7 +15,6 @@ import pro.yakuraion.englishhelper.domain.entities.learning.LearningWordFull
 import pro.yakuraion.englishhelper.domain.usecases.GetNextWordToLearnTodayUseCase
 import pro.yakuraion.englishhelper.domain.usecases.MoveLearningWordToNextLevelUseCase
 import pro.yakuraion.englishhelper.domain.usecases.MoveLearningWordToPreviousLevelUseCase
-import timber.log.Timber
 
 class TestingViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
@@ -22,32 +23,45 @@ class TestingViewModel @AssistedInject constructor(
     private val moveLearningWordToPreviousLevelUseCase: MoveLearningWordToPreviousLevelUseCase
 ) : ViewModel() {
 
-    val isLoading = mutableStateOf(true)
+    var uiState: TestingUiState by mutableStateOf(TestingUiState.Loading)
+        private set
 
-    val word = mutableStateOf<LearningWordFull?>(null)
+    private var wordFull: LearningWordFull? = null
+
+    private var isDictionaryVisited = false
 
     init {
         viewModelScope.launch {
             getNextWordToLearnTodayUseCase.getNextWordToLearnToday().collect { word ->
-                Timber.d("newWord = ${word?.word?.name}")
-                isLoading.value = false
-                this@TestingViewModel.word.value = word
+                wordFull = word
+                isDictionaryVisited = false
+                uiState = when {
+                    word == null -> {
+                        TestingUiState.NoWords
+                    }
+                    word.word.soundFile != null -> {
+                        TestingUiState.WordWithAudio(word.word.name, word.word.soundFile!!)
+                    }
+                    else -> {
+                        TestingUiState.WordSimple(word.word.name)
+                    }
+                }
             }
         }
     }
 
-    fun onKnowClick() {
-        word.value?.let { wordNotNull ->
-            viewModelScope.launch {
-                moveLearningWordToNextLevelUseCase.moveLearningWordToNextLevel(wordNotNull.learningWord)
-            }
-        }
+    fun onVisitedDictionary() {
+        isDictionaryVisited = true
     }
 
-    fun onDoNotKnowClick() {
-        word.value?.let { wordNotNull ->
+    fun onRememberClick() {
+        wordFull?.learningWord?.let { learningWord ->
             viewModelScope.launch {
-                moveLearningWordToPreviousLevelUseCase.moveLearningWordToPreviousLevel(wordNotNull.learningWord)
+                if (isDictionaryVisited) {
+                    moveLearningWordToPreviousLevelUseCase.moveLearningWordToPreviousLevel(learningWord)
+                } else {
+                    moveLearningWordToNextLevelUseCase.moveLearningWordToNextLevel(learningWord)
+                }
             }
         }
     }

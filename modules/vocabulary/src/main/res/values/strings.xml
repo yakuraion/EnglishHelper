@@ -15,4 +15,5 @@
     <string name="vocabulary_testing_screen_simple_yes">I remember</string>
     <string name="vocabulary_testing_screen_answer_placeholder">Your answer…</string>
     <string name="vocabulary_testing_screen_help_button">Go to the dictionary</string>
+    <string name="vocabulary_testing_screen_wrong_answer_error">Wrong answer!</string>
 </resources>
