@@ -34,6 +34,8 @@ compose-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "co
 compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 compose-junit = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
 
+accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version = "0.25.1"}
+
 navigation-fragment = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
 navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }

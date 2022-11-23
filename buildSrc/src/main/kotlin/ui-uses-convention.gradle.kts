@@ -28,6 +28,8 @@ dependencies {
     add("debugImplementation", versionCatalog.findLibrary("compose-tooling").get())
     add("androidTestImplementation", versionCatalog.findLibrary("compose-junit").get())
 
+    add("implementation", versionCatalog.findLibrary("accompanist-systemuicontroller").get())
+
     add("implementation", versionCatalog.findLibrary("navigation-fragment").get())
     add("implementation", versionCatalog.findLibrary("navigation-ui").get())
     add("implementation", versionCatalog.findLibrary("navigation-compose").get())
