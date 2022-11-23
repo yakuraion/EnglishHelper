@@ -11,6 +11,8 @@
     <string name="vocabulary_add_words_screen_already_exists_words_error">The word \"%s\" is already added</string>
 
     <string name="vocabulary_testing_screen_title">Testing</string>
+    <string name="vocabulary_testing_screen_no_more_words_title">You have checked all words today</string>
+    <string name="vocabulary_testing_screen_no_more_words_button">Return</string>
     <string name="vocabulary_testing_screen_simple_question">Do you remember this word?</string>
     <string name="vocabulary_testing_screen_simple_tip">If you do not, then go to the dictionary</string>
     <string name="vocabulary_testing_screen_simple_yes">I remember</string>

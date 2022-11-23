@@ -3,18 +3,23 @@ package pro.yakuraion.englishhelper.vocabulary.ui.testing
 import android.content.res.Configuration
 import android.net.Uri
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.HelpOutline
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
@@ -82,10 +88,27 @@ private fun TestingScreen(
                     )
                 }
                 is TestingUiState.NoWords -> {
-                    Text(
-                        text = "No words",
-                        modifier = Modifier.align(Alignment.Center)
-                    )
+                    Column(modifier = Modifier.align(Alignment.Center)) {
+                        Text(
+                            text = stringResource(id = R.string.vocabulary_testing_screen_no_more_words_title),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp),
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                        Spacer(modifier = Modifier.height(24.dp))
+                        Button(
+                            onClick = onBackClick,
+                            modifier = Modifier.align(Alignment.CenterHorizontally)
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.vocabulary_testing_screen_no_more_words_button),
+                                fontWeight = FontWeight.Medium,
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                        }
+                    }
                 }
                 is TestingUiState.WordSimple -> {
                     TestingLayout(
@@ -142,6 +165,20 @@ private fun TestingLayout(
             )
         }
         content()
+    }
+}
+
+@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun TestingScreenNoMoreWordsPreview() {
+    AppTheme {
+        TestingScreen(
+            uiState = TestingUiState.NoWords,
+            onBackClick = {},
+            onVisitedDictionary = {},
+            onRememberClick = {}
+        )
     }
 }
 
