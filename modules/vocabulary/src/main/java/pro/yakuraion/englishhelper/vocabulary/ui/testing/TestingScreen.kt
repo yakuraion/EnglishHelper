@@ -31,7 +31,7 @@ fun TestingScreen() {
 }
 
 @Composable
-fun TestingLayout(content: @Composable () -> Unit) {
+private fun TestingLayout(content: @Composable () -> Unit) {
     Scaffold { paddingValues ->
         Box(
             modifier = Modifier
@@ -59,7 +59,7 @@ fun TestingLayout(content: @Composable () -> Unit) {
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun TestingScreenWithAudioPreview() {
+private fun TestingScreenWithAudioPreview() {
     AppTheme {
         TestingLayout {
             TestingWordWithAudio()
@@ -70,7 +70,7 @@ fun TestingScreenWithAudioPreview() {
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun TestingScreenSimplePreview() {
+private fun TestingScreenSimplePreview() {
     AppTheme {
         TestingLayout {
             TestingWordSimple()

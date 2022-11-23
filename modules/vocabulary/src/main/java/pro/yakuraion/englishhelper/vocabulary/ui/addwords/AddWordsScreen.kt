@@ -43,7 +43,7 @@ fun AddWordsScreen(
 }
 
 @Composable
-fun AddWordsScreen(
+private fun AddWordsScreen(
     word: String,
     isWordAlreadyExistError: AddWordsViewModel.IsWordAlreadyExistError?,
     isLoading: Boolean,
