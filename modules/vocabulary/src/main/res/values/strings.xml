@@ -2,6 +2,7 @@
 <resources>
     <string name="vocabulary_overview_screen_title">Vocabulary</string>
     <string name="vocabulary_overview_screen_testing_title">The number of words to check today:</string>
+    <string name="vocabulary_overview_screen_empty_testing_title">You don\'t have any words to check today</string>
     <string name="vocabulary_overview_screen_testing_button">Go testing</string>
     <string name="vocabulary_overview_screen_add_words">Add words</string>
 

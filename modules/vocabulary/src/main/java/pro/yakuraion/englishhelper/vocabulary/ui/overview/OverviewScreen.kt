@@ -81,11 +81,17 @@ private fun OverviewScreen(
                     )
                 }
                 is OverviewUiState.Content -> {
-                    TestingBlock(
-                        wordsNumber = uiState.numberOfWordsToLearnToday,
-                        onStartTestingClick = onStartTestingClick,
-                        modifier = Modifier.padding(16.dp)
-                    )
+                    if (uiState.numberOfWordsToLearnToday > 0) {
+                        TestingBlock(
+                            wordsNumber = uiState.numberOfWordsToLearnToday,
+                            onStartTestingClick = onStartTestingClick,
+                            modifier = Modifier.padding(16.dp)
+                        )
+                    } else {
+                        EmptyTestingBlock(
+                            modifier = Modifier.padding(16.dp)
+                        )
+                    }
                 }
             }
         }
@@ -158,6 +164,19 @@ private fun TestingBlock(
     }
 }
 
+@Composable
+private fun EmptyTestingBlock(
+    modifier: Modifier = Modifier
+) {
+    Block(modifier = modifier) {
+        Text(
+            text = stringResource(id = R.string.vocabulary_overview_screen_empty_testing_title),
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.titleMedium)
+    }
+}
+
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
@@ -165,6 +184,19 @@ private fun OverviewScreenPreview() {
     AppTheme {
         OverviewScreen(
             uiState = OverviewUiState.Content(numberOfWordsToLearnToday = 10),
+            onAddWordsClick = {},
+            onStartTestingClick = {}
+        )
+    }
+}
+
+@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun OverviewScreenEmptyWordsPreview() {
+    AppTheme {
+        OverviewScreen(
+            uiState = OverviewUiState.Content(numberOfWordsToLearnToday = 0),
             onAddWordsClick = {},
             onStartTestingClick = {}
         )
