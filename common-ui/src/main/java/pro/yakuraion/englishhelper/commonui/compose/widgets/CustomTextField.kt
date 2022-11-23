@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -57,13 +58,24 @@ fun CustomTextField(
     isLoading: Boolean = false
 ) {
     Column(modifier = modifier) {
-        Box(modifier = Modifier.height(IntrinsicSize.Min)) {
+        val shape = MaterialTheme.shapes.small
+        Box(
+            modifier = Modifier
+                .height(IntrinsicSize.Min)
+                .applyIf(isError) {
+                    border(
+                        width = 2.dp,
+                        color = MaterialTheme.colorScheme.error,
+                        shape = shape
+                    )
+                }
+        ) {
             InnerTextField(
                 value = value,
                 onValueChange = onValueChange,
+                shape = shape,
                 placeholder = placeholder,
                 maxLines = maxLines,
-                isError = isError,
                 actionIcon = actionIcon
             )
             if (isLoading) {
@@ -88,25 +100,16 @@ fun CustomTextField(
 private fun InnerTextField(
     value: String,
     onValueChange: (String) -> Unit,
+    shape: Shape,
     modifier: Modifier = Modifier,
     placeholder: String? = null,
     maxLines: Int = Int.MAX_VALUE,
-    isError: Boolean = false,
     actionIcon: ImageVector? = null
 ) {
-    val shape = MaterialTheme.shapes.small
     TextField(
         value = value,
         onValueChange = onValueChange,
-        modifier = modifier
-            .fillMaxWidth()
-            .applyIf(isError) {
-                border(
-                    width = 2.dp,
-                    color = MaterialTheme.colorScheme.error,
-                    shape = shape
-                )
-            },
+        modifier = modifier.fillMaxWidth(),
         placeholder = placeholder?.let { { Text(text = placeholder) } },
         trailingIcon = actionIcon?.let {
             {
@@ -134,7 +137,9 @@ private fun ActionLoading(
 ) {
     ActionContainer(modifier = modifier) {
         CircularProgressIndicator(
-            modifier = Modifier.size(24.dp).align(Alignment.Center),
+            modifier = Modifier
+                .size(24.dp)
+                .align(Alignment.Center),
             color = MaterialTheme.colorScheme.onPrimary
         )
     }
@@ -257,6 +262,23 @@ private fun CustomTextFieldWithErrorPreview() {
             value = "",
             onValueChange = { },
             modifier = Modifier.padding(16.dp),
+            isError = true,
+            errorMessage = "Something wrong happened",
+        )
+    }
+}
+
+@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun CustomTextFieldActionWithErrorPreview() {
+    AppTheme {
+        CustomTextField(
+            value = "",
+            onValueChange = { },
+            modifier = Modifier.padding(16.dp),
+            actionEnabled = true,
+            actionIcon = Icons.Default.Done,
             isError = true,
             errorMessage = "Something wrong happened",
         )
