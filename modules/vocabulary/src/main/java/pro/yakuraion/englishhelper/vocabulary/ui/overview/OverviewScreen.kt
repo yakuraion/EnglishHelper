@@ -5,12 +5,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -36,26 +39,52 @@ fun OverviewScreen(
     onAddWordsClick: () -> Unit,
     onStartTestingClick: () -> Unit
 ) {
-    when (val uiState = viewModel.uiState) {
-        OverviewUiState.Loading -> {
-            Text(text = "Loading")
-        }
-        is OverviewUiState.Content -> {
-            Scaffold(
-                floatingActionButton = { AddWordsButton(onAddWordsClick = onAddWordsClick) },
-                floatingActionButtonPosition = FabPosition.Center
-            ) { paddingValues ->
-                Column(
-                    modifier = Modifier.padding(
-                        start = 16.dp,
-                        top = 16.dp,
-                        end = 16.dp,
-                        bottom = paddingValues.calculateBottomPadding()
+    OverviewScreen(
+        uiState = viewModel.uiState,
+        onAddWordsClick = onAddWordsClick,
+        onStartTestingClick = onStartTestingClick
+    )
+}
+
+@Composable
+private fun OverviewScreen(
+    uiState: OverviewUiState,
+    onAddWordsClick: () -> Unit,
+    onStartTestingClick: () -> Unit
+) {
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = {
+                    Text(text = stringResource(id = R.string.vocabulary_overview_screen_title))
+                },
+            )
+        },
+        floatingActionButton = {
+            if (uiState is OverviewUiState.Content) {
+                AddWordsButton(
+                    onAddWordsClick = onAddWordsClick
+                )
+            }
+        },
+        floatingActionButtonPosition = FabPosition.Center
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            when (uiState) {
+                OverviewUiState.Loading -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center)
                     )
-                ) {
+                }
+                is OverviewUiState.Content -> {
                     TestingBlock(
                         wordsNumber = uiState.numberOfWordsToLearnToday,
-                        onStartTestingClick = onStartTestingClick
+                        onStartTestingClick = onStartTestingClick,
+                        modifier = Modifier.padding(16.dp)
                     )
                 }
             }
@@ -94,8 +123,12 @@ private fun Block(
 }
 
 @Composable
-private fun TestingBlock(wordsNumber: Int, onStartTestingClick: () -> Unit) {
-    Block {
+private fun TestingBlock(
+    wordsNumber: Int,
+    onStartTestingClick: () -> Unit,
+    modifier: Modifier
+) {
+    Block(modifier = modifier) {
         Column(modifier = Modifier.fillMaxWidth()) {
             Text(
                 text = stringResource(id = R.string.vocabulary_overview_screen_testing_title),
@@ -130,6 +163,23 @@ private fun TestingBlock(wordsNumber: Int, onStartTestingClick: () -> Unit) {
 @Composable
 private fun OverviewScreenPreview() {
     AppTheme {
-        OverviewScreen(onAddWordsClick = {}, onStartTestingClick = {})
+        OverviewScreen(
+            uiState = OverviewUiState.Content(numberOfWordsToLearnToday = 10),
+            onAddWordsClick = {},
+            onStartTestingClick = {}
+        )
+    }
+}
+
+@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun OverviewScreenProgressPreview() {
+    AppTheme {
+        OverviewScreen(
+            uiState = OverviewUiState.Loading,
+            onAddWordsClick = {},
+            onStartTestingClick = {}
+        )
     }
 }
