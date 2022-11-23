@@ -95,6 +95,9 @@ fun TestingWordWithAudio(
                 modifier = Modifier.fillMaxSize()
             )
         }
+        LaunchedEffect(state.word) {
+            playSound(context, state.soundFile)
+        }
         val errorMessage = if (state.isWrongAnswerError) {
             stringResource(id = R.string.vocabulary_testing_screen_wrong_answer_error)
         } else {
