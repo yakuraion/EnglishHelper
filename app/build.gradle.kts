@@ -13,8 +13,8 @@ android {
 
     defaultConfig {
         applicationId = "pro.yakuraion.englishhelper"
-        versionCode = 1
-        versionName = "0.1.0"
+        versionCode = 2
+        versionName = "0.2.0"
     }
 
     val releaseKeystorePropertiesFile = file(
