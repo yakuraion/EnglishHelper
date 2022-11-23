@@ -4,15 +4,17 @@ import android.content.Context
 import android.content.res.Configuration
 import android.media.MediaPlayer
 import android.net.Uri
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.VolumeUp
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -78,17 +80,21 @@ fun TestingWordWithAudio(
     onRememberClick: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
-        val content = LocalContext.current
-        Icon(
-            imageVector = Icons.Filled.VolumeUp,
-            contentDescription = null,
+        val context = LocalContext.current
+        Button(
+            onClick = { playSound(context, state.soundFile) },
             modifier = Modifier
                 .size(100.dp)
-                .align(Alignment.Center)
-                .clickable {
-                    playSound(content, state.soundFile)
-                }
-        )
+                .align(Alignment.Center),
+            shape = CircleShape,
+            contentPadding = PaddingValues(16.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Filled.VolumeUp,
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
         val errorMessage = if (state.isWrongAnswerError) {
             stringResource(id = R.string.vocabulary_testing_screen_wrong_answer_error)
         } else {
