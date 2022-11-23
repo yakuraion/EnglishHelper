@@ -1,7 +1,7 @@
 package pro.yakuraion.englishhelper.vocabulary.ui.testing
 
 import android.content.res.Configuration
-import androidx.compose.foundation.border
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,12 +42,12 @@ fun TestingWordSimple(
                 text = word,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .border(
-                        width = 2.dp,
-                        color = LocalContentColor.current,
-                        shape = MaterialTheme.shapes.extraLarge
+                    .background(
+                        color = MaterialTheme.colorScheme.primaryContainer,
+                        shape = MaterialTheme.shapes.large
                     )
-                    .padding(horizontal = 24.dp, vertical = 4.dp),
+                    .padding(horizontal = 24.dp, vertical = 8.dp),
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
                 fontWeight = FontWeight.Medium,
                 style = MaterialTheme.typography.headlineLarge
             )
