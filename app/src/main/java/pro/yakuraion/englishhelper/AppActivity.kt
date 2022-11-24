@@ -1,6 +1,5 @@
 package pro.yakuraion.englishhelper
 
-import android.annotation.SuppressLint
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -26,33 +25,34 @@ class AppActivity : ComponentActivity() {
             val useCasesProvider = (application as UseCasesProviderHolder).getUseCasesProvider()
             CompositionLocalProvider(LocalUseCasesProvider provides useCasesProvider) {
                 AppTheme {
-                    setUpStatusBarColor()
-                    setUpActivityBackground()
+                    SetUpStatusBarColorEffect()
+                    SetUpActivityBackgroundEffect()
                     VocabularyScreen()
                 }
             }
         }
     }
 
-    @SuppressLint("ComposableNaming")
     @Composable
-    private fun setUpStatusBarColor() {
+    private fun SetUpStatusBarColorEffect() {
         val systemUiController = rememberSystemUiController()
         val useDarkIcons = !isSystemInDarkTheme()
         val backgroundColor = MaterialTheme.colorScheme.background
+
         DisposableEffect(systemUiController, useDarkIcons) {
             systemUiController.setSystemBarsColor(
                 color = backgroundColor,
                 darkIcons = useDarkIcons
             )
+
             onDispose {}
         }
     }
 
-    @SuppressLint("ComposableNaming")
     @Composable
-    private fun setUpActivityBackground() {
+    private fun SetUpActivityBackgroundEffect() {
         val backgroundDrawable = ColorDrawable(MaterialTheme.colorScheme.background.toArgb())
+
         LaunchedEffect(Unit) {
             window.setBackgroundDrawable(backgroundDrawable)
         }
