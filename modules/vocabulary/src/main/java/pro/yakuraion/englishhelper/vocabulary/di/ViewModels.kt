@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalSavedStateRegistryOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import pro.yakuraion.englishhelper.commonui.di.LocalUseCasesProvider
+import pro.yakuraion.englishhelper.commonui.compose.compositionlocal.LocalUseCasesProvider
 
 @Composable
 inline fun <reified VM : ViewModel> daggerViewModel(
