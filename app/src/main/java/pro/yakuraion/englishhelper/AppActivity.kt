@@ -8,7 +8,6 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.toArgb
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -39,22 +38,21 @@ class AppActivity : ComponentActivity() {
         val useDarkIcons = !isSystemInDarkTheme()
         val backgroundColor = MaterialTheme.colorScheme.background
 
-        DisposableEffect(systemUiController, useDarkIcons) {
+        LaunchedEffect(systemUiController, useDarkIcons, backgroundColor) {
             systemUiController.setSystemBarsColor(
                 color = backgroundColor,
                 darkIcons = useDarkIcons
             )
-
-            onDispose {}
         }
     }
 
     @Composable
     private fun SetUpActivityBackgroundEffect() {
-        val backgroundDrawable = ColorDrawable(MaterialTheme.colorScheme.background.toArgb())
+        val backgroundColor = MaterialTheme.colorScheme.background
 
-        LaunchedEffect(Unit) {
-            window.setBackgroundDrawable(backgroundDrawable)
+        LaunchedEffect(backgroundColor) {
+            val drawable = ColorDrawable(backgroundColor.toArgb())
+            window.setBackgroundDrawable(drawable)
         }
     }
 }
