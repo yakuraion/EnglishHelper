@@ -2,9 +2,14 @@ package pro.yakuraion.englishhelper.commonui.compose.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 
 private val LightColors = lightColorScheme(
     primary = md_theme_light_primary,
@@ -66,6 +71,16 @@ private val DarkColors = darkColorScheme(
     surfaceTint = md_theme_dark_surfaceTint,
 )
 
+private val Typography = Typography(
+    titleLarge = TextStyle(
+        fontFamily = FontFamily.SansSerif,
+        fontWeight = FontWeight.Medium,
+        fontSize = 20.sp,
+        lineHeight = 26.sp,
+        letterSpacing = 0.2.sp
+    )
+)
+
 @Composable
 fun AppTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
@@ -79,6 +94,7 @@ fun AppTheme(
 
     MaterialTheme(
         colorScheme = colors,
+        typography = Typography,
         content = content
     )
 }
