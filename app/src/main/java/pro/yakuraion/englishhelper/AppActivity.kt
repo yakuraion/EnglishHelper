@@ -13,7 +13,6 @@ import androidx.compose.ui.graphics.toArgb
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 import pro.yakuraion.englishhelper.commonui.di.LocalUseCasesProvider
-import pro.yakuraion.englishhelper.domain.di.UseCasesProviderHolder
 import pro.yakuraion.englishhelper.vocabulary.ui.VocabularyScreen
 
 class AppActivity : ComponentActivity() {
@@ -21,7 +20,7 @@ class AppActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val useCasesProvider = (application as UseCasesProviderHolder).getUseCasesProvider()
+            val useCasesProvider = (application as App).appComponent
             CompositionLocalProvider(LocalUseCasesProvider provides useCasesProvider) {
                 AppTheme {
                     SetUpStatusBarColorEffect()
