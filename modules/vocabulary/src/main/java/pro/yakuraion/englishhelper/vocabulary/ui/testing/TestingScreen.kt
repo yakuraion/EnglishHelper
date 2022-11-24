@@ -32,7 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
-import pro.yakuraion.englishhelper.commonui.compose.widgets.PrimaryOutlineButton
+import pro.yakuraion.englishhelper.commonui.compose.widgets.buttons.OutlinedButton
 import pro.yakuraion.englishhelper.commonui.openLink
 import pro.yakuraion.englishhelper.vocabulary.R
 import pro.yakuraion.englishhelper.vocabulary.di.daggerViewModel
@@ -148,7 +148,7 @@ private fun TestingLayout(
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         val context = LocalContext.current
-        PrimaryOutlineButton(
+        OutlinedButton(
             onClick = {
                 context.openLink(getWordLink(word))
                 onVisitedDictionary()
