@@ -2,6 +2,10 @@ package utils
 
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
+fun KotlinJvmOptions.optIn(annotation: String) {
+    freeCompilerArgs = freeCompilerArgs + "-opt-in=$annotation"
+}
+
 fun KotlinJvmOptions.enableComposeCompilerReports(destination: String) {
     freeCompilerArgs = freeCompilerArgs + listOf(
         "-P",
