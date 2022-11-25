@@ -32,6 +32,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 import pro.yakuraion.englishhelper.commonui.compose.widgets.CustomTextField
+import pro.yakuraion.englishhelper.commonui.compose.widgets.CustomTextFieldActionIcon
+import pro.yakuraion.englishhelper.commonui.compose.widgets.CustomTextFieldError
 import pro.yakuraion.englishhelper.vocabulary.R
 import java.io.File
 
@@ -98,7 +100,7 @@ fun TestingWordWithAudio(
         LaunchedEffect(state.word) {
             playSound(context, state.soundFile)
         }
-        val errorMessage = if (state.isWrongAnswerError) {
+        val errorText = if (state.isWrongAnswerError) {
             stringResource(id = R.string.vocabulary_testing_screen_wrong_answer_error)
         } else {
             ""
@@ -108,17 +110,20 @@ fun TestingWordWithAudio(
             value = state.answer,
             onValueChange = { state.onAnswerChanged(it) },
             modifier = Modifier
-                .fillMaxWidth()
                 .align(Alignment.BottomCenter)
                 .padding(16.dp)
                 .focusRequester(focusRequester),
-            placeholder = stringResource(id = R.string.vocabulary_testing_screen_answer_placeholder),
             maxLines = 1,
-            actionEnabled = state.actionEnabled,
-            actionIcon = Icons.Default.Done,
-            onActionClick = { state.onDoneClick(onRememberClick) },
-            isError = state.isWrongAnswerError,
-            errorMessage = errorMessage
+            placeholderText = stringResource(id = R.string.vocabulary_testing_screen_answer_placeholder),
+            actionIcon = CustomTextFieldActionIcon(
+                icon = Icons.Default.Done,
+                onClick = { state.onDoneClick(onRememberClick) },
+                isEnabled = state.actionEnabled
+            ),
+            error = CustomTextFieldError(
+                isError = state.isWrongAnswerError,
+                text = errorText
+            )
         )
         LaunchedEffect(Unit) {
             focusRequester.requestFocus()

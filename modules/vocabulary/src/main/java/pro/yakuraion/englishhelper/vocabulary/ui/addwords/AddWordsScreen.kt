@@ -27,6 +27,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 import pro.yakuraion.englishhelper.commonui.compose.widgets.CustomTextField
+import pro.yakuraion.englishhelper.commonui.compose.widgets.CustomTextFieldActionIcon
+import pro.yakuraion.englishhelper.commonui.compose.widgets.CustomTextFieldError
 import pro.yakuraion.englishhelper.vocabulary.R
 import pro.yakuraion.englishhelper.vocabulary.di.daggerViewModel
 
@@ -83,17 +85,20 @@ private fun AddWordsScreen(
                     value = word,
                     onValueChange = onWordChanged,
                     modifier = Modifier
-                        .fillMaxWidth()
                         .padding(horizontal = 16.dp)
                         .focusRequester(focusRequester),
-                    placeholder = stringResource(id = R.string.vocabulary_add_words_screen_type_word),
                     maxLines = 1,
-                    actionEnabled = word.length > 2,
-                    actionIcon = Icons.Default.Add,
-                    onActionClick = onAddWordsClick,
-                    isError = isWordAlreadyExistError != null,
-                    errorMessage = isWordAlreadyExistError?.let { formatIsWordAlreadyExistErrorMessage(it) }.orEmpty(),
-                    isLoading = isLoading
+                    placeholderText = stringResource(id = R.string.vocabulary_add_words_screen_type_word),
+                    actionIcon = CustomTextFieldActionIcon(
+                        icon = Icons.Default.Add,
+                        onClick = onAddWordsClick,
+                        isEnabled = word.length > 2,
+                        isLoading = isLoading
+                    ),
+                    error = CustomTextFieldError(
+                        isError = isWordAlreadyExistError != null,
+                        text = formatIsWordAlreadyExistErrorMessage(isWordAlreadyExistError)
+                    )
                 )
                 LaunchedEffect(Unit) {
                     focusRequester.requestFocus()
@@ -104,8 +109,10 @@ private fun AddWordsScreen(
 }
 
 @Composable
-private fun formatIsWordAlreadyExistErrorMessage(error: AddWordsViewModel.IsWordAlreadyExistError): String {
-    return stringResource(R.string.vocabulary_add_words_screen_already_exists_words_error, error.word)
+private fun formatIsWordAlreadyExistErrorMessage(error: AddWordsViewModel.IsWordAlreadyExistError?): String {
+    return error
+        ?.let { stringResource(R.string.vocabulary_add_words_screen_already_exists_words_error, error.word) }
+        .orEmpty()
 }
 
 @Preview
