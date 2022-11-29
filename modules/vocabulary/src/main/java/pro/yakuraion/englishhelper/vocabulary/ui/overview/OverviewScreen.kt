@@ -103,8 +103,7 @@ private fun AddWordsButton(onAddWordsClick: () -> Unit) {
     TertiaryIconTextButton(
         icon = Icons.Filled.Add,
         text = stringResource(R.string.vocabulary_overview_screen_add_words),
-        onClick = onAddWordsClick,
-        modifier = Modifier.height(48.dp)
+        onClick = onAddWordsClick
     )
 }
 
@@ -173,7 +172,8 @@ private fun EmptyTestingBlock(
             text = stringResource(id = R.string.vocabulary_overview_screen_empty_testing_title),
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.titleMedium)
+            style = MaterialTheme.typography.titleMedium
+        )
     }
 }
 
