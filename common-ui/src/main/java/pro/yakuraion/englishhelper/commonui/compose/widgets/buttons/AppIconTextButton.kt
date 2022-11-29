@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 
 @Composable
-fun IconTextButton(
+fun AppIconTextButton(
     icon: ImageVector,
     text: String,
     onClick: () -> Unit,
@@ -47,13 +47,13 @@ fun IconTextButton(
 }
 
 @Composable
-fun TertiaryIconTextButton(
+fun AppTertiaryIconTextButton(
     icon: ImageVector,
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    IconTextButton(
+    AppIconTextButton(
         icon = icon,
         text = text,
         onClick = onClick,
@@ -66,9 +66,9 @@ fun TertiaryIconTextButton(
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun TertiaryIconTextButtonPreview() {
+private fun AppTertiaryIconTextButtonPreview() {
     AppTheme {
-        TertiaryIconTextButton(
+        AppTertiaryIconTextButton(
             icon = Icons.Filled.Done,
             text = "Done",
             onClick = {}

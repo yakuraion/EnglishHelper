@@ -9,16 +9,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.HelpOutline
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -27,17 +22,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
-import pro.yakuraion.englishhelper.commonui.compose.widgets.buttons.OutlinedButton
+import pro.yakuraion.englishhelper.commonui.compose.widgets.buttons.AppArrowBackButton
+import pro.yakuraion.englishhelper.commonui.compose.widgets.buttons.AppButtonWithText
+import pro.yakuraion.englishhelper.commonui.compose.widgets.buttons.AppOutlinedButton
 import pro.yakuraion.englishhelper.commonui.openLink
 import pro.yakuraion.englishhelper.vocabulary.R
 import pro.yakuraion.englishhelper.vocabulary.di.viewmodel.daggerViewModel
 import java.io.File
-import java.net.URLEncoder
 
 @Composable
 fun TestingScreen(
@@ -61,19 +56,7 @@ private fun TestingScreen(
 ) {
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(text = stringResource(id = R.string.vocabulary_testing_screen_title))
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = null
-                        )
-                    }
-                }
-            )
+            TopBar(onBackClick = onBackClick)
         }
     ) { paddingValues ->
         Box(
@@ -81,59 +64,35 @@ private fun TestingScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
+            val alignModifier = Modifier.align(Alignment.Center)
             when (uiState) {
                 is TestingUiState.Loading -> {
-                    CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center)
+                    Loading(modifier = alignModifier)
+                }
+                is TestingUiState.NoMoreWords -> {
+                    NoMoreWords(
+                        onBackClick = onBackClick,
+                        modifier = alignModifier
                     )
                 }
-                is TestingUiState.NoWords -> {
-                    Column(modifier = Modifier.align(Alignment.Center)) {
-                        Text(
-                            text = stringResource(id = R.string.vocabulary_testing_screen_no_more_words_title),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp),
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.titleLarge
-                        )
-                        Spacer(modifier = Modifier.height(24.dp))
-                        Button(
-                            onClick = onBackClick,
-                            modifier = Modifier.align(Alignment.CenterHorizontally)
-                        ) {
-                            Text(
-                                text = stringResource(id = R.string.vocabulary_testing_screen_no_more_words_button),
-                                fontWeight = FontWeight.Medium,
-                                style = MaterialTheme.typography.titleMedium
-                            )
-                        }
-                    }
-                }
                 is TestingUiState.WordSimple -> {
-                    TestingLayout(
+                    WordSimple(
                         word = uiState.word,
-                        onVisitedDictionary = onVisitedDictionary
-                    ) {
-                        TestingWordSimple(
-                            word = uiState.word,
-                            onRememberClick = onRememberClick
-                        )
-                    }
+                        dictionaryLink = uiState.link,
+                        onVisitedDictionary = onVisitedDictionary,
+                        onRememberClick = onRememberClick,
+                        modifier = alignModifier
+                    )
                 }
                 is TestingUiState.WordWithAudio -> {
-                    TestingLayout(
+                    WordWithAudio(
                         word = uiState.word,
-                        onVisitedDictionary = onVisitedDictionary
-                    ) {
-                        TestingWordWithAudio(
-                            state = rememberTestingWordWithAudioState(
-                                word = uiState.word,
-                                soundFile = uiState.soundFile
-                            ),
-                            onRememberClick = onRememberClick
-                        )
-                    }
+                        soundFile = uiState.soundFile,
+                        dictionaryLink = uiState.link,
+                        onVisitedDictionary = onVisitedDictionary,
+                        onRememberClick = onRememberClick,
+                        modifier = alignModifier
+                    )
                 }
             }
         }
@@ -141,44 +100,114 @@ private fun TestingScreen(
 }
 
 @Composable
-private fun TestingLayout(
+private fun TopBar(onBackClick: () -> Unit) {
+    CenterAlignedTopAppBar(
+        title = {
+            Text(text = stringResource(id = R.string.vocabulary_testing_screen_title))
+        },
+        navigationIcon = {
+            AppArrowBackButton(onBackClick = onBackClick)
+        }
+    )
+}
+
+@Composable
+private fun Loading(modifier: Modifier = Modifier) {
+    CircularProgressIndicator(
+        modifier = modifier
+    )
+}
+
+@Composable
+private fun NoMoreWords(
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
+        Text(
+            text = stringResource(id = R.string.vocabulary_testing_screen_no_more_words_title),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.titleLarge
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+        AppButtonWithText(
+            text = stringResource(id = R.string.vocabulary_testing_screen_no_more_words_button),
+            onClick = onBackClick,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
+    }
+}
+
+@Composable
+private fun WordSimple(
     word: String,
+    dictionaryLink: Uri,
     onVisitedDictionary: () -> Unit,
+    onRememberClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    TestingLayout(
+        dictionaryLink = dictionaryLink,
+        onVisitedDictionary = onVisitedDictionary,
+        modifier = modifier
+    ) {
+        TestingWordSimple(
+            word = word,
+            onRememberClick = onRememberClick
+        )
+    }
+}
+
+@Composable
+private fun WordWithAudio(
+    word: String,
+    soundFile: File,
+    dictionaryLink: Uri,
+    onVisitedDictionary: () -> Unit,
+    onRememberClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    TestingLayout(
+        dictionaryLink = dictionaryLink,
+        onVisitedDictionary = onVisitedDictionary,
+        modifier = modifier
+    ) {
+        TestingWordWithAudio(
+            state = rememberTestingWordWithAudioState(
+                word = word,
+                soundFile = soundFile
+            ),
+            onRememberClick = onRememberClick
+        )
+    }
+}
+
+@Composable
+private fun TestingLayout(
+    dictionaryLink: Uri,
+    onVisitedDictionary: () -> Unit,
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = modifier.fillMaxSize()) {
         val context = LocalContext.current
-        OutlinedButton(
+        AppOutlinedButton(
+            text = stringResource(id = R.string.vocabulary_testing_screen_help_button),
             onClick = {
-                context.openLink(getWordLink(word))
+                context.openLink(dictionaryLink)
                 onVisitedDictionary()
             },
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .padding(top = 16.dp, end = 16.dp)
-        ) {
-            Icon(imageVector = Icons.Filled.HelpOutline, contentDescription = null)
-            Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
-            Text(
-                text = stringResource(id = R.string.vocabulary_testing_screen_help_button),
-                fontWeight = FontWeight.Bold
-            )
-        }
-        content()
-    }
-}
-
-@Preview
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-private fun TestingScreenNoMoreWordsPreview() {
-    AppTheme {
-        TestingScreen(
-            uiState = TestingUiState.NoWords,
-            onBackClick = {},
-            onVisitedDictionary = {},
-            onRememberClick = {}
+                .padding(top = 16.dp, end = 16.dp),
+            leadingIcon = {
+                Icon(imageVector = Icons.Filled.HelpOutline, contentDescription = null)
+            }
         )
+        content()
     }
 }
 
@@ -188,17 +217,15 @@ private fun TestingScreenNoMoreWordsPreview() {
 private fun TestingScreenSimplePreview() {
     AppTheme {
         TestingScreen(
-            uiState = TestingUiState.WordSimple("word"),
+            uiState = TestingUiState.WordSimple(
+                word = "word",
+                link = Uri.EMPTY
+            ),
             onBackClick = {},
             onVisitedDictionary = {},
             onRememberClick = {}
         )
     }
-}
-
-private fun getWordLink(word: String): Uri {
-    val encodedWord = URLEncoder.encode(word, "utf-8")
-    return Uri.parse("https://wooordhunt.ru/word/$encodedWord")
 }
 
 @Preview
@@ -209,8 +236,37 @@ private fun TestingScreenWithAudioPreview() {
         TestingScreen(
             uiState = TestingUiState.WordWithAudio(
                 word = "word",
-                soundFile = File("")
+                soundFile = File(""),
+                link = Uri.EMPTY
             ),
+            onBackClick = {},
+            onVisitedDictionary = {},
+            onRememberClick = {}
+        )
+    }
+}
+
+@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun TestingScreenNoMoreWordsPreview() {
+    AppTheme {
+        TestingScreen(
+            uiState = TestingUiState.NoMoreWords,
+            onBackClick = {},
+            onVisitedDictionary = {},
+            onRememberClick = {}
+        )
+    }
+}
+
+@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun TestingScreenLoadingPreview() {
+    AppTheme {
+        TestingScreen(
+            uiState = TestingUiState.Loading,
             onBackClick = {},
             onVisitedDictionary = {},
             onRememberClick = {}

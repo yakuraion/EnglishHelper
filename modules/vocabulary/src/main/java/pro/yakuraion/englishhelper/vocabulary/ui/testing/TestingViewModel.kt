@@ -37,13 +37,20 @@ class TestingViewModel @AssistedInject constructor(
                 isDictionaryVisited = false
                 uiState = when {
                     word == null -> {
-                        TestingUiState.NoWords
+                        TestingUiState.NoMoreWords
                     }
                     word.word.soundFile != null -> {
-                        TestingUiState.WordWithAudio(word.word.name, word.word.soundFile!!)
+                        TestingUiState.WordWithAudio(
+                            word = word.word.name,
+                            soundFile = word.word.soundFile!!,
+                            link = word.word.wooordhuntLink
+                        )
                     }
                     else -> {
-                        TestingUiState.WordSimple(word.word.name)
+                        TestingUiState.WordSimple(
+                            word = word.word.name,
+                            link = word.word.wooordhuntLink
+                        )
                     }
                 }
             }

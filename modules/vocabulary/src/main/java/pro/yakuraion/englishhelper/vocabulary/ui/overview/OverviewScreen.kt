@@ -29,7 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
-import pro.yakuraion.englishhelper.commonui.compose.widgets.buttons.TertiaryIconTextButton
+import pro.yakuraion.englishhelper.commonui.compose.widgets.buttons.AppTertiaryIconTextButton
 import pro.yakuraion.englishhelper.vocabulary.R
 import pro.yakuraion.englishhelper.vocabulary.di.viewmodel.daggerViewModel
 
@@ -100,7 +100,7 @@ private fun OverviewScreen(
 
 @Composable
 private fun AddWordsButton(onAddWordsClick: () -> Unit) {
-    TertiaryIconTextButton(
+    AppTertiaryIconTextButton(
         icon = Icons.Filled.Add,
         text = stringResource(R.string.vocabulary_overview_screen_add_words),
         onClick = onAddWordsClick

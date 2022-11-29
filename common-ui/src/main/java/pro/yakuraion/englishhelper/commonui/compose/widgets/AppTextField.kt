@@ -47,7 +47,7 @@ import pro.yakuraion.englishhelper.common.applyIf
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 
 @Composable
-fun CustomTextField(
+fun AppTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -250,12 +250,12 @@ object CustomTextFieldDefaults {
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun CustomTextFieldPreview() {
+private fun AppTextFieldPreview() {
     AppTheme {
         Box(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
             val context = LocalContext.current
             var value by remember { mutableStateOf("") }
-            CustomTextField(
+            AppTextField(
                 value = value,
                 onValueChange = { value = it },
                 modifier = Modifier.padding(16.dp),
@@ -274,9 +274,9 @@ private fun CustomTextFieldPreview() {
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun CustomTextFieldWithTextPreview() {
+private fun AppTextFieldWithTextPreview() {
     AppTheme {
-        CustomTextField(
+        AppTextField(
             value = "Some text",
             onValueChange = {},
             modifier = Modifier.padding(16.dp)
@@ -287,9 +287,9 @@ private fun CustomTextFieldWithTextPreview() {
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun CustomTextFieldWithErrorPreview() {
+private fun AppTextFieldWithErrorPreview() {
     AppTheme {
-        CustomTextField(
+        AppTextField(
             value = "",
             onValueChange = {},
             modifier = Modifier.padding(16.dp),
@@ -304,9 +304,9 @@ private fun CustomTextFieldWithErrorPreview() {
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun CustomTextFieldWithEmptyErrorPreview() {
+private fun AppTextFieldWithEmptyErrorPreview() {
     AppTheme {
-        CustomTextField(
+        AppTextField(
             value = "",
             onValueChange = { },
             modifier = Modifier.padding(16.dp),
@@ -321,9 +321,9 @@ private fun CustomTextFieldWithEmptyErrorPreview() {
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun CustomTextFieldLoadingIconPreview() {
+private fun AppTextFieldLoadingIconPreview() {
     AppTheme {
-        CustomTextField(
+        AppTextField(
             value = "",
             onValueChange = {},
             modifier = Modifier.padding(16.dp),
@@ -339,9 +339,9 @@ private fun CustomTextFieldLoadingIconPreview() {
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun CustomTextFieldDisabledIconPreview() {
+private fun AppTextFieldDisabledIconPreview() {
     AppTheme {
-        CustomTextField(
+        AppTextField(
             value = "",
             onValueChange = {},
             modifier = Modifier.padding(16.dp),
@@ -357,9 +357,9 @@ private fun CustomTextFieldDisabledIconPreview() {
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun CustomTextFieldIconWithErrorPreview() {
+private fun AppTextFieldIconWithErrorPreview() {
     AppTheme {
-        CustomTextField(
+        AppTextField(
             value = "",
             onValueChange = {},
             modifier = Modifier.padding(16.dp),
@@ -379,9 +379,9 @@ private fun CustomTextFieldIconWithErrorPreview() {
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun CustomTextFieldDisabledIconWithErrorPreview() {
+private fun AppTextFieldDisabledIconWithErrorPreview() {
     AppTheme {
-        CustomTextField(
+        AppTextField(
             value = "",
             onValueChange = {},
             modifier = Modifier.padding(16.dp),

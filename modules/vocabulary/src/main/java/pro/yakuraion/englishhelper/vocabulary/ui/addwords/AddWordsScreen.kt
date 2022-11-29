@@ -24,7 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
-import pro.yakuraion.englishhelper.commonui.compose.widgets.CustomTextField
+import pro.yakuraion.englishhelper.commonui.compose.widgets.AppTextField
 import pro.yakuraion.englishhelper.commonui.compose.widgets.CustomTextFieldActionIcon
 import pro.yakuraion.englishhelper.commonui.compose.widgets.CustomTextFieldError
 import pro.yakuraion.englishhelper.vocabulary.R
@@ -74,7 +74,7 @@ private fun AddWordsScreen(
         ) {
             Column(modifier = Modifier.align(Alignment.Center)) {
                 val focusRequester = remember { FocusRequester() }
-                CustomTextField(
+                AppTextField(
                     value = uiState.word,
                     onValueChange = onWordChanged,
                     modifier = Modifier
