@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 import pro.yakuraion.englishhelper.commonui.compose.widgets.buttons.TertiaryIconTextButton
 import pro.yakuraion.englishhelper.vocabulary.R
-import pro.yakuraion.englishhelper.vocabulary.di.daggerViewModel
+import pro.yakuraion.englishhelper.vocabulary.di.viewmodel.daggerViewModel
 
 @Composable
 fun OverviewScreen(

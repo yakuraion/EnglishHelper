@@ -35,7 +35,7 @@ import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 import pro.yakuraion.englishhelper.commonui.compose.widgets.buttons.OutlinedButton
 import pro.yakuraion.englishhelper.commonui.openLink
 import pro.yakuraion.englishhelper.vocabulary.R
-import pro.yakuraion.englishhelper.vocabulary.di.daggerViewModel
+import pro.yakuraion.englishhelper.vocabulary.di.viewmodel.daggerViewModel
 import java.io.File
 import java.net.URLEncoder
 
