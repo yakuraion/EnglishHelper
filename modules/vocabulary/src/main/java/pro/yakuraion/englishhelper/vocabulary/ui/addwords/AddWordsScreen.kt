@@ -1,6 +1,5 @@
 package pro.yakuraion.englishhelper.vocabulary.ui.addwords
 
-import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,15 +31,12 @@ import pro.yakuraion.englishhelper.vocabulary.R
 import pro.yakuraion.englishhelper.vocabulary.di.viewmodel.daggerViewModel
 
 @Composable
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 fun AddWordsScreen(
     viewModel: AddWordsViewModel = daggerViewModel(),
     onBackClick: () -> Unit
 ) {
     AddWordsScreen(
-        word = viewModel.word,
-        isWordAlreadyExistError = viewModel.isWordAlreadyExistError,
-        isLoading = viewModel.isLoading,
+        uiState = viewModel.uiState,
         onWordChanged = { viewModel.onWordChanged(it) },
         onAddWordsClick = { viewModel.onAddWordClick() },
         onBackClick = onBackClick
@@ -49,9 +45,7 @@ fun AddWordsScreen(
 
 @Composable
 private fun AddWordsScreen(
-    word: String,
-    isWordAlreadyExistError: AddWordsViewModel.IsWordAlreadyExistError?,
-    isLoading: Boolean,
+    uiState: AddWordsUiState,
     onWordChanged: (String) -> Unit,
     onAddWordsClick: () -> Unit,
     onBackClick: () -> Unit
@@ -81,7 +75,7 @@ private fun AddWordsScreen(
             Column(modifier = Modifier.align(Alignment.Center)) {
                 val focusRequester = remember { FocusRequester() }
                 CustomTextField(
-                    value = word,
+                    value = uiState.word,
                     onValueChange = onWordChanged,
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
@@ -91,12 +85,12 @@ private fun AddWordsScreen(
                     actionIcon = CustomTextFieldActionIcon(
                         icon = Icons.Default.Add,
                         onClick = onAddWordsClick,
-                        isEnabled = word.length > 2,
-                        isLoading = isLoading
+                        isEnabled = uiState.isAddButtonEnabled,
+                        isLoading = uiState.isAddButtonLoading
                     ),
                     error = CustomTextFieldError(
-                        isError = isWordAlreadyExistError != null,
-                        text = formatIsWordAlreadyExistErrorMessage(isWordAlreadyExistError)
+                        isError = uiState.isWordAlreadyExistError,
+                        text = formatIsWordAlreadyExistErrorMessage(word = uiState.alreadyExistWord)
                     )
                 )
                 LaunchedEffect(Unit) {
@@ -108,9 +102,9 @@ private fun AddWordsScreen(
 }
 
 @Composable
-private fun formatIsWordAlreadyExistErrorMessage(error: AddWordsViewModel.IsWordAlreadyExistError?): String {
-    return error
-        ?.let { stringResource(R.string.vocabulary_add_words_screen_already_exists_words_error, error.word) }
+private fun formatIsWordAlreadyExistErrorMessage(word: String?): String {
+    return word
+        ?.let { stringResource(R.string.vocabulary_add_words_screen_already_exists_words_error, it) }
         .orEmpty()
 }
 
@@ -120,9 +114,7 @@ private fun formatIsWordAlreadyExistErrorMessage(error: AddWordsViewModel.IsWord
 private fun AddWordsContentPreview() {
     AppTheme {
         AddWordsScreen(
-            word = "word",
-            isWordAlreadyExistError = null,
-            isLoading = false,
+            uiState = AddWordsUiState(),
             onWordChanged = {},
             onAddWordsClick = {},
             onBackClick = {}

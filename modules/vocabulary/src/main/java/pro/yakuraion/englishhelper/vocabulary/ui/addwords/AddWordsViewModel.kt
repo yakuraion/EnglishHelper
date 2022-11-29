@@ -20,40 +20,36 @@ class AddWordsViewModel @AssistedInject constructor(
     private val isWordAlreadyExistUseCase: IsWordAlreadyExistUseCase
 ) : ViewModel() {
 
-    var word by mutableStateOf("")
-        private set
-
-    var isWordAlreadyExistError by mutableStateOf<IsWordAlreadyExistError?>(null)
-        private set
-
-    data class IsWordAlreadyExistError(val word: String)
-
-    var isLoading by mutableStateOf(false)
+    var uiState by mutableStateOf(AddWordsUiState())
         private set
 
     fun onWordChanged(word: String) {
-        this.word = word
-        isWordAlreadyExistError = null
+        uiState = uiState.copy(
+            word = word,
+            isWordAlreadyExistError = false
+        )
     }
 
     fun onAddWordClick() {
-        addWord(word.trim())
+        addWord(uiState.word.trim())
     }
 
     private fun addWord(word: String) {
         viewModelScope.launch {
             if (!validateIsWordAlreadyExists(word)) return@launch
-            isLoading = true
+            uiState = uiState.copy(isAddButtonLoading = true)
             addWordUseCase.addWord(word)
-            isLoading = false
-            this@AddWordsViewModel.word = ""
+            uiState = uiState.copy(
+                word = "",
+                isAddButtonLoading = false
+            )
         }
     }
 
     private suspend fun validateIsWordAlreadyExists(word: String): Boolean {
         val isExist = isWordAlreadyExistUseCase.isWordAlreadyExist(word)
         if (isExist) {
-            isWordAlreadyExistError = IsWordAlreadyExistError(word)
+            uiState = uiState.copy(isWordAlreadyExistError = true)
         }
         return !isExist
     }
