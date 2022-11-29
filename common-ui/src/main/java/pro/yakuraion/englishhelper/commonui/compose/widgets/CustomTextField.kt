@@ -77,7 +77,7 @@ fun CustomTextField(
                 trailingIcon = {},
                 maxLines = maxLines,
                 shape = shapes.shape,
-                colors = CustomTextFieldDefaults.textFieldsColors()
+                colors = transparentTextFieldColors()
             )
             if (actionIcon != null) {
                 IconLoadingActionContainer(
@@ -98,11 +98,22 @@ fun CustomTextField(
 }
 
 @Composable
+private fun transparentTextFieldColors() = TextFieldDefaults.textFieldColors(
+    focusedIndicatorColor = Color.Transparent,
+    unfocusedIndicatorColor = Color.Transparent,
+    disabledIndicatorColor = Color.Transparent,
+    errorIndicatorColor = Color.Transparent
+)
+
+@Composable
 private fun ErrorBorderBox(
     isError: Boolean,
     shape: Shape,
     modifier: Modifier = Modifier,
-    errorBorderStroke: BorderStroke = CustomTextFieldDefaults.errorBorderStroke(),
+    errorBorderStroke: BorderStroke = BorderStroke(
+        width = 2.dp,
+        color = MaterialTheme.colorScheme.error
+    ),
     content: @Composable BoxScope.() -> Unit
 ) {
     Box(
@@ -137,6 +148,10 @@ private fun IconLoadingActionContainer(
     containerColor: Color = MaterialTheme.colorScheme.primary,
     contentColor: Color = MaterialTheme.colorScheme.onPrimary,
 ) {
+    val containerWidth = 48.dp
+    val progressSize = 24.dp
+    val iconSize = 24.dp
+
     ActionContainer(
         onClick = onClick,
         onClickEnabled = !isLoading && isEnabled,
@@ -145,7 +160,7 @@ private fun IconLoadingActionContainer(
         containerColor = containerColor,
         contentColor = contentColor,
         modifier = modifier
-            .width(CustomTextFieldDefaults.ActionContainerWidth)
+            .width(containerWidth)
             .clickable(
                 enabled = !isLoading && isEnabled,
                 onClick = onClick
@@ -154,7 +169,7 @@ private fun IconLoadingActionContainer(
         if (isLoading) {
             CircularProgressIndicator(
                 modifier = Modifier
-                    .size(CustomTextFieldDefaults.ActionProgressSize)
+                    .size(progressSize)
                     .align(Alignment.Center),
                 color = LocalContentColor.current
             )
@@ -163,7 +178,7 @@ private fun IconLoadingActionContainer(
                 imageVector = icon,
                 contentDescription = null,
                 modifier = Modifier
-                    .size(CustomTextFieldDefaults.ActionIconSize)
+                    .size(iconSize)
                     .align(Alignment.Center)
             )
         }
@@ -181,9 +196,11 @@ private fun ActionContainer(
     modifier: Modifier = Modifier,
     content: @Composable BoxScope.() -> Unit
 ) {
+    val disabledAlpha = 0.4f
+
     Box(
         modifier = modifier
-            .alpha(if (enabled) 1f else CustomTextFieldDefaults.ActionDisabledAlpha)
+            .alpha(if (enabled) 1f else disabledAlpha)
             .fillMaxSize()
             .clip(shape)
             .background(containerColor)
@@ -216,12 +233,6 @@ object CustomTextFieldDefaults {
 
     private val CornerRadius = 8.dp
 
-    internal val ActionContainerWidth = 48.dp
-    internal val ActionIconSize = 24.dp
-    internal val ActionProgressSize = 24.dp
-
-    internal const val ActionDisabledAlpha = 0.4f
-
     fun shapes(
         shape: Shape = RoundedCornerShape(CornerRadius),
         actionShape: Shape = RoundedCornerShape(
@@ -233,20 +244,6 @@ object CustomTextFieldDefaults {
     ) = CustomTextFieldShapes(
         shape = shape,
         actionShape = actionShape
-    )
-
-    @Composable
-    internal fun errorBorderStroke() = BorderStroke(
-        width = 2.dp,
-        color = MaterialTheme.colorScheme.error
-    )
-
-    @Composable
-    internal fun textFieldsColors() = TextFieldDefaults.textFieldColors(
-        focusedIndicatorColor = Color.Transparent,
-        unfocusedIndicatorColor = Color.Transparent,
-        disabledIndicatorColor = Color.Transparent,
-        errorIndicatorColor = Color.Transparent
     )
 }
 
