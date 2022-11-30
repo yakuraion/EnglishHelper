@@ -1,9 +1,6 @@
 package pro.yakuraion.englishhelper.vocabulary.ui.testing
 
-import android.content.Context
 import android.content.res.Configuration
-import android.media.MediaPlayer
-import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,12 +26,111 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import pro.yakuraion.englishhelper.commonui.MediaPlayerUtils
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 import pro.yakuraion.englishhelper.commonui.compose.widgets.AppTextField
 import pro.yakuraion.englishhelper.commonui.compose.widgets.CustomTextFieldActionIcon
 import pro.yakuraion.englishhelper.commonui.compose.widgets.CustomTextFieldError
 import pro.yakuraion.englishhelper.vocabulary.R
 import java.io.File
+
+@Composable
+fun TestingWordWithAudio(
+    state: TestingWordWithAudioState,
+    onWordTested: () -> Unit
+) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        PlaySoundButton(
+            soundFile = state.soundFile,
+            modifier = Modifier.align(Alignment.Center)
+        )
+        AnswerTextField(
+            answer = state.answer,
+            onAnswerChanged = { state.onAnswerChanged(it) },
+            onDoneClick = { state.onDoneClick(onWordTested) },
+            isActionEnabled = state.isActionEnabled,
+            isWrongAnswer = state.isWrongAnswer,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(16.dp)
+        )
+
+        PlaySoundEffect(state.soundFile)
+    }
+}
+
+@Composable
+private fun PlaySoundButton(
+    soundFile: File,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+
+    Button(
+        onClick = {
+            MediaPlayerUtils.playSound(context, soundFile)
+        },
+        modifier = modifier.size(100.dp),
+        shape = CircleShape,
+        contentPadding = PaddingValues(16.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Filled.VolumeUp,
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize()
+        )
+    }
+}
+
+@Composable
+private fun AnswerTextField(
+    answer: String,
+    onAnswerChanged: (String) -> Unit,
+    onDoneClick: () -> Unit,
+    isActionEnabled: Boolean,
+    isWrongAnswer: Boolean,
+    modifier: Modifier = Modifier
+) {
+    val focusRequester = remember { FocusRequester() }
+
+    AppTextField(
+        value = answer,
+        onValueChange = onAnswerChanged,
+        modifier = modifier.focusRequester(focusRequester),
+        maxLines = 1,
+        placeholderText = stringResource(id = R.string.vocabulary_testing_screen_answer_placeholder),
+        actionIcon = CustomTextFieldActionIcon(
+            icon = Icons.Default.Done,
+            onClick = onDoneClick,
+            isEnabled = isActionEnabled
+        ),
+        error = CustomTextFieldError(
+            isError = isWrongAnswer,
+            text = getWrongAnswerErrorText(isWrongAnswer)
+        )
+    )
+
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
+}
+
+@Composable
+private fun getWrongAnswerErrorText(isError: Boolean): String {
+    return if (isError) {
+        stringResource(id = R.string.vocabulary_testing_screen_wrong_answer_error)
+    } else {
+        ""
+    }
+}
+
+@Composable
+private fun PlaySoundEffect(soundFile: File) {
+    val context = LocalContext.current
+    LaunchedEffect(soundFile) {
+        MediaPlayerUtils.playSound(context, soundFile)
+    }
+}
 
 class TestingWordWithAudioState(
     val word: String,
@@ -44,23 +140,22 @@ class TestingWordWithAudioState(
     var answer: String by mutableStateOf("")
         private set
 
-    var actionEnabled by mutableStateOf(false)
-        private set
+    val isActionEnabled: Boolean
+        get() = answer.length > 2
 
-    var isWrongAnswerError by mutableStateOf(false)
+    var isWrongAnswer by mutableStateOf(false)
         private set
 
     fun onAnswerChanged(answer: String) {
         this.answer = answer
-        actionEnabled = answer.length > 2
-        isWrongAnswerError = false
+        isWrongAnswer = false
     }
 
     fun onDoneClick(onRightAnswer: () -> Unit) {
         if (word.equals(answer.trim(), false)) {
             onRightAnswer()
         } else {
-            isWrongAnswerError = true
+            isWrongAnswer = true
         }
     }
 }
@@ -75,65 +170,6 @@ fun rememberTestingWordWithAudioState(
     }
 }
 
-@Composable
-fun TestingWordWithAudio(
-    state: TestingWordWithAudioState,
-    onRememberClick: () -> Unit
-) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        val context = LocalContext.current
-        Button(
-            onClick = { playSound(context, state.soundFile) },
-            modifier = Modifier
-                .size(100.dp)
-                .align(Alignment.Center),
-            shape = CircleShape,
-            contentPadding = PaddingValues(16.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Filled.VolumeUp,
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize()
-            )
-        }
-        LaunchedEffect(state.word) {
-            playSound(context, state.soundFile)
-        }
-        val errorText = if (state.isWrongAnswerError) {
-            stringResource(id = R.string.vocabulary_testing_screen_wrong_answer_error)
-        } else {
-            ""
-        }
-        val focusRequester = remember { FocusRequester() }
-        AppTextField(
-            value = state.answer,
-            onValueChange = { state.onAnswerChanged(it) },
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(16.dp)
-                .focusRequester(focusRequester),
-            maxLines = 1,
-            placeholderText = stringResource(id = R.string.vocabulary_testing_screen_answer_placeholder),
-            actionIcon = CustomTextFieldActionIcon(
-                icon = Icons.Default.Done,
-                onClick = { state.onDoneClick(onRememberClick) },
-                isEnabled = state.actionEnabled
-            ),
-            error = CustomTextFieldError(
-                isError = state.isWrongAnswerError,
-                text = errorText
-            )
-        )
-        LaunchedEffect(Unit) {
-            focusRequester.requestFocus()
-        }
-    }
-}
-
-private fun playSound(context: Context, file: File) {
-    MediaPlayer.create(context, Uri.fromFile(file)).start()
-}
-
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
@@ -144,7 +180,7 @@ private fun TestingWordWithAudioPreview() {
                 word = "word",
                 soundFile = File("")
             ),
-            onRememberClick = {}
+            onWordTested = {}
         )
     }
 }

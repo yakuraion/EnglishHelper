@@ -27,7 +27,7 @@ import pro.yakuraion.englishhelper.vocabulary.R
 @Composable
 fun TestingWordSimple(
     word: String,
-    onRememberClick: () -> Unit
+    onWordTested: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.align(Alignment.Center)) {
@@ -43,7 +43,7 @@ fun TestingWordSimple(
         }
         AppButtonWithText(
             text = stringResource(id = R.string.vocabulary_testing_screen_simple_yes),
-            onClick = onRememberClick,
+            onClick = onWordTested,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 16.dp)
@@ -103,7 +103,7 @@ private fun TestingWordSimplePreview() {
     AppTheme {
         TestingWordSimple(
             word = "some word",
-            onRememberClick = {}
+            onWordTested = {}
         )
     }
 }

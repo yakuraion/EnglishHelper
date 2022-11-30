@@ -61,7 +61,7 @@ class TestingViewModel @AssistedInject constructor(
         isDictionaryVisited = true
     }
 
-    fun onRememberClick() {
+    fun onWordTested() {
         wordFull?.learningWord?.let { learningWord ->
             viewModelScope.launch {
                 if (isDictionaryVisited) {

@@ -43,7 +43,7 @@ fun TestingScreen(
         uiState = viewModel.uiState,
         onBackClick = onBackClick,
         onVisitedDictionary = { viewModel.onVisitedDictionary() },
-        onRememberClick = { viewModel.onRememberClick() }
+        onWordTested = { viewModel.onWordTested() }
     )
 }
 
@@ -52,7 +52,7 @@ private fun TestingScreen(
     uiState: TestingUiState,
     onBackClick: () -> Unit,
     onVisitedDictionary: () -> Unit,
-    onRememberClick: () -> Unit
+    onWordTested: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -80,7 +80,7 @@ private fun TestingScreen(
                         word = uiState.word,
                         dictionaryLink = uiState.link,
                         onVisitedDictionary = onVisitedDictionary,
-                        onRememberClick = onRememberClick,
+                        onWordTested = onWordTested,
                         modifier = alignModifier
                     )
                 }
@@ -90,7 +90,7 @@ private fun TestingScreen(
                         soundFile = uiState.soundFile,
                         dictionaryLink = uiState.link,
                         onVisitedDictionary = onVisitedDictionary,
-                        onRememberClick = onRememberClick,
+                        onWordTested = onWordTested,
                         modifier = alignModifier
                     )
                 }
@@ -146,7 +146,7 @@ private fun WordSimple(
     word: String,
     dictionaryLink: Uri,
     onVisitedDictionary: () -> Unit,
-    onRememberClick: () -> Unit,
+    onWordTested: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     TestingLayout(
@@ -156,7 +156,7 @@ private fun WordSimple(
     ) {
         TestingWordSimple(
             word = word,
-            onRememberClick = onRememberClick
+            onWordTested = onWordTested
         )
     }
 }
@@ -167,7 +167,7 @@ private fun WordWithAudio(
     soundFile: File,
     dictionaryLink: Uri,
     onVisitedDictionary: () -> Unit,
-    onRememberClick: () -> Unit,
+    onWordTested: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     TestingLayout(
@@ -180,7 +180,7 @@ private fun WordWithAudio(
                 word = word,
                 soundFile = soundFile
             ),
-            onRememberClick = onRememberClick
+            onWordTested = onWordTested
         )
     }
 }
@@ -223,7 +223,7 @@ private fun TestingScreenSimplePreview() {
             ),
             onBackClick = {},
             onVisitedDictionary = {},
-            onRememberClick = {}
+            onWordTested = {}
         )
     }
 }
@@ -241,7 +241,7 @@ private fun TestingScreenWithAudioPreview() {
             ),
             onBackClick = {},
             onVisitedDictionary = {},
-            onRememberClick = {}
+            onWordTested = {}
         )
     }
 }
@@ -255,7 +255,7 @@ private fun TestingScreenNoMoreWordsPreview() {
             uiState = TestingUiState.NoMoreWords,
             onBackClick = {},
             onVisitedDictionary = {},
-            onRememberClick = {}
+            onWordTested = {}
         )
     }
 }
@@ -269,7 +269,7 @@ private fun TestingScreenLoadingPreview() {
             uiState = TestingUiState.Loading,
             onBackClick = {},
             onVisitedDictionary = {},
-            onRememberClick = {}
+            onWordTested = {}
         )
     }
 }
