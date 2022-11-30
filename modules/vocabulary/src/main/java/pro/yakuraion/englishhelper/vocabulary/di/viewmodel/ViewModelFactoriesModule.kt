@@ -7,6 +7,7 @@ import dagger.multibindings.IntoMap
 import pro.yakuraion.englishhelper.commonui.di.viewmodel.AssistedSavedStateViewModelFactory
 import pro.yakuraion.englishhelper.commonui.di.viewmodel.ViewModelKey
 import pro.yakuraion.englishhelper.vocabulary.ui.addwords.AddWordsViewModel
+import pro.yakuraion.englishhelper.vocabulary.ui.list.ListViewModel
 import pro.yakuraion.englishhelper.vocabulary.ui.overview.OverviewViewModel
 import pro.yakuraion.englishhelper.vocabulary.ui.testing.TestingViewModel
 
@@ -27,4 +28,9 @@ internal interface ViewModelFactoriesModule {
     @IntoMap
     @ViewModelKey(TestingViewModel::class)
     fun bindsTesting(impl: TestingViewModel.Factory): AssistedSavedStateViewModelFactory<out ViewModel>
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ListViewModel::class)
+    fun bindsList(impl: ListViewModel.Factory): AssistedSavedStateViewModelFactory<out ViewModel>
 }
