@@ -67,6 +67,8 @@ dependencies {
     add("implementation", versionCatalog.findLibrary("kotlin-coroutines").get())
     add("testImplementation", versionCatalog.findLibrary("kotlin-coroutines-test").get())
 
+    add("implementation", versionCatalog.findLibrary("kotlin-collections-immutable").get())
+
     add("implementation", versionCatalog.findLibrary("dagger").get())
     add("kapt", versionCatalog.findLibrary("dagger-compiler").get())
 

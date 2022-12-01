@@ -4,10 +4,14 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
 import pro.yakuraion.englishhelper.data.database.entities.LearningWordEntity
 
 @Dao
 internal interface LearningWordsDao {
+
+    @Query("SELECT * FROM learning_word")
+    fun getAll(): Flow<List<LearningWordEntity>>
 
     @Query("SELECT * FROM learning_word WHERE name = :name")
     suspend fun getByName(name: String): LearningWordEntity

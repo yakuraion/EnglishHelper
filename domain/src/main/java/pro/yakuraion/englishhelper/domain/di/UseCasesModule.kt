@@ -4,6 +4,10 @@ import dagger.Binds
 import dagger.Module
 import pro.yakuraion.englishhelper.domain.usecases.AddWordUseCase
 import pro.yakuraion.englishhelper.domain.usecases.AddWordUseCaseImpl
+import pro.yakuraion.englishhelper.domain.usecases.GetCompletedWordsUseCase
+import pro.yakuraion.englishhelper.domain.usecases.GetCompletedWordsUseCaseImpl
+import pro.yakuraion.englishhelper.domain.usecases.GetLearningWordsUseCase
+import pro.yakuraion.englishhelper.domain.usecases.GetLearningWordsUseCaseImpl
 import pro.yakuraion.englishhelper.domain.usecases.GetNextWordToLearnTodayUseCase
 import pro.yakuraion.englishhelper.domain.usecases.GetNextWordToLearnTodayUseCaseImpl
 import pro.yakuraion.englishhelper.domain.usecases.GetWordsToLearnUseCase
@@ -18,6 +22,14 @@ import javax.inject.Singleton
 
 @Module
 internal interface UseCasesModule {
+
+    @Singleton
+    @Binds
+    fun bindsGetLearningWordsUseCase(impl: GetLearningWordsUseCaseImpl): GetLearningWordsUseCase
+
+    @Singleton
+    @Binds
+    fun bindsGetCompletedWordsUseCase(impl: GetCompletedWordsUseCaseImpl): GetCompletedWordsUseCase
 
     @Singleton
     @Binds

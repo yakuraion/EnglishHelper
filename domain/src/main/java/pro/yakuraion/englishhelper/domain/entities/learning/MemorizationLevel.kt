@@ -29,7 +29,7 @@ data class MemorizationLevel(val level: Int) {
 
     companion object {
 
-        private const val MAX_LEVEL = 4
+        const val MAX_LEVEL = 4
 
         fun new() = MemorizationLevel(0)
     }
