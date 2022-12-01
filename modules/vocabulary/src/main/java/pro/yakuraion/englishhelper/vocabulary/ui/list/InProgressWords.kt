@@ -37,10 +37,11 @@ fun InProgressWords(
         ) { index, word ->
             WordRow(
                 word = word,
-                modifier = Modifier.padding(horizontal = 16.dp)
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
             )
             if (index != words.lastIndex) {
-                Divider(modifier = Modifier.padding(vertical = 8.dp))
+                Divider()
             }
         }
     }
@@ -97,7 +98,7 @@ private fun WordLevelStar(enabled: Boolean) {
     Icon(
         imageVector = if (enabled) Icons.Default.Star else Icons.Default.StarOutline,
         contentDescription = null,
-        modifier = Modifier.alpha(if (enabled) 0.6f else 0.3f),
+        modifier = Modifier.alpha(if (enabled) 0.8f else 0.4f),
         tint = MaterialTheme.colorScheme.tertiary
     )
 }

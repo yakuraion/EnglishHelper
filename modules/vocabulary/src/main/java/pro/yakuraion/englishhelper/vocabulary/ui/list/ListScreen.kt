@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 import pro.yakuraion.englishhelper.commonui.compose.widgets.AppPagerWithTabs
@@ -56,6 +55,10 @@ private fun ListScreen(
                     )
                 }
                 Page.COMPLETED -> {
+                    CompletedWords(
+                        words = completedWords,
+                        modifier = Modifier.fillMaxSize()
+                    )
                 }
             }
         }
@@ -100,11 +103,13 @@ private fun ListScreenPreview() {
             inProgressWords = (0..10).map { index ->
                 LearningWord(
                     name = "word $index",
-                    memorizationLevel = MemorizationLevel(0),
+                    memorizationLevel = MemorizationLevel(index % 4),
                     nextDayToLearn = 0
                 )
             }.toImmutableList(),
-            completedWords = persistentListOf(),
+            completedWords = (0..10).map { index ->
+                CompletedWord(name = "word $index")
+            }.toImmutableList(),
             onBackClick = {}
         )
     }
