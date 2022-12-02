@@ -43,13 +43,13 @@ class TestingViewModel @AssistedInject constructor(
                         TestingUiState.WordWithAudio(
                             word = word.word.name,
                             soundFile = word.word.soundFile!!,
-                            link = word.word.wooordhuntLink
+                            linkUrl = word.word.wooordhuntUrl
                         )
                     }
                     else -> {
                         TestingUiState.WordSimple(
                             word = word.word.name,
-                            link = word.word.wooordhuntLink
+                            linkUrl = word.word.wooordhuntUrl
                         )
                     }
                 }

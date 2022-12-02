@@ -78,7 +78,7 @@ private fun TestingScreen(
                 is TestingUiState.WordSimple -> {
                     WordSimple(
                         word = uiState.word,
-                        dictionaryLink = uiState.link,
+                        dictionaryUrl = uiState.linkUrl,
                         onVisitedDictionary = onVisitedDictionary,
                         onWordTested = onWordTested,
                         modifier = alignModifier
@@ -88,7 +88,7 @@ private fun TestingScreen(
                     WordWithAudio(
                         word = uiState.word,
                         soundFile = uiState.soundFile,
-                        dictionaryLink = uiState.link,
+                        dictionaryUrl = uiState.linkUrl,
                         onVisitedDictionary = onVisitedDictionary,
                         onWordTested = onWordTested,
                         modifier = alignModifier
@@ -144,13 +144,13 @@ private fun NoMoreWords(
 @Composable
 private fun WordSimple(
     word: String,
-    dictionaryLink: Uri,
+    dictionaryUrl: String,
     onVisitedDictionary: () -> Unit,
     onWordTested: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     TestingLayout(
-        dictionaryLink = dictionaryLink,
+        dictionaryUrl = dictionaryUrl,
         onVisitedDictionary = onVisitedDictionary,
         modifier = modifier
     ) {
@@ -165,13 +165,13 @@ private fun WordSimple(
 private fun WordWithAudio(
     word: String,
     soundFile: File,
-    dictionaryLink: Uri,
+    dictionaryUrl: String,
     onVisitedDictionary: () -> Unit,
     onWordTested: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     TestingLayout(
-        dictionaryLink = dictionaryLink,
+        dictionaryUrl = dictionaryUrl,
         onVisitedDictionary = onVisitedDictionary,
         modifier = modifier
     ) {
@@ -187,7 +187,7 @@ private fun WordWithAudio(
 
 @Composable
 private fun TestingLayout(
-    dictionaryLink: Uri,
+    dictionaryUrl: String,
     onVisitedDictionary: () -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
@@ -197,7 +197,7 @@ private fun TestingLayout(
         AppOutlinedButton(
             text = stringResource(id = R.string.vocabulary_testing_screen_help_button),
             onClick = {
-                context.openLink(dictionaryLink)
+                context.openLink(Uri.parse(dictionaryUrl))
                 onVisitedDictionary()
             },
             modifier = Modifier
@@ -219,7 +219,7 @@ private fun TestingScreenSimplePreview() {
         TestingScreen(
             uiState = TestingUiState.WordSimple(
                 word = "word",
-                link = Uri.EMPTY
+                linkUrl = ""
             ),
             onBackClick = {},
             onVisitedDictionary = {},
@@ -237,7 +237,7 @@ private fun TestingScreenWithAudioPreview() {
             uiState = TestingUiState.WordWithAudio(
                 word = "word",
                 soundFile = File(""),
-                link = Uri.EMPTY
+                linkUrl = ""
             ),
             onBackClick = {},
             onVisitedDictionary = {},

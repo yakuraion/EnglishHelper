@@ -95,10 +95,13 @@ private fun WordLevelView(
 
 @Composable
 private fun WordLevelStar(enabled: Boolean) {
+    val enabledAlpha = 0.8f
+    val disableAlpha = 0.4f
+
     Icon(
         imageVector = if (enabled) Icons.Default.Star else Icons.Default.StarOutline,
         contentDescription = null,
-        modifier = Modifier.alpha(if (enabled) 0.8f else 0.4f),
+        modifier = Modifier.alpha(if (enabled) enabledAlpha else disableAlpha),
         tint = MaterialTheme.colorScheme.tertiary
     )
 }

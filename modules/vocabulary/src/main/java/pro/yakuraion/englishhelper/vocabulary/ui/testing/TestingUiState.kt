@@ -1,6 +1,5 @@
 package pro.yakuraion.englishhelper.vocabulary.ui.testing
 
-import android.net.Uri
 import java.io.File
 
 sealed class TestingUiState {
@@ -9,7 +8,7 @@ sealed class TestingUiState {
 
     object NoMoreWords : TestingUiState()
 
-    data class WordSimple(val word: String, val link: Uri) : TestingUiState()
+    data class WordSimple(val word: String, val linkUrl: String) : TestingUiState()
 
-    data class WordWithAudio(val word: String, val soundFile: File, val link: Uri) : TestingUiState()
+    data class WordWithAudio(val word: String, val soundFile: File, val linkUrl: String) : TestingUiState()
 }

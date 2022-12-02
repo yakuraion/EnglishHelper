@@ -94,6 +94,7 @@ private enum class Page {
     abstract fun title(): String
 }
 
+@Suppress("MagicNumber")
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable

@@ -86,11 +86,13 @@ private fun WordText(
 private fun AdditionalText(
     modifier: Modifier = Modifier
 ) {
+    val alpha = 0.6f
+
     Text(
         text = stringResource(id = R.string.vocabulary_testing_screen_simple_tip),
         modifier = modifier
             .fillMaxWidth()
-            .alpha(0.6f),
+            .alpha(alpha),
         textAlign = TextAlign.Center,
         style = MaterialTheme.typography.labelMedium
     )
