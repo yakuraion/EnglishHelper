@@ -49,13 +49,13 @@ private fun ListScreen(
         ) { pageNumber ->
             when (Page.values()[pageNumber]) {
                 Page.IN_PROGRESS -> {
-                    InProgressWords(
+                    ListInProgress(
                         words = inProgressWords,
                         modifier = Modifier.fillMaxSize()
                     )
                 }
                 Page.COMPLETED -> {
-                    CompletedWords(
+                    ListCompleted(
                         words = completedWords,
                         modifier = Modifier.fillMaxSize()
                     )
@@ -101,14 +101,14 @@ private enum class Page {
 private fun ListScreenPreview() {
     AppTheme {
         ListScreen(
-            inProgressWords = (0..10).map { index ->
+            inProgressWords = (0..30).map { index ->
                 LearningWord(
                     name = "word $index",
                     memorizationLevel = MemorizationLevel(index % 4),
                     nextDayToLearn = 0
                 )
             }.toImmutableList(),
-            completedWords = (0..10).map { index ->
+            completedWords = (0..30).map { index ->
                 CompletedWord(name = "word $index")
             }.toImmutableList(),
             onBackClick = {}

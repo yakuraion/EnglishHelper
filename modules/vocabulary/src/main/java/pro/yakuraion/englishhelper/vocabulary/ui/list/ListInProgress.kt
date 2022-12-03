@@ -1,12 +1,13 @@
 package pro.yakuraion.englishhelper.vocabulary.ui.list
 
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarOutline
 import androidx.compose.material3.Divider
@@ -16,17 +17,37 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
+import pro.yakuraion.englishhelper.commonui.compose.widgets.layout.rememberAppBottomSheetState
 import pro.yakuraion.englishhelper.domain.entities.learning.LearningWord
 import pro.yakuraion.englishhelper.domain.entities.learning.MemorizationLevel
+import pro.yakuraion.englishhelper.vocabulary.R
 
 @Composable
-fun InProgressWords(
+fun ListInProgress(
+    words: ImmutableList<LearningWord>,
+    modifier: Modifier = Modifier
+) {
+    val bottomSheetState = rememberAppBottomSheetState()
+    ListBottomSheet(
+        numberOfSelected = 10,
+        bottomSheetState = bottomSheetState,
+        bottomSheetButtons = persistentListOf(
+            { BottomSheetResetButton(onClick = {}) },
+            { BottomSheetDeleteButton(onClick = {}) }
+        ),
+        modifier = modifier
+    ) {
+        Words(words = words)
+    }
+}
+
+@Composable
+private fun Words(
     words: ImmutableList<LearningWord>,
     modifier: Modifier = Modifier
 ) {
@@ -37,8 +58,7 @@ fun InProgressWords(
         ) { index, word ->
             WordRow(
                 word = word,
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
             if (index != words.lastIndex) {
                 Divider()
@@ -53,7 +73,7 @@ private fun WordRow(
     modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier.fillMaxWidth()) {
-        NameText(
+        WordNameText(
             name = word.name,
             modifier = Modifier.weight(1f)
         )
@@ -64,7 +84,7 @@ private fun WordRow(
 }
 
 @Composable
-private fun NameText(
+private fun WordNameText(
     name: String,
     modifier: Modifier = Modifier
 ) {
@@ -106,29 +126,24 @@ private fun WordLevelStar(enabled: Boolean) {
     )
 }
 
-@Preview
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun InProgressWordsPreview() {
-    AppTheme {
-        InProgressWords(
-            words = persistentListOf(
-                LearningWord(
-                    name = "word 1",
-                    memorizationLevel = MemorizationLevel(0),
-                    nextDayToLearn = 0
-                ),
-                LearningWord(
-                    name = "word 2",
-                    memorizationLevel = MemorizationLevel(1),
-                    nextDayToLearn = 1
-                ),
-                LearningWord(
-                    name = "word 3",
-                    memorizationLevel = MemorizationLevel(2),
-                    nextDayToLearn = 2
-                ),
-            )
-        )
-    }
+private fun BottomSheetResetButton(
+    onClick: () -> Unit
+) {
+    ListBottomSheetButton(
+        text = stringResource(id = R.string.vocabulary_list_screen_bottom_sheet_reset_progress_button),
+        icon = Icons.Default.Refresh,
+        onClick = onClick
+    )
+}
+
+@Composable
+private fun BottomSheetDeleteButton(
+    onClick: () -> Unit
+) {
+    ListBottomSheetButton(
+        text = stringResource(id = R.string.vocabulary_list_screen_bottom_sheet_delete_button),
+        icon = Icons.Default.Delete,
+        onClick = onClick
+    )
 }

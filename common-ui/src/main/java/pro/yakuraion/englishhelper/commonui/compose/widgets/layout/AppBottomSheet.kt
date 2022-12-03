@@ -31,6 +31,7 @@ fun AppBottomSheet(
     bottomSheet: @Composable () -> Unit,
     bottomSheetHeight: Dp,
     state: AppBottomSheetState,
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
     val transition = updateTransition(
@@ -52,7 +53,7 @@ fun AppBottomSheet(
         }
     }
 
-    Box {
+    Box(modifier = modifier) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
