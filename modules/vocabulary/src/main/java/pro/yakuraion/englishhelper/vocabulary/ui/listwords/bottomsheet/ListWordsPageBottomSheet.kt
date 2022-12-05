@@ -74,7 +74,7 @@ private fun BottomSheetContent(
         ) {
             Text(
                 text = stringResource(
-                    R.string.vocabulary_list_screen_bottom_sheet_number_of_selected_words,
+                    R.string.vocabulary_list_words_screen_bottom_sheet_number_of_selected_words,
                     numberOfSelected
                 ),
                 modifier = Modifier.weight(1f)

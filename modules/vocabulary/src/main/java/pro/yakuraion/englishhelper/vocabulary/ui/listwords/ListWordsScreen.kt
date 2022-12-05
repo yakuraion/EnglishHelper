@@ -75,7 +75,7 @@ private fun ListWordsScreen(
 private fun TopBar(onBackClick: () -> Unit) {
     CenterAlignedTopAppBar(
         title = {
-            Text(text = stringResource(id = R.string.vocabulary_testing_screen_title))
+            Text(text = stringResource(id = R.string.vocabulary_list_words_screen_title))
         },
         navigationIcon = {
             AppArrowBackButton(onBackClick = onBackClick)
@@ -87,13 +87,13 @@ private enum class Page {
     IN_PROGRESS {
 
         @Composable
-        override fun title(): String = stringResource(id = R.string.vocabulary_list_screen_tab_in_progress_title)
+        override fun title(): String = stringResource(id = R.string.vocabulary_list_words_screen_tab_in_progress_title)
     },
 
     COMPLETED {
 
         @Composable
-        override fun title(): String = stringResource(id = R.string.vocabulary_list_screen_tab_completed_title)
+        override fun title(): String = stringResource(id = R.string.vocabulary_list_words_screen_tab_completed_title)
     };
 
     @Composable

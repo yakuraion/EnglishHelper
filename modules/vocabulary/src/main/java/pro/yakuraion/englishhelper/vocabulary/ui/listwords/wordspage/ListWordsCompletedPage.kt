@@ -83,7 +83,7 @@ private fun BottomSheetLearnAgainButton(
     onClick: () -> Unit
 ) {
     ListWordsPageBottomSheetButton(
-        text = stringResource(id = R.string.vocabulary_list_screen_bottom_sheet_learn_again_button),
+        text = stringResource(id = R.string.vocabulary_list_words_screen_bottom_sheet_learn_again_button),
         icon = Icons.Default.Refresh,
         onClick = onClick
     )
@@ -94,7 +94,7 @@ private fun BottomSheetDeleteButton(
     onClick: () -> Unit
 ) {
     ListWordsPageBottomSheetButton(
-        text = stringResource(id = R.string.vocabulary_list_screen_bottom_sheet_delete_button),
+        text = stringResource(id = R.string.vocabulary_list_words_screen_bottom_sheet_delete_button),
         icon = Icons.Default.Delete,
         onClick = onClick
     )
