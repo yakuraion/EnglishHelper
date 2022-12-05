@@ -1,7 +1,6 @@
 package pro.yakuraion.englishhelper.vocabulary.ui.overview
 
 import android.content.res.Configuration
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -87,7 +86,7 @@ private fun OverviewScreen(
                         if (uiState.numberOfWordsToLearnToday > 0) {
                             OverviewTestingCard(
                                 wordsNumber = uiState.numberOfWordsToLearnToday,
-                                onStartTestingClick = onStartTestingClick,
+                                onClick = onStartTestingClick,
                                 modifier = paddingModifier
                             )
                         } else {
@@ -101,8 +100,8 @@ private fun OverviewScreen(
                         OverviewWordsTotalCard(
                             numberOfInProgressWords = uiState.totalNumberOfInProgressWords,
                             numberOfCompletedWords = uiState.totalNumberOfCompletedWords,
+                            onClick = onListWordsClick,
                             modifier = paddingModifier
-                                .clickable { onListWordsClick() }
                         )
                     }
                 }

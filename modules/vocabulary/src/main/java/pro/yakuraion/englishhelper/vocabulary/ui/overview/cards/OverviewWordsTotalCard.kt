@@ -22,9 +22,13 @@ import pro.yakuraion.englishhelper.vocabulary.R
 fun OverviewWordsTotalCard(
     numberOfInProgressWords: Int,
     numberOfCompletedWords: Int,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    OverviewCard(modifier = modifier) {
+    OverviewCard(
+        modifier = modifier,
+        onClick = onClick
+    ) {
         Column {
             Text(
                 text = stringResource(id = R.string.vocabulary_overview_screen_words_total_title),
@@ -79,7 +83,8 @@ private fun OverviewWordsTotalCardPreview() {
         Scaffold {
             OverviewWordsTotalCard(
                 numberOfInProgressWords = 10,
-                numberOfCompletedWords = 20
+                numberOfCompletedWords = 20,
+                onClick = {}
             )
         }
     }
