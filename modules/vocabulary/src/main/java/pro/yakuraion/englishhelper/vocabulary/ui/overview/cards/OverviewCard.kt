@@ -11,26 +11,35 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import pro.yakuraion.englishhelper.common.applyIf
 
 @Composable
 fun OverviewCard(
     modifier: Modifier = Modifier,
+    activeContainerColor: Color = MaterialTheme.colorScheme.secondaryContainer,
+    activeContentColor: Color = MaterialTheme.colorScheme.onSecondaryContainer,
     onClick: (() -> Unit)? = null,
     content: @Composable () -> Unit
 ) {
+    val (containerColor, contentColor) = if (onClick != null) {
+        activeContainerColor to activeContentColor
+    } else {
+        MaterialTheme.colorScheme.surfaceVariant to MaterialTheme.colorScheme.onSurfaceVariant
+    }
+
     Box(
         modifier = modifier
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.large)
-            .background(color = MaterialTheme.colorScheme.primaryContainer)
+            .background(color = containerColor)
             .applyIf(onClick != null) {
                 clickable { onClick?.invoke() }
             }
             .padding(16.dp)
     ) {
-        CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onPrimaryContainer) {
+        CompositionLocalProvider(LocalContentColor provides contentColor) {
             content()
         }
     }

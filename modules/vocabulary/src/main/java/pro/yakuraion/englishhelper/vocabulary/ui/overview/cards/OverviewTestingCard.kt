@@ -28,6 +28,8 @@ fun OverviewTestingCard(
 ) {
     OverviewCard(
         modifier = modifier,
+        activeContainerColor = MaterialTheme.colorScheme.primaryContainer,
+        activeContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
         onClick = onClick
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -73,6 +75,18 @@ private fun OverviewTestingCardPreview() {
                 wordsNumber = 10,
                 onClick = {}
             )
+        }
+    }
+}
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun OverviewEmptyTestingCardPreview() {
+    AppTheme {
+        Scaffold {
+            OverviewEmptyTestingCard()
         }
     }
 }
