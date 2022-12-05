@@ -8,12 +8,13 @@ import pro.yakuraion.englishhelper.commonui.compose.widgets.layout.AppBottomShee
 import pro.yakuraion.englishhelper.commonui.compose.widgets.layout.rememberAppBottomSheetState
 
 class ListWordsPageState<WORD>(
-    val words: List<WORD>,
+    val words: ImmutableList<WORD>,
     val bottomSheetState: AppBottomSheetState
 ) {
 
     private val _selectedWords = mutableStateListOf<WORD>()
-    val selectedWords: List<WORD> = _selectedWords
+    val selectedWords: List<WORD>
+        get() = _selectedWords
 
     val isSelectionModeEnabled: Boolean
         get() = _selectedWords.isNotEmpty()
