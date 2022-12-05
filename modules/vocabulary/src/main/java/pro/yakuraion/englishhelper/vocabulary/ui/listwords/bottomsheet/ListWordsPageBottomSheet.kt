@@ -1,7 +1,8 @@
-package pro.yakuraion.englishhelper.vocabulary.ui.list
+package pro.yakuraion.englishhelper.vocabulary.ui.listwords.bottomsheet
 
+import android.annotation.SuppressLint
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,36 +11,41 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.filled.ThumbDown
+import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 import pro.yakuraion.englishhelper.commonui.compose.widgets.layout.AppBottomSheet
 import pro.yakuraion.englishhelper.commonui.compose.widgets.layout.AppBottomSheetState
+import pro.yakuraion.englishhelper.commonui.compose.widgets.layout.rememberAppBottomSheetState
 import pro.yakuraion.englishhelper.vocabulary.R
 
 @Composable
-fun ListBottomSheet(
+fun ListWordsPageBottomSheet(
     numberOfSelected: Int,
     bottomSheetState: AppBottomSheetState,
     bottomSheetButtons: ImmutableList<@Composable () -> Unit>,
+    onBottomSheetCloseClick: () -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
     AppBottomSheet(
         bottomSheet = {
-            ListBottomSheetContent(
+            BottomSheetContent(
                 numberOfSelected = numberOfSelected,
                 buttons = bottomSheetButtons,
-                onCloseClick = { bottomSheetState.collapse() }
+                onCloseClick = onBottomSheetCloseClick
             )
         },
         bottomSheetHeight = 180.dp,
@@ -51,7 +57,7 @@ fun ListBottomSheet(
 }
 
 @Composable
-fun ListBottomSheetContent(
+private fun BottomSheetContent(
     numberOfSelected: Int,
     buttons: ImmutableList<@Composable () -> Unit>,
     onCloseClick: () -> Unit,
@@ -97,24 +103,43 @@ fun ListBottomSheetContent(
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun ListBottomSheetButton(
-    text: String,
-    icon: ImageVector,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Button(
-        onClick = onClick,
-        modifier = modifier,
-        shape = MaterialTheme.shapes.small
-    ) {
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Icon(imageVector = icon, contentDescription = null)
-            Text(text = text)
+private fun ListWordsPageBottomSheetPreview() {
+    AppTheme {
+        Scaffold {
+            val state = rememberAppBottomSheetState(AppBottomSheetState.Value.EXPANDED)
+
+            ListWordsPageBottomSheet(
+                numberOfSelected = 10,
+                bottomSheetState = state,
+                bottomSheetButtons = persistentListOf(
+                    {
+                        ListWordsPageBottomSheetButton(
+                            text = "Button 1",
+                            icon = Icons.Default.ThumbUp,
+                            onClick = { }
+                        )
+                    },
+                    {
+                        ListWordsPageBottomSheetButton(
+                            text = "Button 2",
+                            icon = Icons.Default.ThumbDown,
+                            onClick = { }
+                        )
+                    }
+                ),
+                onBottomSheetCloseClick = {}
+            ) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(text = "Content")
+                }
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-package pro.yakuraion.englishhelper.vocabulary.ui.list
+package pro.yakuraion.englishhelper.vocabulary.ui.listwords
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,13 +20,15 @@ import pro.yakuraion.englishhelper.domain.entities.learning.LearningWord
 import pro.yakuraion.englishhelper.domain.entities.learning.MemorizationLevel
 import pro.yakuraion.englishhelper.vocabulary.R
 import pro.yakuraion.englishhelper.vocabulary.di.viewmodel.daggerViewModel
+import pro.yakuraion.englishhelper.vocabulary.ui.listwords.wordspage.ListWordsCompletedPage
+import pro.yakuraion.englishhelper.vocabulary.ui.listwords.wordspage.ListWordsInProgressPage
 
 @Composable
-fun ListScreen(
-    viewModel: ListViewModel = daggerViewModel(),
+fun ListWordsScreen(
+    viewModel: ListWordsViewModel = daggerViewModel(),
     onBackClick: () -> Unit
 ) {
-    ListScreen(
+    ListWordsScreen(
         inProgressWords = viewModel.inProgressWords,
         completedWords = viewModel.completedWords,
         onBackClick = onBackClick
@@ -34,7 +36,7 @@ fun ListScreen(
 }
 
 @Composable
-private fun ListScreen(
+private fun ListWordsScreen(
     inProgressWords: ImmutableList<LearningWord>,
     completedWords: ImmutableList<CompletedWord>,
     onBackClick: () -> Unit
@@ -49,14 +51,18 @@ private fun ListScreen(
         ) { pageNumber ->
             when (Page.values()[pageNumber]) {
                 Page.IN_PROGRESS -> {
-                    ListInProgress(
+                    ListWordsInProgressPage(
                         words = inProgressWords,
+                        onResetInProgressWords = {},
+                        onDeleteInProgressWords = {},
                         modifier = Modifier.fillMaxSize()
                     )
                 }
                 Page.COMPLETED -> {
-                    ListCompleted(
+                    ListWordsCompletedPage(
                         words = completedWords,
+                        onResetCompletedWords = {},
+                        onDeleteCompletedWords = {},
                         modifier = Modifier.fillMaxSize()
                     )
                 }
@@ -98,9 +104,9 @@ private enum class Page {
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun ListScreenPreview() {
+private fun ListWordsScreenPreview() {
     AppTheme {
-        ListScreen(
+        ListWordsScreen(
             inProgressWords = (0..30).map { index ->
                 LearningWord(
                     name = "word $index",

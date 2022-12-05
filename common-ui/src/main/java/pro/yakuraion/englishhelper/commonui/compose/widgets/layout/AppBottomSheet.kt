@@ -1,11 +1,12 @@
 package pro.yakuraion.englishhelper.commonui.compose.widgets.layout
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,8 +14,12 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Divider
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -67,9 +72,12 @@ fun AppBottomSheet(
                 .height(bottomSheetHeight)
                 .align(Alignment.BottomCenter)
                 .offset(y = bottomSheetOffset)
+                .background(MaterialTheme.colorScheme.surface)
         ) {
             Divider()
-            bottomSheet()
+            CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onSurface) {
+                bottomSheet()
+            }
         }
     }
 }
@@ -107,36 +115,41 @@ fun rememberAppBottomSheetState(
 }
 
 @Suppress("MagicNumber")
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun AppBottomSheetPreview() {
     AppTheme {
-        val state = rememberAppBottomSheetState()
-        AppBottomSheet(
-            bottomSheet = {
-                Spacer(
-                    modifier = Modifier
-                        .fillMaxSize()
-                )
-            },
-            bottomSheetHeight = 200.dp,
-            state = state
-        ) {
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(50) { index ->
-                    Text(
-                        text = "row $index",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                if (state.isCollapsed) {
-                                    state.expand()
-                                } else {
-                                    state.collapse()
+        Scaffold {
+            val state = rememberAppBottomSheetState(AppBottomSheetState.Value.EXPANDED)
+            AppBottomSheet(
+                bottomSheet = {
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        Text(
+                            text = "Bottom sheet",
+                            modifier = Modifier.align(Alignment.Center),
+                        )
+                    }
+                },
+                bottomSheetHeight = 200.dp,
+                state = state
+            ) {
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                    items(50) { index ->
+                        Text(
+                            text = "row $index",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    if (state.isCollapsed) {
+                                        state.expand()
+                                    } else {
+                                        state.collapse()
+                                    }
                                 }
-                            }
-                    )
+                        )
+                    }
                 }
             }
         }

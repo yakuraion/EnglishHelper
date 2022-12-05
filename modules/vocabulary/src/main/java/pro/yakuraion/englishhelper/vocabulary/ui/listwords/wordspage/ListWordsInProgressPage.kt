@@ -1,16 +1,12 @@
-package pro.yakuraion.englishhelper.vocabulary.ui.list
+package pro.yakuraion.englishhelper.vocabulary.ui.listwords.wordspage
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarOutline
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -19,60 +15,53 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import pro.yakuraion.englishhelper.commonui.compose.widgets.layout.rememberAppBottomSheetState
+import kotlinx.collections.immutable.toPersistentList
+import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 import pro.yakuraion.englishhelper.domain.entities.learning.LearningWord
 import pro.yakuraion.englishhelper.domain.entities.learning.MemorizationLevel
 import pro.yakuraion.englishhelper.vocabulary.R
+import pro.yakuraion.englishhelper.vocabulary.ui.listwords.bottomsheet.ListWordsPageBottomSheetButton
 
 @Composable
-fun ListInProgress(
+fun ListWordsInProgressPage(
     words: ImmutableList<LearningWord>,
+    onResetInProgressWords: (List<LearningWord>) -> Unit,
+    onDeleteInProgressWords: (List<LearningWord>) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val bottomSheetState = rememberAppBottomSheetState()
-    ListBottomSheet(
-        numberOfSelected = 10,
-        bottomSheetState = bottomSheetState,
+    val state = rememberListWordsState(words = words)
+
+    ListWordsPage(
+        state = state,
+        key = { _, item -> item.name },
+        wordRowContent = { word -> WordRowContent(word = word) },
+        onWordSelect = { word, isSelect -> if (isSelect) state.select(word) else state.deselect(word) },
         bottomSheetButtons = persistentListOf(
-            { BottomSheetResetButton(onClick = {}) },
-            { BottomSheetDeleteButton(onClick = {}) }
-        ),
-        modifier = modifier
-    ) {
-        Words(words = words)
-    }
-}
-
-@Composable
-private fun Words(
-    words: ImmutableList<LearningWord>,
-    modifier: Modifier = Modifier
-) {
-    LazyColumn(modifier = modifier) {
-        itemsIndexed(
-            items = words,
-            key = { _, item -> item.name }
-        ) { index, word ->
-            WordRow(
-                word = word,
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-            )
-            if (index != words.lastIndex) {
-                Divider()
+            {
+                BottomSheetResetButton(
+                    onClick = { onResetInProgressWords(state.selectedWords) }
+                )
+            },
+            {
+                BottomSheetDeleteButton(
+                    onClick = { onDeleteInProgressWords(state.selectedWords) }
+                )
             }
-        }
-    }
+        ),
+        onBottomSheetCloseClick = { state.deselectAll() },
+        modifier = modifier
+    )
 }
 
 @Composable
-private fun WordRow(
+private fun WordRowContent(
     word: LearningWord,
     modifier: Modifier = Modifier
 ) {
-    Row(modifier = modifier.fillMaxWidth()) {
+    Row(modifier = modifier) {
         WordNameText(
             name = word.name,
             modifier = Modifier.weight(1f)
@@ -91,7 +80,6 @@ private fun WordNameText(
     Text(
         text = name,
         modifier = modifier,
-        color = MaterialTheme.colorScheme.secondary,
         overflow = TextOverflow.Ellipsis,
         maxLines = 2,
         style = MaterialTheme.typography.titleLarge
@@ -130,7 +118,7 @@ private fun WordLevelStar(enabled: Boolean) {
 private fun BottomSheetResetButton(
     onClick: () -> Unit
 ) {
-    ListBottomSheetButton(
+    ListWordsPageBottomSheetButton(
         text = stringResource(id = R.string.vocabulary_list_screen_bottom_sheet_reset_progress_button),
         icon = Icons.Default.Refresh,
         onClick = onClick
@@ -141,9 +129,29 @@ private fun BottomSheetResetButton(
 private fun BottomSheetDeleteButton(
     onClick: () -> Unit
 ) {
-    ListBottomSheetButton(
+    ListWordsPageBottomSheetButton(
         text = stringResource(id = R.string.vocabulary_list_screen_bottom_sheet_delete_button),
         icon = Icons.Default.Delete,
         onClick = onClick
     )
+}
+
+@Suppress("MagicNumber")
+@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun ListWordsInProgressPagePreview() {
+    AppTheme {
+        ListWordsInProgressPage(
+            words = List(30) { index ->
+                LearningWord(
+                    name = "word $index",
+                    memorizationLevel = MemorizationLevel(index % 4),
+                    nextDayToLearn = 0
+                )
+            }.toPersistentList(),
+            onResetInProgressWords = {},
+            onDeleteInProgressWords = {}
+        )
+    }
 }

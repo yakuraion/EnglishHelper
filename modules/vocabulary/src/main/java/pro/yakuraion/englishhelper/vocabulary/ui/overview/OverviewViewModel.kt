@@ -10,12 +10,17 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
+import pro.yakuraion.englishhelper.common.coroutines.operators.flowCombine
 import pro.yakuraion.englishhelper.commonui.di.viewmodel.AssistedSavedStateViewModelFactory
+import pro.yakuraion.englishhelper.domain.usecases.GetCompletedWordsUseCase
+import pro.yakuraion.englishhelper.domain.usecases.GetLearningWordsUseCase
 import pro.yakuraion.englishhelper.domain.usecases.GetWordsToLearnUseCase
 
 class OverviewViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
-    private val getWordsToLearnUseCase: GetWordsToLearnUseCase
+    private val getWordsToLearnUseCase: GetWordsToLearnUseCase,
+    private val getLearningWordsUseCase: GetLearningWordsUseCase,
+    private val getCompletedWordsUseCase: GetCompletedWordsUseCase
 ) : ViewModel() {
 
     var uiState by mutableStateOf<OverviewUiState>(OverviewUiState.Loading)
@@ -23,8 +28,16 @@ class OverviewViewModel @AssistedInject constructor(
 
     init {
         viewModelScope.launch {
-            getWordsToLearnUseCase.getWordsToLearnToday().collect { words ->
-                uiState = OverviewUiState.Content(numberOfWordsToLearnToday = words.count())
+            flowCombine(
+                getWordsToLearnUseCase.getWordsToLearnToday(),
+                getLearningWordsUseCase.getLearningWords(),
+                getCompletedWordsUseCase.getCompletedWords()
+            ).collect { (todayWords, learningWords, completedWords) ->
+                uiState = OverviewUiState.Content(
+                    numberOfWordsToLearnToday = todayWords.count(),
+                    totalNumberOfInProgressWords = learningWords.count(),
+                    totalNumberOfCompletedWords = completedWords.count()
+                )
             }
         }
     }

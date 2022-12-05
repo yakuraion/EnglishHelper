@@ -1,4 +1,4 @@
-package pro.yakuraion.englishhelper.vocabulary.ui.list
+package pro.yakuraion.englishhelper.vocabulary.ui.listwords
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,7 +19,7 @@ import pro.yakuraion.englishhelper.domain.entities.learning.LearningWord
 import pro.yakuraion.englishhelper.domain.usecases.GetCompletedWordsUseCase
 import pro.yakuraion.englishhelper.domain.usecases.GetLearningWordsUseCase
 
-class ListViewModel @AssistedInject constructor(
+class ListWordsViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
     private val getLearningWordsUseCase: GetLearningWordsUseCase,
     private val getCompletedWordsUseCase: GetCompletedWordsUseCase
@@ -44,8 +44,8 @@ class ListViewModel @AssistedInject constructor(
     }
 
     @AssistedFactory
-    interface Factory : AssistedSavedStateViewModelFactory<ListViewModel> {
+    interface Factory : AssistedSavedStateViewModelFactory<ListWordsViewModel> {
 
-        override fun create(savedStateHandle: SavedStateHandle): ListViewModel
+        override fun create(savedStateHandle: SavedStateHandle): ListWordsViewModel
     }
 }
