@@ -15,7 +15,6 @@ import pro.yakuraion.englishhelper.data.database.daos.TodayLearningWordsDao
 import pro.yakuraion.englishhelper.data.database.daos.WordsDao
 import pro.yakuraion.englishhelper.domain.entities.learning.LearningWord
 import pro.yakuraion.englishhelper.domain.repositories.TodayLearningWordsRepository
-import java.io.File
 import javax.inject.Inject
 
 internal class TodayLearningWordsRepositoryImpl @Inject constructor(
@@ -36,8 +35,8 @@ internal class TodayLearningWordsRepositoryImpl @Inject constructor(
         todayLearningWordsDao.reset(entities)
     }
 
-    override suspend fun addWordToLearning(name: String, soundFile: File?, nextDayToLearn: Int) {
-        val wordEntity = getWordEntity(name, soundFile)
+    override suspend fun addWordToLearning(name: String, soundUri: String?, nextDayToLearn: Int) {
+        val wordEntity = getWordEntity(name, soundUri)
         val learningWordEntity = getLearningWordEntity(name, nextDayToLearn)
         val todayLearningWordEntity = getTodayLearningWordEntity(name)
         appDatabase.withTransaction {

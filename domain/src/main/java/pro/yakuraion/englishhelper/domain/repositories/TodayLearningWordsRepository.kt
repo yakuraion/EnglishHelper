@@ -2,7 +2,6 @@ package pro.yakuraion.englishhelper.domain.repositories
 
 import kotlinx.coroutines.flow.Flow
 import pro.yakuraion.englishhelper.domain.entities.learning.LearningWord
-import java.io.File
 
 interface TodayLearningWordsRepository {
 
@@ -10,7 +9,7 @@ interface TodayLearningWordsRepository {
 
     suspend fun setTodayLearningWords(words: List<LearningWord>)
 
-    suspend fun addWordToLearning(name: String, soundFile: File?, nextDayToLearn: Int)
+    suspend fun addWordToLearning(name: String, soundUri: String?, nextDayToLearn: Int)
 
     suspend fun updateWordAndMoveToTheEndOfToday(word: LearningWord)
 

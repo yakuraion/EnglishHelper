@@ -39,10 +39,10 @@ class TestingViewModel @AssistedInject constructor(
                     word == null -> {
                         TestingUiState.NoMoreWords
                     }
-                    word.word.soundFile != null -> {
+                    word.word.soundUri != null -> {
                         TestingUiState.WordWithAudio(
                             word = word.word.name,
-                            soundFile = word.word.soundFile!!,
+                            soundUri = word.word.soundUri!!,
                             linkUrl = word.word.wooordhuntUrl
                         )
                     }

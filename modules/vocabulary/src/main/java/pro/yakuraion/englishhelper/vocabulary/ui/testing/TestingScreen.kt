@@ -32,7 +32,6 @@ import pro.yakuraion.englishhelper.commonui.compose.widgets.buttons.AppOutlinedB
 import pro.yakuraion.englishhelper.commonui.openLink
 import pro.yakuraion.englishhelper.vocabulary.R
 import pro.yakuraion.englishhelper.vocabulary.di.viewmodel.daggerViewModel
-import java.io.File
 
 @Composable
 fun TestingScreen(
@@ -87,7 +86,7 @@ private fun TestingScreen(
                 is TestingUiState.WordWithAudio -> {
                     WordWithAudio(
                         word = uiState.word,
-                        soundFile = uiState.soundFile,
+                        soundUri = uiState.soundUri,
                         dictionaryUrl = uiState.linkUrl,
                         onVisitedDictionary = onVisitedDictionary,
                         onWordTested = onWordTested,
@@ -164,7 +163,7 @@ private fun WordSimple(
 @Composable
 private fun WordWithAudio(
     word: String,
-    soundFile: File,
+    soundUri: String,
     dictionaryUrl: String,
     onVisitedDictionary: () -> Unit,
     onWordTested: () -> Unit,
@@ -178,7 +177,7 @@ private fun WordWithAudio(
         TestingWordWithAudio(
             state = rememberTestingWordWithAudioState(
                 word = word,
-                soundFile = soundFile
+                soundUri = soundUri
             ),
             onWordTested = onWordTested
         )
@@ -236,7 +235,7 @@ private fun TestingScreenWithAudioPreview() {
         TestingScreen(
             uiState = TestingUiState.WordWithAudio(
                 word = "word",
-                soundFile = File(""),
+                soundUri = "",
                 linkUrl = ""
             ),
             onBackClick = {},

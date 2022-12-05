@@ -1,7 +1,5 @@
 package pro.yakuraion.englishhelper.vocabulary.ui.testing
 
-import java.io.File
-
 sealed class TestingUiState {
 
     object Loading : TestingUiState()
@@ -10,5 +8,5 @@ sealed class TestingUiState {
 
     data class WordSimple(val word: String, val linkUrl: String) : TestingUiState()
 
-    data class WordWithAudio(val word: String, val soundFile: File, val linkUrl: String) : TestingUiState()
+    data class WordWithAudio(val word: String, val soundUri: String, val linkUrl: String) : TestingUiState()
 }

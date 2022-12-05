@@ -10,8 +10,7 @@ configure<BaseExtension> {
     }
 
     buildFeatures.compose = true
-
-    composeOptions.kotlinCompilerExtensionVersion = "1.3.0"
+    composeOptions.kotlinCompilerExtensionVersion = "1.3.2"
 }
 
 dependencies {

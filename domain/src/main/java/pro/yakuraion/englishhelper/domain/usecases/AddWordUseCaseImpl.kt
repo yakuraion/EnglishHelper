@@ -18,9 +18,9 @@ internal class AddWordUseCaseImpl @Inject constructor(
     override suspend fun addWord(name: String) {
         require(!isWordAlreadyExistUseCase.isWordAlreadyExist(name)) { "Word '$name' has been already added" }
         withContext(dispatchers.ioDispatcher) {
-            val soundFile = wordsSoundsRepository.downloadSoundForWorld(name)
+            val soundUri = wordsSoundsRepository.downloadSoundForWorld(name)?.toURI()?.toString()
             val currentDay = learningRepository.getLearningDay()
-            todayLearningWordsRepository.addWordToLearning(name, soundFile, currentDay)
+            todayLearningWordsRepository.addWordToLearning(name, soundUri, currentDay)
         }
     }
 }

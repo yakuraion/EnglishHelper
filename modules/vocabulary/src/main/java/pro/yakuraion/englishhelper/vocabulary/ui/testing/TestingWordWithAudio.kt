@@ -32,7 +32,6 @@ import pro.yakuraion.englishhelper.commonui.compose.widgets.AppTextField
 import pro.yakuraion.englishhelper.commonui.compose.widgets.CustomTextFieldActionIcon
 import pro.yakuraion.englishhelper.commonui.compose.widgets.CustomTextFieldError
 import pro.yakuraion.englishhelper.vocabulary.R
-import java.io.File
 
 @Composable
 fun TestingWordWithAudio(
@@ -41,7 +40,7 @@ fun TestingWordWithAudio(
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         PlaySoundButton(
-            soundFile = state.soundFile,
+            soundUri = state.soundUri,
             modifier = Modifier.align(Alignment.Center)
         )
         AnswerTextField(
@@ -55,21 +54,19 @@ fun TestingWordWithAudio(
                 .padding(16.dp)
         )
 
-        PlaySoundEffect(state.soundFile)
+        PlaySoundEffect(state.soundUri)
     }
 }
 
 @Composable
 private fun PlaySoundButton(
-    soundFile: File,
+    soundUri: String,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
 
     Button(
-        onClick = {
-            MediaPlayerUtils.playSound(context, soundFile)
-        },
+        onClick = { MediaPlayerUtils.playSound(context, soundUri) },
         modifier = modifier.size(100.dp),
         shape = CircleShape,
         contentPadding = PaddingValues(16.dp)
@@ -125,16 +122,16 @@ private fun getWrongAnswerErrorText(isError: Boolean): String {
 }
 
 @Composable
-private fun PlaySoundEffect(soundFile: File) {
+private fun PlaySoundEffect(soundUri: String) {
     val context = LocalContext.current
-    LaunchedEffect(soundFile) {
-        MediaPlayerUtils.playSound(context, soundFile)
+    LaunchedEffect(soundUri) {
+        MediaPlayerUtils.playSound(context, soundUri)
     }
 }
 
 class TestingWordWithAudioState(
     val word: String,
-    val soundFile: File
+    val soundUri: String
 ) {
 
     var answer: String by mutableStateOf("")
@@ -163,10 +160,10 @@ class TestingWordWithAudioState(
 @Composable
 fun rememberTestingWordWithAudioState(
     word: String,
-    soundFile: File
+    soundUri: String
 ): TestingWordWithAudioState {
-    return remember(word, soundFile) {
-        TestingWordWithAudioState(word, soundFile)
+    return remember(word, soundUri) {
+        TestingWordWithAudioState(word, soundUri)
     }
 }
 
@@ -178,7 +175,7 @@ private fun TestingWordWithAudioPreview() {
         TestingWordWithAudio(
             state = TestingWordWithAudioState(
                 word = "word",
-                soundFile = File("")
+                soundUri = ""
             ),
             onWordTested = {}
         )
