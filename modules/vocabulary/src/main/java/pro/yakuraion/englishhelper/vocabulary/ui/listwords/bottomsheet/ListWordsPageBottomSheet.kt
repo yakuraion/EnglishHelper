@@ -2,6 +2,7 @@ package pro.yakuraion.englishhelper.vocabulary.ui.listwords.bottomsheet
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -25,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import pro.yakuraion.englishhelper.commonui.compose.animation.content.CounterAnimatedContent
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 import pro.yakuraion.englishhelper.commonui.compose.widgets.layout.AppBottomSheet
 import pro.yakuraion.englishhelper.commonui.compose.widgets.layout.AppBottomSheetState
@@ -56,6 +58,7 @@ fun ListWordsPageBottomSheet(
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun BottomSheetContent(
     numberOfSelected: Int,
@@ -72,11 +75,12 @@ private fun BottomSheetContent(
                 .padding(start = 16.dp, top = 8.dp, end = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            CounterAnimatedContent(targetState = numberOfSelected) { targetCount ->
+                Text(text = targetCount.toString())
+            }
+            Spacer(modifier = Modifier.width(4.dp))
             Text(
-                text = stringResource(
-                    R.string.vocabulary_list_words_screen_bottom_sheet_number_of_selected_words,
-                    numberOfSelected
-                ),
+                text = stringResource(R.string.vocabulary_list_words_screen_bottom_sheet_number_of_selected_words),
                 modifier = Modifier.weight(1f)
             )
 
