@@ -74,7 +74,7 @@ private fun <W> WordRow(
     val backgroundColor = if (isSelected) {
         MaterialTheme.colorScheme.secondaryContainer
     } else {
-        MaterialTheme.colorScheme.surface
+        MaterialTheme.colorScheme.background
     }
 
     Box(

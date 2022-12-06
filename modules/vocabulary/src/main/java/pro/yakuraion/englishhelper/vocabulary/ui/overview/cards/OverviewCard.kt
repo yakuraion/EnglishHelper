@@ -26,7 +26,7 @@ fun OverviewCard(
     val (containerColor, contentColor) = if (onClick != null) {
         activeContainerColor to activeContentColor
     } else {
-        MaterialTheme.colorScheme.surfaceVariant to MaterialTheme.colorScheme.onSurfaceVariant
+        MaterialTheme.colorScheme.surface to MaterialTheme.colorScheme.onSurface
     }
 
     Box(

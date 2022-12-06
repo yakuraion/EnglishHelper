@@ -5,7 +5,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,6 +16,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 import pro.yakuraion.englishhelper.commonui.compose.widgets.AppPagerWithTabs
+import pro.yakuraion.englishhelper.commonui.compose.widgets.AppTopAppBar
 import pro.yakuraion.englishhelper.commonui.compose.widgets.buttons.AppArrowBackButton
 import pro.yakuraion.englishhelper.domain.entities.CompletedWord
 import pro.yakuraion.englishhelper.domain.entities.learning.LearningWord
@@ -82,13 +82,12 @@ private fun ListWordsScreen(
                 }
             }
         }
-
     }
 }
 
 @Composable
 private fun TopBar(onBackClick: () -> Unit) {
-    CenterAlignedTopAppBar(
+    AppTopAppBar(
         title = {
             Text(text = stringResource(id = R.string.vocabulary_list_words_screen_title))
         },

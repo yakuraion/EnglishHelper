@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.HelpOutline
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
+import pro.yakuraion.englishhelper.commonui.compose.widgets.AppTopAppBar
 import pro.yakuraion.englishhelper.commonui.compose.widgets.buttons.AppArrowBackButton
 import pro.yakuraion.englishhelper.commonui.compose.widgets.buttons.AppButtonWithText
 import pro.yakuraion.englishhelper.commonui.compose.widgets.buttons.AppOutlinedButton
@@ -100,7 +100,7 @@ private fun TestingScreen(
 
 @Composable
 private fun TopBar(onBackClick: () -> Unit) {
-    CenterAlignedTopAppBar(
+    AppTopAppBar(
         title = {
             Text(text = stringResource(id = R.string.vocabulary_testing_screen_title))
         },

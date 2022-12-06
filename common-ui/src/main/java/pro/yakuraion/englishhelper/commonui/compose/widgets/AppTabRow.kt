@@ -24,6 +24,8 @@ fun AppTabRow(
     TabRow(
         selectedTabIndex = selectedTabIndex,
         modifier = modifier,
+        containerColor = MaterialTheme.colorScheme.background,
+        contentColor = MaterialTheme.colorScheme.onBackground,
         indicator = { tabPositions ->
             TabRowDefaults.Indicator(
                 modifier = Modifier

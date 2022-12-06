@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
@@ -25,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
+import pro.yakuraion.englishhelper.commonui.compose.widgets.AppTopAppBar
 import pro.yakuraion.englishhelper.vocabulary.R
 import pro.yakuraion.englishhelper.vocabulary.di.viewmodel.daggerViewModel
 import pro.yakuraion.englishhelper.vocabulary.ui.overview.cards.OverviewEmptyTestingCard
@@ -55,7 +55,7 @@ private fun OverviewScreen(
 ) {
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
+            AppTopAppBar(
                 title = {
                     Text(text = stringResource(id = R.string.vocabulary_overview_screen_title))
                 },

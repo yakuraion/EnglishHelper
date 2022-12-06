@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -25,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 import pro.yakuraion.englishhelper.commonui.compose.widgets.AppTextField
+import pro.yakuraion.englishhelper.commonui.compose.widgets.AppTopAppBar
 import pro.yakuraion.englishhelper.commonui.compose.widgets.CustomTextFieldActionIcon
 import pro.yakuraion.englishhelper.commonui.compose.widgets.CustomTextFieldError
 import pro.yakuraion.englishhelper.vocabulary.R
@@ -52,7 +52,7 @@ private fun AddWordsScreen(
 ) {
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
+            AppTopAppBar(
                 title = {
                     Text(text = stringResource(id = R.string.vocabulary_add_words_screen_title))
                 },
