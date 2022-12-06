@@ -24,9 +24,10 @@ fun <WORD> ListWordsPage(
     key: (index: Int, item: WORD) -> Any,
     wordRowContent: @Composable (WORD) -> Unit,
     onWordSelect: (word: WORD, isSelect: Boolean) -> Unit,
+    emptyWordsContent: @Composable () -> Unit,
     bottomSheetButtons: ImmutableList<@Composable () -> Unit>,
     onBottomSheetCloseClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     ListWordsPageBottomSheet(
         numberOfSelected = state.selectedWords.count(),
@@ -35,12 +36,16 @@ fun <WORD> ListWordsPage(
         onBottomSheetCloseClick = onBottomSheetCloseClick,
         modifier = modifier
     ) {
-        Words(
-            state = state,
-            key = key,
-            wordRowContent = wordRowContent,
-            onWordSelect = onWordSelect
-        )
+        if (state.words.isNotEmpty()) {
+            Words(
+                state = state,
+                key = key,
+                wordRowContent = wordRowContent,
+                onWordSelect = onWordSelect
+            )
+        } else {
+            emptyWordsContent()
+        }
     }
 }
 
