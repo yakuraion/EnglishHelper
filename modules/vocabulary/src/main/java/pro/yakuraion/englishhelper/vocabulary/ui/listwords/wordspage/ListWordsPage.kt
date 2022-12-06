@@ -56,7 +56,7 @@ private fun <WORD> Words(
         itemsIndexed(
             items = state.words,
             key = key
-        ) { index, word ->
+        ) { _, word ->
             WordRow(
                 word = word,
                 isSelectionModeEnabled = state.isSelectionModeEnabled,
@@ -64,9 +64,7 @@ private fun <WORD> Words(
                 onSelect = { isSelect -> onWordSelect(word, isSelect) },
                 content = wordRowContent
             )
-            if (index != state.words.lastIndex) {
-                Divider()
-            }
+            Divider()
         }
     }
 }
