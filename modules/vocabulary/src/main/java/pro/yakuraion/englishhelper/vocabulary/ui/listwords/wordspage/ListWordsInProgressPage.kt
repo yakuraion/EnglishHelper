@@ -24,29 +24,25 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 import pro.yakuraion.englishhelper.domain.entities.learning.LearningWord
 import pro.yakuraion.englishhelper.domain.entities.learning.MemorizationLevel
 import pro.yakuraion.englishhelper.vocabulary.R
-import pro.yakuraion.englishhelper.vocabulary.ui.listwords.bottomsheet.ListWordsPageBottomSheetButton
+import pro.yakuraion.englishhelper.vocabulary.ui.listwords.wordspage.bottomsheet.ListWordsPageBottomSheetButton
 
 @Composable
 fun ListWordsInProgressPage(
-    words: ImmutableList<LearningWord>,
+    state: ListWordsPageState<LearningWord>,
     onResetInProgressWords: (List<LearningWord>) -> Unit,
     onDeleteInProgressWords: (List<LearningWord>) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val state = rememberListWordsState(words = words)
-
     ListWordsPage(
         state = state,
         key = { _, item -> item.name },
         wordRowContent = { word -> WordRowContent(word = word) },
-        onWordSelect = { word, isSelect -> if (isSelect) state.select(word) else state.deselect(word) },
         emptyWordsContent = { EmptyWords() },
         bottomSheetButtons = persistentListOf(
             {
@@ -60,7 +56,6 @@ fun ListWordsInProgressPage(
                 )
             }
         ),
-        onBottomSheetCloseClick = { state.deselectAll() },
         modifier = modifier
     )
 }
@@ -196,14 +191,16 @@ private fun BottomSheetDeleteButton(
 @Composable
 private fun ListWordsInProgressPagePreview() {
     AppTheme {
+        val words = List(30) { index ->
+            LearningWord(
+                name = "word $index",
+                memorizationLevel = MemorizationLevel(index % 4),
+                nextDayToLearn = 0
+            )
+        }.toPersistentList()
+
         ListWordsInProgressPage(
-            words = List(30) { index ->
-                LearningWord(
-                    name = "word $index",
-                    memorizationLevel = MemorizationLevel(index % 4),
-                    nextDayToLearn = 0
-                )
-            }.toPersistentList(),
+            state = rememberListWordsPageState(words = words),
             onResetInProgressWords = {},
             onDeleteInProgressWords = {}
         )
@@ -216,7 +213,7 @@ private fun ListWordsInProgressPagePreview() {
 private fun ListWordsInProgressPageEmptyPreview() {
     AppTheme {
         ListWordsInProgressPage(
-            words = persistentListOf(),
+            state = rememberListWordsPageState(words = persistentListOf()),
             onResetInProgressWords = {},
             onDeleteInProgressWords = {}
         )

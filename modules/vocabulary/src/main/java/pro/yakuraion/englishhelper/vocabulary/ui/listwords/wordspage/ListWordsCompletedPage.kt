@@ -18,28 +18,24 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 import pro.yakuraion.englishhelper.domain.entities.CompletedWord
 import pro.yakuraion.englishhelper.vocabulary.R
-import pro.yakuraion.englishhelper.vocabulary.ui.listwords.bottomsheet.ListWordsPageBottomSheetButton
+import pro.yakuraion.englishhelper.vocabulary.ui.listwords.wordspage.bottomsheet.ListWordsPageBottomSheetButton
 
 @Composable
 fun ListWordsCompletedPage(
-    words: ImmutableList<CompletedWord>,
+    state: ListWordsPageState<CompletedWord>,
     onResetCompletedWords: (List<CompletedWord>) -> Unit,
     onDeleteCompletedWords: (List<CompletedWord>) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val state = rememberListWordsState(words = words)
-
     ListWordsPage(
         state = state,
         key = { _, item -> item.name },
         wordRowContent = { word -> WordRowContent(word = word) },
-        onWordSelect = { word, isSelect -> if (isSelect) state.select(word) else state.deselect(word) },
         emptyWordsContent = { EmptyWords() },
         bottomSheetButtons = persistentListOf(
             {
@@ -53,7 +49,6 @@ fun ListWordsCompletedPage(
                 )
             }
         ),
-        onBottomSheetCloseClick = { state.deselectAll() },
         modifier = modifier,
     )
 }
@@ -131,12 +126,14 @@ private fun BottomSheetDeleteButton(
 @Composable
 private fun ListWordsCompletedPagePreview() {
     AppTheme {
+        val words = List(30) { index ->
+            CompletedWord(
+                name = "word $index"
+            )
+        }.toPersistentList()
+
         ListWordsCompletedPage(
-            words = List(30) { index ->
-                CompletedWord(
-                    name = "word $index"
-                )
-            }.toPersistentList(),
+            state = rememberListWordsPageState(words = words),
             onResetCompletedWords = {},
             onDeleteCompletedWords = {}
         )
@@ -150,7 +147,7 @@ private fun ListWordsCompletedPagePreview() {
 private fun ListWordsCompletedPageEmptyPreview() {
     AppTheme {
         ListWordsCompletedPage(
-            words = persistentListOf(),
+            state = rememberListWordsPageState(words = persistentListOf()),
             onResetCompletedWords = {},
             onDeleteCompletedWords = {}
         )

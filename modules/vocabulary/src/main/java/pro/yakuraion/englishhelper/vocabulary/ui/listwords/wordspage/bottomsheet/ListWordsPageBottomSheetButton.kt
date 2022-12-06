@@ -1,4 +1,4 @@
-package pro.yakuraion.englishhelper.vocabulary.ui.listwords.bottomsheet
+package pro.yakuraion.englishhelper.vocabulary.ui.listwords.wordspage.bottomsheet
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column

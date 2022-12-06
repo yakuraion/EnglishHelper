@@ -22,6 +22,7 @@ import pro.yakuraion.englishhelper.vocabulary.R
 import pro.yakuraion.englishhelper.vocabulary.di.viewmodel.daggerViewModel
 import pro.yakuraion.englishhelper.vocabulary.ui.listwords.wordspage.ListWordsCompletedPage
 import pro.yakuraion.englishhelper.vocabulary.ui.listwords.wordspage.ListWordsInProgressPage
+import pro.yakuraion.englishhelper.vocabulary.ui.listwords.wordspage.rememberListWordsPageState
 
 @Composable
 fun ListWordsScreen(
@@ -44,15 +45,22 @@ private fun ListWordsScreen(
     Scaffold(
         topBar = { TopBar(onBackClick = onBackClick) }
     ) { paddingValues ->
+        val inProgressPageState = rememberListWordsPageState(words = inProgressWords)
+        val completedPageState = rememberListWordsPageState(words = completedWords)
+
         AppPagerWithTabs(
             count = Page.values().count(),
             title = { Page.values()[it].title() },
-            modifier = Modifier.padding(paddingValues)
+            modifier = Modifier.padding(paddingValues),
+            onPageChanged = {
+                inProgressPageState.deselectAll()
+                completedPageState.deselectAll()
+            }
         ) { pageNumber ->
             when (Page.values()[pageNumber]) {
                 Page.IN_PROGRESS -> {
                     ListWordsInProgressPage(
-                        words = inProgressWords,
+                        state = inProgressPageState,
                         onResetInProgressWords = {},
                         onDeleteInProgressWords = {},
                         modifier = Modifier.fillMaxSize()
@@ -60,7 +68,7 @@ private fun ListWordsScreen(
                 }
                 Page.COMPLETED -> {
                     ListWordsCompletedPage(
-                        words = completedWords,
+                        state = completedPageState,
                         onResetCompletedWords = {},
                         onDeleteCompletedWords = {},
                         modifier = Modifier.fillMaxSize()

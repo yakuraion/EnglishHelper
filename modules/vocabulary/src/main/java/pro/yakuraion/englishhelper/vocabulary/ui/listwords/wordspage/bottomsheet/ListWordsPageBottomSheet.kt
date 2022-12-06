@@ -1,8 +1,7 @@
-package pro.yakuraion.englishhelper.vocabulary.ui.listwords.bottomsheet
+package pro.yakuraion.englishhelper.vocabulary.ui.listwords.wordspage.bottomsheet
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -58,7 +57,6 @@ fun ListWordsPageBottomSheet(
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun BottomSheetContent(
     numberOfSelected: Int,

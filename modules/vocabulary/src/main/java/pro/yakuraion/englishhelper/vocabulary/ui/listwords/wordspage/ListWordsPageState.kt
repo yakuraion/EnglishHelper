@@ -1,47 +1,38 @@
 package pro.yakuraion.englishhelper.vocabulary.ui.listwords.wordspage
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import kotlinx.collections.immutable.ImmutableList
 import pro.yakuraion.englishhelper.commonui.compose.widgets.layout.AppBottomSheetState
 import pro.yakuraion.englishhelper.commonui.compose.widgets.layout.rememberAppBottomSheetState
+import pro.yakuraion.englishhelper.vocabulary.ui.listwords.wordspage.content.ListWordsContentState
+import pro.yakuraion.englishhelper.vocabulary.ui.listwords.wordspage.content.rememberListWordsContentState
 
-class ListWordsPageState<WORD>(
-    val words: ImmutableList<WORD>,
+class ListWordsPageState<W>(
+    val contentState: ListWordsContentState<W>,
     val bottomSheetState: AppBottomSheetState
 ) {
 
-    private val _selectedWords = mutableStateListOf<WORD>()
-    val selectedWords: List<WORD>
-        get() = _selectedWords
+    val selectedWords: List<W>
+        get() = contentState.selectedWords
 
-    val isSelectionModeEnabled: Boolean
-        get() = _selectedWords.isNotEmpty()
-
-    fun getIsSelected(word: WORD) = _selectedWords.contains(word)
-
-    fun select(word: WORD) {
-        if (!_selectedWords.contains(word)) {
-            _selectedWords.add(word)
-        }
+    fun selectWord(word: W) {
+        contentState.select(word)
         updateBottomSheetState()
     }
 
-    fun deselect(word: WORD) {
-        if (_selectedWords.contains(word)) {
-            _selectedWords.remove(word)
-        }
+    fun deselectWord(word: W) {
+        contentState.deselect(word)
         updateBottomSheetState()
     }
 
     fun deselectAll() {
-        _selectedWords.clear()
-        updateBottomSheetState()
+        contentState.deselectAll()
+        bottomSheetState.collapse()
     }
 
     private fun updateBottomSheetState() {
-        if (isSelectionModeEnabled) {
+        if (contentState.selectedWords.isNotEmpty()) {
             bottomSheetState.expand()
         } else {
             bottomSheetState.collapse()
@@ -50,9 +41,12 @@ class ListWordsPageState<WORD>(
 }
 
 @Composable
-fun <WORD> rememberListWordsState(
-    words: ImmutableList<WORD>,
+fun <W> rememberListWordsPageState(
+    words: ImmutableList<W>,
     bottomSheetState: AppBottomSheetState = rememberAppBottomSheetState()
-) = remember(words, bottomSheetState) {
-    ListWordsPageState(words, bottomSheetState)
+): ListWordsPageState<W> {
+    val contentState = rememberListWordsContentState(words = words)
+    return remember(contentState, bottomSheetState) {
+        ListWordsPageState(contentState, bottomSheetState)
+    }
 }

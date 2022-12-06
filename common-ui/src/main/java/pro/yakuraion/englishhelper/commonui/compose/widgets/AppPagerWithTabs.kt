@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,6 +24,7 @@ fun AppPagerWithTabs(
     count: Int,
     title: @Composable (Int) -> String,
     modifier: Modifier = Modifier,
+    onPageChanged: (Int) -> Unit = {},
     content: @Composable (Int) -> Unit
 ) {
     Column(
@@ -50,6 +53,12 @@ fun AppPagerWithTabs(
             state = pagerState
         ) { page ->
             content(page)
+        }
+
+        LaunchedEffect(pagerState) {
+            snapshotFlow { pagerState.currentPage }.collect { page ->
+                onPageChanged(page)
+            }
         }
     }
 }
