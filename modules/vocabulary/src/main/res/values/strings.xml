@@ -24,6 +24,7 @@
     <string name="vocabulary_list_words_screen_title">Your words</string>
     <string name="vocabulary_list_words_screen_tab_in_progress_title">In studying</string>
     <string name="vocabulary_list_words_screen_tab_completed_title">Learned</string>
+    <string name="vocabulary_list_words_screen_word_level_new">new</string>
     <string name="vocabulary_list_words_screen_bottom_sheet_number_of_selected_words">selected</string>
     <string name="vocabulary_list_words_screen_bottom_sheet_reset_progress_button">Clear progress</string>
     <string name="vocabulary_list_words_screen_bottom_sheet_learn_again_button">Learn again</string>

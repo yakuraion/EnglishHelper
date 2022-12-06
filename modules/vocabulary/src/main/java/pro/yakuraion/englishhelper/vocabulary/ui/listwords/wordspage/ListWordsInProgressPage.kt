@@ -8,9 +8,12 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarOutline
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
@@ -61,13 +64,16 @@ private fun WordRowContent(
     word: LearningWord,
     modifier: Modifier = Modifier
 ) {
-    Row(modifier = modifier) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         WordNameText(
             name = word.name,
             modifier = Modifier.weight(1f)
         )
-        WordLevelView(
-            currentLevel = word.memorizationLevel.level
+        WordLevel(
+            level = word.memorizationLevel.level
         )
     }
 }
@@ -87,15 +93,40 @@ private fun WordNameText(
 }
 
 @Composable
-private fun WordLevelView(
-    currentLevel: Int,
+private fun WordLevel(
+    level: Int,
+    modifier: Modifier = Modifier
+) {
+    CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.tertiary) {
+        if (level == 0) {
+            WordLevelNew(modifier = modifier)
+        } else {
+            WordLevelStars(level = level, modifier = modifier)
+        }
+    }
+}
+
+@Composable
+private fun WordLevelNew(
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = stringResource(id = R.string.vocabulary_list_words_screen_word_level_new),
+        modifier = modifier,
+        style = MaterialTheme.typography.headlineSmall
+    )
+}
+
+@Composable
+private fun WordLevelStars(
+    level: Int,
     modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier) {
-        repeat(currentLevel) {
+        repeat(level) {
             WordLevelStar(enabled = true)
         }
-        repeat(MemorizationLevel.MAX_LEVEL - currentLevel) {
+        repeat(MemorizationLevel.MAX_LEVEL - level) {
             WordLevelStar(enabled = false)
         }
     }
@@ -109,8 +140,7 @@ private fun WordLevelStar(enabled: Boolean) {
     Icon(
         imageVector = if (enabled) Icons.Default.Star else Icons.Default.StarOutline,
         contentDescription = null,
-        modifier = Modifier.alpha(if (enabled) enabledAlpha else disableAlpha),
-        tint = MaterialTheme.colorScheme.tertiary
+        modifier = Modifier.alpha(if (enabled) enabledAlpha else disableAlpha)
     )
 }
 
