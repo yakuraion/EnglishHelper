@@ -7,11 +7,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FabPosition
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,7 +25,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
-import pro.yakuraion.englishhelper.commonui.compose.widgets.buttons.AppTertiaryIconTextButton
 import pro.yakuraion.englishhelper.vocabulary.R
 import pro.yakuraion.englishhelper.vocabulary.di.viewmodel.daggerViewModel
 import pro.yakuraion.englishhelper.vocabulary.ui.overview.cards.OverviewEmptyTestingCard
@@ -65,7 +68,7 @@ private fun OverviewScreen(
                 )
             }
         },
-        floatingActionButtonPosition = FabPosition.Center
+        floatingActionButtonPosition = FabPosition.End
     ) { paddingValues ->
         Box(
             modifier = Modifier
@@ -111,12 +114,20 @@ private fun OverviewScreen(
 }
 
 @Composable
-private fun AddWordsButton(onAddWordsClick: () -> Unit) {
-    AppTertiaryIconTextButton(
-        icon = Icons.Filled.Add,
-        text = stringResource(R.string.vocabulary_overview_screen_add_words),
-        onClick = onAddWordsClick
-    )
+private fun AddWordsButton(
+    onAddWordsClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    FloatingActionButton(
+        onClick = onAddWordsClick,
+        modifier = modifier.size(64.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Default.Add,
+            contentDescription = null,
+            modifier = Modifier.size(FloatingActionButtonDefaults.LargeIconSize)
+        )
+    }
 }
 
 @Preview
