@@ -15,7 +15,6 @@ fun <W> ListWordsPage(
     bottomSheetButtons: ImmutableList<@Composable () -> Unit>,
     modifier: Modifier = Modifier,
 ) {
-
     ListWordsPageBottomSheet(
         numberOfSelected = state.selectedWords.count(),
         bottomSheetState = state.bottomSheetState,
