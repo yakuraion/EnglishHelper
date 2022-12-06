@@ -1,12 +1,15 @@
 package pro.yakuraion.englishhelper.vocabulary.ui.listwords
 
 import android.content.res.Configuration
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,6 +39,7 @@ fun ListWordsScreen(
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ListWordsScreen(
     inProgressWords: ImmutableList<LearningWord>,
@@ -48,34 +52,37 @@ private fun ListWordsScreen(
         val inProgressPageState = rememberListWordsPageState(words = inProgressWords)
         val completedPageState = rememberListWordsPageState(words = completedWords)
 
-        AppPagerWithTabs(
-            count = Page.values().count(),
-            title = { Page.values()[it].title() },
-            modifier = Modifier.padding(paddingValues),
-            onPageChanged = {
-                inProgressPageState.deselectAll()
-                completedPageState.deselectAll()
-            }
-        ) { pageNumber ->
-            when (Page.values()[pageNumber]) {
-                Page.IN_PROGRESS -> {
-                    ListWordsInProgressPage(
-                        state = inProgressPageState,
-                        onResetInProgressWords = {},
-                        onDeleteInProgressWords = {},
-                        modifier = Modifier.fillMaxSize()
-                    )
+        CompositionLocalProvider(LocalOverscrollConfiguration provides null) {
+            AppPagerWithTabs(
+                count = Page.values().count(),
+                title = { Page.values()[it].title() },
+                modifier = Modifier.padding(paddingValues),
+                onPageChanged = {
+                    inProgressPageState.deselectAll()
+                    completedPageState.deselectAll()
                 }
-                Page.COMPLETED -> {
-                    ListWordsCompletedPage(
-                        state = completedPageState,
-                        onResetCompletedWords = {},
-                        onDeleteCompletedWords = {},
-                        modifier = Modifier.fillMaxSize()
-                    )
+            ) { pageNumber ->
+                when (Page.values()[pageNumber]) {
+                    Page.IN_PROGRESS -> {
+                        ListWordsInProgressPage(
+                            state = inProgressPageState,
+                            onResetInProgressWords = {},
+                            onDeleteInProgressWords = {},
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+                    Page.COMPLETED -> {
+                        ListWordsCompletedPage(
+                            state = completedPageState,
+                            onResetCompletedWords = {},
+                            onDeleteCompletedWords = {},
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
                 }
             }
         }
+
     }
 }
 
