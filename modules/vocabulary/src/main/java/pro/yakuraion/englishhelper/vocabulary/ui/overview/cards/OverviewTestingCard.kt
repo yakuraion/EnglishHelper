@@ -28,8 +28,8 @@ fun OverviewTestingCard(
 ) {
     OverviewCard(
         modifier = modifier,
-        activeContainerColor = MaterialTheme.colorScheme.primaryContainer,
-        activeContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        activeContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
+        activeContentColor = MaterialTheme.colorScheme.onTertiaryContainer,
         onClick = onClick
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
