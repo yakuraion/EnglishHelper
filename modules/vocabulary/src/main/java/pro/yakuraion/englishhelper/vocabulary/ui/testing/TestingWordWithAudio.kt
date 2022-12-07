@@ -54,7 +54,7 @@ fun TestingWordWithAudio(
                 .padding(16.dp)
         )
 
-        PlaySoundEffect(state.soundUri)
+        PlaySoundEffect(state.queueId, state.soundUri)
     }
 }
 
@@ -122,14 +122,15 @@ private fun getWrongAnswerErrorText(isError: Boolean): String {
 }
 
 @Composable
-private fun PlaySoundEffect(soundUri: String) {
+private fun PlaySoundEffect(queueId: Long, soundUri: String) {
     val context = LocalContext.current
-    LaunchedEffect(soundUri) {
+    LaunchedEffect(queueId, soundUri) {
         MediaPlayerUtils.playSound(context, soundUri)
     }
 }
 
 class TestingWordWithAudioState(
+    val queueId: Long,
     val word: String,
     val soundUri: String
 ) {
@@ -159,11 +160,12 @@ class TestingWordWithAudioState(
 
 @Composable
 fun rememberTestingWordWithAudioState(
+    queueId: Long,
     word: String,
     soundUri: String
 ): TestingWordWithAudioState {
-    return remember(word, soundUri) {
-        TestingWordWithAudioState(word, soundUri)
+    return remember(queueId, word, soundUri) {
+        TestingWordWithAudioState(queueId, word, soundUri)
     }
 }
 
@@ -174,6 +176,7 @@ private fun TestingWordWithAudioPreview() {
     AppTheme {
         TestingWordWithAudio(
             state = TestingWordWithAudioState(
+                queueId = 0,
                 word = "word",
                 soundUri = ""
             ),

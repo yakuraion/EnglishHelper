@@ -85,6 +85,7 @@ private fun TestingScreen(
                 }
                 is TestingUiState.WordWithAudio -> {
                     WordWithAudio(
+                        queueId = uiState.queueId,
                         word = uiState.word,
                         soundUri = uiState.soundUri,
                         dictionaryUrl = uiState.linkUrl,
@@ -162,6 +163,7 @@ private fun WordSimple(
 
 @Composable
 private fun WordWithAudio(
+    queueId: Long,
     word: String,
     soundUri: String,
     dictionaryUrl: String,
@@ -176,6 +178,7 @@ private fun WordWithAudio(
     ) {
         TestingWordWithAudio(
             state = rememberTestingWordWithAudioState(
+                queueId = queueId,
                 word = word,
                 soundUri = soundUri
             ),
@@ -217,6 +220,7 @@ private fun TestingScreenSimplePreview() {
     AppTheme {
         TestingScreen(
             uiState = TestingUiState.WordSimple(
+                0,
                 word = "word",
                 linkUrl = ""
             ),
@@ -234,6 +238,7 @@ private fun TestingScreenWithAudioPreview() {
     AppTheme {
         TestingScreen(
             uiState = TestingUiState.WordWithAudio(
+                0,
                 word = "word",
                 soundUri = "",
                 linkUrl = ""

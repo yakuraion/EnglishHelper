@@ -9,12 +9,15 @@ import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pro.yakuraion.englishhelper.commonui.di.viewmodel.AssistedSavedStateViewModelFactory
 import pro.yakuraion.englishhelper.domain.entities.learning.LearningWordFull
 import pro.yakuraion.englishhelper.domain.usecases.GetNextWordToLearnTodayUseCase
 import pro.yakuraion.englishhelper.domain.usecases.MoveLearningWordToNextLevelUseCase
 import pro.yakuraion.englishhelper.domain.usecases.MoveLearningWordToPreviousLevelUseCase
+import kotlin.properties.Delegates
+import kotlin.random.Random
 
 class TestingViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
@@ -26,33 +29,45 @@ class TestingViewModel @AssistedInject constructor(
     var uiState: TestingUiState by mutableStateOf(TestingUiState.Loading)
         private set
 
+    private var wordFullJob: Job? by Delegates.observable(null) { _, oldValue, _ ->
+        oldValue?.cancel()
+    }
+
     private var wordFull: LearningWordFull? = null
 
     private var isDictionaryVisited = false
 
     init {
-        viewModelScope.launch {
-            getNextWordToLearnTodayUseCase.getNextWordToLearnToday().collect { word ->
-                wordFull = word
-                isDictionaryVisited = false
-                uiState = when {
-                    word == null -> {
-                        TestingUiState.NoMoreWords
-                    }
-                    word.word.soundUri != null -> {
-                        TestingUiState.WordWithAudio(
-                            word = word.word.name,
-                            soundUri = word.word.soundUri!!,
-                            linkUrl = word.word.wooordhuntUrl
-                        )
-                    }
-                    else -> {
-                        TestingUiState.WordSimple(
-                            word = word.word.name,
-                            linkUrl = word.word.wooordhuntUrl
-                        )
-                    }
-                }
+        loadNextWord()
+    }
+
+    private fun loadNextWord() {
+        wordFullJob = viewModelScope.launch {
+            wordFull = getNextWordToLearnTodayUseCase.getNextWordToLearnToday()
+            isDictionaryVisited = false
+            uiState = getUiState(wordFull)
+        }
+    }
+
+    private fun getUiState(word: LearningWordFull?): TestingUiState {
+        return when {
+            word == null -> {
+                TestingUiState.NoMoreWords
+            }
+            word.word.soundUri != null -> {
+                TestingUiState.WordWithAudio(
+                    queueId = Random.nextLong(),
+                    word = word.word.name,
+                    soundUri = word.word.soundUri!!,
+                    linkUrl = word.word.wooordhuntUrl
+                )
+            }
+            else -> {
+                TestingUiState.WordSimple(
+                    queueId = Random.nextLong(),
+                    word = word.word.name,
+                    linkUrl = word.word.wooordhuntUrl
+                )
             }
         }
     }
@@ -69,6 +84,7 @@ class TestingViewModel @AssistedInject constructor(
                 } else {
                     moveLearningWordToNextLevelUseCase.moveLearningWordToNextLevel(learningWord)
                 }
+                loadNextWord()
             }
         }
     }
