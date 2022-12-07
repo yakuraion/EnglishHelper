@@ -21,4 +21,8 @@ internal class InnerCompletedWordsRepository @Inject constructor(
         val completedWordEntity = getCompletedWordEntity(name)
         completedWordsDao.insert(completedWordEntity)
     }
+
+    suspend fun deleteWord(name: String) {
+        completedWordsDao.delete(name)
+    }
 }

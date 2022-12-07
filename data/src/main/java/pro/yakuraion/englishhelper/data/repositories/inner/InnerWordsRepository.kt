@@ -20,7 +20,7 @@ internal class InnerWordsRepository @Inject constructor(
         wordsDao.insert(wordEntity)
     }
 
-    suspend fun deleteWord(word: Word) {
-        wordsDao.delete(word.name)
+    suspend fun deleteWord(name: String) {
+        wordsDao.delete(name)
     }
 }

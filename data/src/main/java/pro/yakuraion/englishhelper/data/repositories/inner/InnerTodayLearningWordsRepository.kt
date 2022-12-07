@@ -27,6 +27,11 @@ internal class InnerTodayLearningWordsRepository @Inject constructor(
         todayLearningWordsDao.insert(entity)
     }
 
+    suspend fun insertOrUpdate(name: String) {
+        val entity = getTodayLearningWordEntity(name)
+        todayLearningWordsDao.insertOrUpdate(entity)
+    }
+
     suspend fun updateWord(name: String) {
         val entity = getTodayLearningWordEntity(name)
         todayLearningWordsDao.update(entity)

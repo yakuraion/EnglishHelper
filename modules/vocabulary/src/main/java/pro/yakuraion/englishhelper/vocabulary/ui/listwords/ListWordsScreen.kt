@@ -35,6 +35,10 @@ fun ListWordsScreen(
     ListWordsScreen(
         inProgressWords = viewModel.inProgressWords,
         completedWords = viewModel.completedWords,
+        onResetInProgressWords = { viewModel.onResetLearningWords(it) },
+        onDeleteInProgressWords = { viewModel.onDeleteLearningWords(it) },
+        onResetCompletedWords = { viewModel.onResetCompletedWords(it) },
+        onDeleteCompletedWords = { viewModel.onDeleteCompletedWords(it) },
         onBackClick = onBackClick
     )
 }
@@ -44,6 +48,10 @@ fun ListWordsScreen(
 private fun ListWordsScreen(
     inProgressWords: ImmutableList<LearningWord>,
     completedWords: ImmutableList<CompletedWord>,
+    onResetInProgressWords: (List<LearningWord>) -> Unit,
+    onDeleteInProgressWords: (List<LearningWord>) -> Unit,
+    onResetCompletedWords: (List<CompletedWord>) -> Unit,
+    onDeleteCompletedWords: (List<CompletedWord>) -> Unit,
     onBackClick: () -> Unit
 ) {
     Scaffold(
@@ -66,16 +74,28 @@ private fun ListWordsScreen(
                     Page.IN_PROGRESS -> {
                         ListWordsInProgressPage(
                             state = inProgressPageState,
-                            onResetInProgressWords = {},
-                            onDeleteInProgressWords = {},
+                            onResetInProgressWords = { words ->
+                                onResetInProgressWords.invoke(words)
+                                inProgressPageState.deselectAll()
+                            },
+                            onDeleteInProgressWords = { words ->
+                                onDeleteInProgressWords.invoke(words)
+                                inProgressPageState.deselectAll()
+                            },
                             modifier = Modifier.fillMaxSize()
                         )
                     }
                     Page.COMPLETED -> {
                         ListWordsCompletedPage(
                             state = completedPageState,
-                            onResetCompletedWords = {},
-                            onDeleteCompletedWords = {},
+                            onResetCompletedWords = { words ->
+                                onResetCompletedWords.invoke(words)
+                                completedPageState.deselectAll()
+                            },
+                            onDeleteCompletedWords = { words ->
+                                onDeleteCompletedWords.invoke(words)
+                                completedPageState.deselectAll()
+                            },
                             modifier = Modifier.fillMaxSize()
                         )
                     }
@@ -131,6 +151,10 @@ private fun ListWordsScreenPreview() {
             completedWords = (0..30).map { index ->
                 CompletedWord(name = "word $index")
             }.toImmutableList(),
+            onResetInProgressWords = {},
+            onDeleteInProgressWords = {},
+            onResetCompletedWords = {},
+            onDeleteCompletedWords = {},
             onBackClick = {}
         )
     }

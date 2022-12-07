@@ -40,12 +40,12 @@ fun ListWordsCompletedPage(
         bottomSheetButtons = persistentListOf(
             {
                 BottomSheetLearnAgainButton(
-                    onClick = { onResetCompletedWords(state.selectedWords) }
+                    onClick = { onResetCompletedWords(state.selectedWords.toList()) }
                 )
             },
             {
                 BottomSheetDeleteButton(
-                    onClick = { onDeleteCompletedWords(state.selectedWords) }
+                    onClick = { onDeleteCompletedWords(state.selectedWords.toList()) }
                 )
             }
         ),

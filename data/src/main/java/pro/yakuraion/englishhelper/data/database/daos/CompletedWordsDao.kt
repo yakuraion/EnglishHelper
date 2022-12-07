@@ -14,4 +14,7 @@ internal interface CompletedWordsDao {
 
     @Insert
     suspend fun insert(completedWordEntity: CompletedWordEntity)
+
+    @Query("DELETE FROM completed_word WHERE name = :name")
+    suspend fun delete(name: String)
 }

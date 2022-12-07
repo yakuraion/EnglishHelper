@@ -47,12 +47,12 @@ fun ListWordsInProgressPage(
         bottomSheetButtons = persistentListOf(
             {
                 BottomSheetResetButton(
-                    onClick = { onResetInProgressWords(state.selectedWords) }
+                    onClick = { onResetInProgressWords(state.selectedWords.toList()) }
                 )
             },
             {
                 BottomSheetDeleteButton(
-                    onClick = { onDeleteInProgressWords(state.selectedWords) }
+                    onClick = { onDeleteInProgressWords(state.selectedWords.toList()) }
                 )
             }
         ),

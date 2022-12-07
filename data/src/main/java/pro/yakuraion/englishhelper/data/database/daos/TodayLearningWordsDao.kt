@@ -2,6 +2,7 @@ package pro.yakuraion.englishhelper.data.database.daos
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
@@ -23,6 +24,9 @@ internal interface TodayLearningWordsDao {
 
     @Insert
     suspend fun insert(word: TodayLearningWordEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertOrUpdate(word: TodayLearningWordEntity)
 
     @Insert
     suspend fun insert(words: List<TodayLearningWordEntity>)
