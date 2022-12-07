@@ -13,7 +13,7 @@ import pro.yakuraion.englishhelper.common.coroutines.Dispatchers
 import pro.yakuraion.englishhelper.domain.entities.learning.LearningWord
 import pro.yakuraion.englishhelper.domain.entities.learning.MemorizationLevel
 import pro.yakuraion.englishhelper.domain.repositories.LearningRepository
-import pro.yakuraion.englishhelper.domain.repositories.TodayLearningWordsRepository
+import pro.yakuraion.englishhelper.domain.repositories.WordsRepository
 
 @RunWith(Parameterized::class)
 internal class MoveLearningWordToPreviousLevelUseCaseTest(
@@ -26,7 +26,7 @@ internal class MoveLearningWordToPreviousLevelUseCaseTest(
     val mockkRule = MockKRule(this)
 
     @MockK
-    lateinit var todayLearningWordsRepository: TodayLearningWordsRepository
+    lateinit var wordsRepository: WordsRepository
 
     @MockK
     lateinit var learningRepository: LearningRepository
@@ -38,7 +38,7 @@ internal class MoveLearningWordToPreviousLevelUseCaseTest(
     override fun createUseCase(dispatchers: Dispatchers): MoveLearningWordToPreviousLevelUseCase {
         return MoveLearningWordToPreviousLevelUseCaseImpl(
             dispatchers,
-            todayLearningWordsRepository,
+            wordsRepository,
             learningRepository
         )
     }
@@ -48,9 +48,9 @@ internal class MoveLearningWordToPreviousLevelUseCaseTest(
         useCase.moveLearningWordToPreviousLevel(word)
 
         if (removeFromToday) {
-            coVerify { todayLearningWordsRepository.updateWordAndRemoveFromToday(updatedWord) }
+            coVerify { wordsRepository.updateTodayLearningDay(updatedWord, false) }
         } else {
-            coVerify { todayLearningWordsRepository.updateWordAndMoveToTheEndOfToday(updatedWord) }
+            coVerify { wordsRepository.updateTodayLearningDay(updatedWord, true) }
         }
     }
 

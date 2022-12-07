@@ -4,16 +4,22 @@ import pro.yakuraion.englishhelper.data.database.entities.TodayLearningWordEntit
 import pro.yakuraion.englishhelper.domain.entities.learning.LearningWord
 import java.util.*
 
-internal fun getTodayLearningWordEntity(word: LearningWord): TodayLearningWordEntity {
+internal fun getTodayLearningWordEntity(
+    name: String,
+    createdAt: Calendar? = null
+): TodayLearningWordEntity {
     return TodayLearningWordEntity(
-        name = word.name,
-        createdAtMillis = Date().time
+        name = name,
+        createdAtMillis = createdAt?.timeInMillis ?: Date().time
     )
 }
 
-internal fun getTodayLearningWordEntity(name: String): TodayLearningWordEntity {
+internal fun getTodayLearningWordEntity(
+    word: LearningWord,
+    createdAt: Calendar? = null
+): TodayLearningWordEntity {
     return TodayLearningWordEntity(
-        name = name,
-        createdAtMillis = Date().time
+        name = word.name,
+        createdAtMillis = createdAt?.timeInMillis ?: Date().time
     )
 }

@@ -6,16 +6,14 @@ import pro.yakuraion.englishhelper.common.coroutines.Dispatchers
 import pro.yakuraion.englishhelper.domain.entities.learning.LearningWord
 import pro.yakuraion.englishhelper.domain.entities.learning.MemorizationLevel
 import pro.yakuraion.englishhelper.domain.repositories.LearningRepository
-import pro.yakuraion.englishhelper.domain.repositories.LearningWordsRepository
-import pro.yakuraion.englishhelper.domain.repositories.TodayLearningWordsRepository
+import pro.yakuraion.englishhelper.domain.repositories.WordsRepository
 import java.util.*
 import javax.inject.Inject
 import kotlin.math.max
 
 internal class GetWordsToLearnUseCaseImpl @Inject constructor(
     private val dispatchers: Dispatchers,
-    private val learningWordsRepository: LearningWordsRepository,
-    private val todayLearningWordsRepository: TodayLearningWordsRepository,
+    private val wordsRepository: WordsRepository,
     private val learningRepository: LearningRepository
 ) : GetWordsToLearnUseCase {
 
@@ -25,7 +23,7 @@ internal class GetWordsToLearnUseCaseImpl @Inject constructor(
                 increaseLearningDay(now)
                 resetWordsToLearn()
             }
-            todayLearningWordsRepository.getTodayLearningWords()
+            wordsRepository.getTodayLearningWords()
         }
     }
 
@@ -39,8 +37,13 @@ internal class GetWordsToLearnUseCaseImpl @Inject constructor(
     private suspend fun isNewLearningDay(now: Calendar): Boolean {
         val nowWithOffset = now.withOffset()
         val lastWithOffset = learningRepository.getLastLearningDate().withOffset()
-        return nowWithOffset.get(Calendar.DAY_OF_YEAR) != lastWithOffset.get(Calendar.DAY_OF_YEAR) ||
-            nowWithOffset.get(Calendar.YEAR) != lastWithOffset.get(Calendar.YEAR)
+        val isSameDates = getIsDatesTheSame(nowWithOffset, lastWithOffset)
+        return !isSameDates
+    }
+
+    private fun getIsDatesTheSame(first: Calendar, second: Calendar): Boolean {
+        return first.get(Calendar.DAY_OF_YEAR) == second.get(Calendar.DAY_OF_YEAR) &&
+            first.get(Calendar.YEAR) == second.get(Calendar.YEAR)
     }
 
     private fun Calendar.withOffset(): Calendar {
@@ -56,7 +59,7 @@ internal class GetWordsToLearnUseCaseImpl @Inject constructor(
 
     private suspend fun resetWordsToLearn() {
         val currentLearningDay = learningRepository.getLearningDay()
-        val words = learningWordsRepository.getWordsAvailableToLearnBy(currentLearningDay)
+        val words = wordsRepository.getLearningWordsAvailableToLearnBy(currentLearningDay)
             .groupBy { WordGroupIdentifier(it.memorizationLevel, it.nextDayToLearn) }
             .flatMap { entry ->
                 getSelectionOfWordsForToday(
@@ -67,7 +70,7 @@ internal class GetWordsToLearnUseCaseImpl @Inject constructor(
                 )
             }
             .shuffled()
-        todayLearningWordsRepository.setTodayLearningWords(words)
+        wordsRepository.setTodayLearningWords(words)
     }
 
     private data class WordGroupIdentifier(val memorizationLevel: MemorizationLevel, val nextDayToLearn: Int)

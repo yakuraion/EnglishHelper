@@ -13,9 +13,6 @@ internal interface LearningWordsDao {
     @Query("SELECT * FROM learning_word")
     fun getAll(): Flow<List<LearningWordEntity>>
 
-    @Query("SELECT * FROM learning_word WHERE name = :name")
-    suspend fun getByName(name: String): LearningWordEntity
-
     @Query("SELECT * FROM learning_word WHERE nextDayToLearn <= :maxLearningDay")
     suspend fun getByMaxLearningDay(maxLearningDay: Int): List<LearningWordEntity>
 

@@ -1,19 +1,24 @@
-package pro.yakuraion.englishhelper.data.repositories
+package pro.yakuraion.englishhelper.data.repositories.inner
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import pro.yakuraion.englishhelper.data.converters.getCompletedWord
+import pro.yakuraion.englishhelper.data.converters.getCompletedWordEntity
 import pro.yakuraion.englishhelper.data.database.daos.CompletedWordsDao
 import pro.yakuraion.englishhelper.domain.entities.CompletedWord
-import pro.yakuraion.englishhelper.domain.repositories.CompletedWordsRepository
 import javax.inject.Inject
 
-internal class CompletedWordsRepositoryImpl @Inject constructor(
+internal class InnerCompletedWordsRepository @Inject constructor(
     private val completedWordsDao: CompletedWordsDao
-) : CompletedWordsRepository {
+) {
 
-    override fun getAllWords(): Flow<List<CompletedWord>> {
+    fun getWords(): Flow<List<CompletedWord>> {
         return completedWordsDao.getAll()
             .map { list -> list.map { getCompletedWord(it) } }
+    }
+
+    suspend fun addWord(name: String) {
+        val completedWordEntity = getCompletedWordEntity(name)
+        completedWordsDao.insert(completedWordEntity)
     }
 }

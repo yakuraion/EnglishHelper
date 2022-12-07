@@ -13,4 +13,7 @@ internal interface WordsDao {
 
     @Insert
     suspend fun insert(word: WordEntity)
+
+    @Query("DELETE FROM word WHERE name = :name")
+    suspend fun delete(name: String)
 }

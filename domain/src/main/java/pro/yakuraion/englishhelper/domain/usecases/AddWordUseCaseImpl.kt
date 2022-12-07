@@ -3,16 +3,16 @@ package pro.yakuraion.englishhelper.domain.usecases
 import kotlinx.coroutines.withContext
 import pro.yakuraion.englishhelper.common.coroutines.Dispatchers
 import pro.yakuraion.englishhelper.domain.repositories.LearningRepository
-import pro.yakuraion.englishhelper.domain.repositories.TodayLearningWordsRepository
+import pro.yakuraion.englishhelper.domain.repositories.WordsRepository
 import pro.yakuraion.englishhelper.domain.repositories.WordsSoundsRepository
 import javax.inject.Inject
 
 internal class AddWordUseCaseImpl @Inject constructor(
     private val dispatchers: Dispatchers,
     private val isWordAlreadyExistUseCase: IsWordAlreadyExistUseCase,
+    private val wordsRepository: WordsRepository,
     private val wordsSoundsRepository: WordsSoundsRepository,
-    private val todayLearningWordsRepository: TodayLearningWordsRepository,
-    private val learningRepository: LearningRepository
+    private val learningRepository: LearningRepository,
 ) : AddWordUseCase {
 
     override suspend fun addWord(name: String) {
@@ -20,7 +20,7 @@ internal class AddWordUseCaseImpl @Inject constructor(
         withContext(dispatchers.ioDispatcher) {
             val soundUri = wordsSoundsRepository.downloadSoundForWorld(name)?.toURI()?.toString()
             val currentDay = learningRepository.getLearningDay()
-            todayLearningWordsRepository.addWordToLearning(name, soundUri, currentDay)
+            wordsRepository.addNewWord(name, soundUri, firstDayToLearn = currentDay)
         }
     }
 }

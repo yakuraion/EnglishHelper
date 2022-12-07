@@ -19,7 +19,7 @@ internal interface TodayLearningWordsDao {
         ORDER BY today_learning_word.createdAtMillis
         """
     )
-    fun getTodayWords(): Flow<List<LearningWordEntity>>
+    fun getAll(): Flow<List<LearningWordEntity>>
 
     @Insert
     suspend fun insert(word: TodayLearningWordEntity)

@@ -17,8 +17,7 @@ import pro.yakuraion.englishhelper.common.coroutines.Dispatchers
 import pro.yakuraion.englishhelper.domain.entities.learning.LearningWord
 import pro.yakuraion.englishhelper.domain.entities.learning.MemorizationLevel
 import pro.yakuraion.englishhelper.domain.repositories.LearningRepository
-import pro.yakuraion.englishhelper.domain.repositories.LearningWordsRepository
-import pro.yakuraion.englishhelper.domain.repositories.TodayLearningWordsRepository
+import pro.yakuraion.englishhelper.domain.repositories.WordsRepository
 import java.util.*
 
 internal class GetWordsToLearnUseCaseImplTest : UseCaseTest<GetWordsToLearnUseCase>() {
@@ -27,23 +26,19 @@ internal class GetWordsToLearnUseCaseImplTest : UseCaseTest<GetWordsToLearnUseCa
     val mockkRule = MockKRule(this)
 
     @MockK
-    lateinit var learningWordsRepository: LearningWordsRepository
-
-    @MockK
-    lateinit var todayLearningWordsRepository: TodayLearningWordsRepository
+    lateinit var wordsRepository: WordsRepository
 
     @MockK
     lateinit var learningRepository: LearningRepository
 
     override fun setUpMocks() {
-        coEvery { learningWordsRepository.getWordsAvailableToLearnBy(any()) } returns LEARNING_WORDS
+        coEvery { wordsRepository.getLearningWordsAvailableToLearnBy(any()) } returns LEARNING_WORDS
     }
 
     override fun createUseCase(dispatchers: Dispatchers): GetWordsToLearnUseCase {
         return GetWordsToLearnUseCaseImpl(
             dispatchers,
-            learningWordsRepository,
-            todayLearningWordsRepository,
+            wordsRepository,
             learningRepository
         )
     }
@@ -58,14 +53,14 @@ internal class GetWordsToLearnUseCaseImplTest : UseCaseTest<GetWordsToLearnUseCa
         coEvery { learningRepository.getLastLearningDate() } returns Calendar.getInstance()
 
         val expectedWords = listOf(LearningWord("name", MemorizationLevel(1), 1))
-        coEvery { todayLearningWordsRepository.getTodayLearningWords() } returns flowOf(expectedWords)
+        coEvery { wordsRepository.getTodayLearningWords() } returns flowOf(expectedWords)
 
         val words = useCase.getWordsToLearnToday().first()
 
         assertEquals(expectedWords, words)
 
         coVerify(exactly = 0) { learningRepository.increaseLearningDay() }
-        coVerify(exactly = 0) { todayLearningWordsRepository.setTodayLearningWords(any()) }
+        coVerify(exactly = 0) { wordsRepository.setTodayLearningWords(any()) }
     }
 
     @Test
@@ -75,8 +70,8 @@ internal class GetWordsToLearnUseCaseImplTest : UseCaseTest<GetWordsToLearnUseCa
         coEvery { learningRepository.getLearningDay() } returns CURRENT_LEARNING_DAY
 
         val todayWords = slot<List<LearningWord>>()
-        coEvery { todayLearningWordsRepository.setTodayLearningWords(capture(todayWords)) } answers {
-            coEvery { todayLearningWordsRepository.getTodayLearningWords() } returns flowOf(todayWords.captured)
+        coEvery { wordsRepository.setTodayLearningWords(capture(todayWords)) } answers {
+            coEvery { wordsRepository.getTodayLearningWords() } returns flowOf(todayWords.captured)
             Unit
         }
 

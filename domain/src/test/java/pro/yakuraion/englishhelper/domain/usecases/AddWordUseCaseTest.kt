@@ -9,7 +9,7 @@ import org.junit.Rule
 import org.junit.Test
 import pro.yakuraion.englishhelper.common.coroutines.Dispatchers
 import pro.yakuraion.englishhelper.domain.repositories.LearningRepository
-import pro.yakuraion.englishhelper.domain.repositories.TodayLearningWordsRepository
+import pro.yakuraion.englishhelper.domain.repositories.WordsRepository
 import pro.yakuraion.englishhelper.domain.repositories.WordsSoundsRepository
 import java.io.File
 
@@ -22,19 +22,19 @@ class AddWordUseCaseTest : UseCaseTest<AddWordUseCase>() {
     lateinit var isWordAlreadyExistUseCase: IsWordAlreadyExistUseCase
 
     @MockK
-    lateinit var wordsSoundsRepository: WordsSoundsRepository
+    lateinit var wordsRepository: WordsRepository
 
     @MockK
-    lateinit var todayLearningWordsRepository: TodayLearningWordsRepository
+    lateinit var wordsSoundsRepository: WordsSoundsRepository
 
     @MockK
     lateinit var learningRepository: LearningRepository
 
-    private val soundsFile = File("")
+    private val soundsUri = File("")
 
     override fun setUpMocks() {
         coEvery { isWordAlreadyExistUseCase.isWordAlreadyExist(NAME) } returns false
-        coEvery { wordsSoundsRepository.downloadSoundForWorld(NAME) } returns soundsFile
+        coEvery { wordsSoundsRepository.downloadSoundForWorld(NAME) } returns soundsUri
         coEvery { learningRepository.getLearningDay() } returns LEARNING_DAY
     }
 
@@ -42,8 +42,8 @@ class AddWordUseCaseTest : UseCaseTest<AddWordUseCase>() {
         return AddWordUseCaseImpl(
             dispatchers,
             isWordAlreadyExistUseCase,
+            wordsRepository,
             wordsSoundsRepository,
-            todayLearningWordsRepository,
             learningRepository
         )
     }
@@ -52,7 +52,7 @@ class AddWordUseCaseTest : UseCaseTest<AddWordUseCase>() {
     fun addWord() = runTest {
         useCase.addWord(NAME)
 
-        coVerify { todayLearningWordsRepository.addWordToLearning(NAME, soundsFile, LEARNING_DAY) }
+        coVerify { wordsRepository.addNewWord(NAME, soundsUri.toURI().toString(), LEARNING_DAY) }
     }
 
     @Test(expected = IllegalArgumentException::class)
