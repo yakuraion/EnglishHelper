@@ -52,5 +52,5 @@ dependencies {
     implementation(project(":common-ui"))
     implementation(project(":domain"))
     implementation(project(":data"))
-    implementation(project(":modules:vocabulary"))
+    implementation(project(":features:vocabulary"))
 }

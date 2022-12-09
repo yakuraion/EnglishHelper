@@ -22,7 +22,7 @@ include(":domain")
 include(":common")
 include(":common-ui")
 include(":common-tests")
-include(":modules:vocabulary")
+include(":features:vocabulary")
 
 includeBuild("plugins/code-check") {
     dependencySubstitution {
