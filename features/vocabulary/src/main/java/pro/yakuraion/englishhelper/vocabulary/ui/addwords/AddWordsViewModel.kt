@@ -31,18 +31,35 @@ class AddWordsViewModel @AssistedInject constructor(
     }
 
     fun onAddWordClick() {
-        addWord(uiState.word.trim())
+        addWord(uiState.word)
     }
 
-    private fun addWord(word: String) {
+    fun onWordNotFoundDialogDismiss() {
+        hideWordNotFoundDialog()
+    }
+
+    fun onWordNotFoundDialogAddClick() {
+        hideWordNotFoundDialog()
+        addWord(
+            word = uiState.word,
+            withAudio = false
+        )
+    }
+
+    private fun addWord(word: String, withAudio: Boolean = true) {
+        val formattedWord = word.trim()
         viewModelScope.launch {
-            if (!validateIsWordAlreadyExists(word)) return@launch
+            if (!validateIsWordAlreadyExists(formattedWord)) return@launch
             uiState = uiState.copy(isAddButtonLoading = true)
-            addWordUseCase.addWord(word)
-            uiState = uiState.copy(
-                word = "",
-                isAddButtonLoading = false
-            )
+            when (addWordUseCase.addWord(formattedWord, withAudio)) {
+                AddWordUseCase.Result.WORD_AUDIO_NOT_FOUND -> {
+                    showWordNotFoundDialog()
+                }
+                else -> {
+                    uiState = uiState.copy(word = "")
+                }
+            }
+            uiState = uiState.copy(isAddButtonLoading = false)
         }
     }
 
@@ -52,6 +69,14 @@ class AddWordsViewModel @AssistedInject constructor(
             uiState = uiState.copy(isWordAlreadyExistError = true)
         }
         return !isExist
+    }
+
+    private fun showWordNotFoundDialog() {
+        uiState = uiState.copy(isWordNotFoundDialogShowing = true)
+    }
+
+    private fun hideWordNotFoundDialog() {
+        uiState = uiState.copy(isWordNotFoundDialogShowing = false)
     }
 
     @AssistedFactory

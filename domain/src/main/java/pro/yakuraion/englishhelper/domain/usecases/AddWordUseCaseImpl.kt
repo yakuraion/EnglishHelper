@@ -15,12 +15,21 @@ internal class AddWordUseCaseImpl @Inject constructor(
     private val learningRepository: LearningRepository,
 ) : AddWordUseCase {
 
-    override suspend fun addWord(name: String) {
+    override suspend fun addWord(
+        name: String,
+        withAudio: Boolean
+    ): AddWordUseCase.Result {
         require(!isWordAlreadyExistUseCase.isWordAlreadyExist(name)) { "Word '$name' has been already added" }
-        withContext(dispatchers.ioDispatcher) {
-            val soundUri = wordsSoundsRepository.downloadSoundForWorld(name)?.toURI()?.toString()
+        return withContext(dispatchers.ioDispatcher) {
             val currentDay = learningRepository.getLearningDay()
+            val soundUri = if (withAudio) {
+                wordsSoundsRepository.downloadSoundForWorld(name)?.toURI()?.toString()
+                    ?: return@withContext AddWordUseCase.Result.WORD_AUDIO_NOT_FOUND
+            } else {
+                null
+            }
             wordsRepository.addNewWord(name, soundUri, firstDayToLearn = currentDay)
+            AddWordUseCase.Result.SUCCESS
         }
     }
 }
