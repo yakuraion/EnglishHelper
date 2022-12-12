@@ -10,9 +10,10 @@
     <string name="vocabulary_add_words_screen_title">Add new word</string>
     <string name="vocabulary_add_words_screen_type_word">Type word…</string>
     <string name="vocabulary_add_words_screen_already_exists_words_error">The word \"%s\" is already added</string>
-    <string name="vocabulary_add_Words_screen_not_found_dialog_title">Word not found</string>
-    <string name="vocabulary_add_Words_screen_not_found_dialog_text">Sorry, we can\'t find the word \"%s\". Do you really want to add this word? Audio will not be available for it.</string>
-    <string name="vocabulary_add_Words_screen_not_found_dialog_confirm">Add word</string>
+    <string name="vocabulary_add_words_screen_not_found_dialog_title">Word not found</string>
+    <string name="vocabulary_add_words_screen_not_found_dialog_text">Sorry, we can\'t find the word \"%s\". Do you really want to add this word? Audio will not be available for it.</string>
+    <string name="vocabulary_add_words_screen_not_found_dialog_confirm">Add word</string>
+    <string name="vocabulary_add_words_screen_dictionary_button">Go to the dictionary</string>
 
     <string name="vocabulary_testing_screen_title">Testing</string>
     <string name="vocabulary_testing_screen_no_more_words_title">You have checked all words today</string>

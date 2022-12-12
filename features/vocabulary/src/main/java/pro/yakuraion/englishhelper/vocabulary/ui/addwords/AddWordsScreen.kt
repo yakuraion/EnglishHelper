@@ -1,11 +1,14 @@
 package pro.yakuraion.englishhelper.vocabulary.ui.addwords
 
 import android.content.res.Configuration
+import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.HelpOutline
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,6 +30,9 @@ import pro.yakuraion.englishhelper.commonui.compose.widgets.AppTopAppBar
 import pro.yakuraion.englishhelper.commonui.compose.widgets.CustomTextFieldActionIcon
 import pro.yakuraion.englishhelper.commonui.compose.widgets.CustomTextFieldError
 import pro.yakuraion.englishhelper.commonui.compose.widgets.buttons.AppArrowBackButton
+import pro.yakuraion.englishhelper.commonui.compose.widgets.buttons.AppOutlinedButton
+import pro.yakuraion.englishhelper.commonui.openLink
+import pro.yakuraion.englishhelper.domain.utils.DictionaryUtils
 import pro.yakuraion.englishhelper.vocabulary.R
 import pro.yakuraion.englishhelper.vocabulary.di.viewmodel.daggerViewModel
 
@@ -59,13 +66,17 @@ private fun AddWordsScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues),
-            contentAlignment = Alignment.Center
+                .padding(paddingValues)
         ) {
+            OpenDictionaryButton(
+                uiState.word,
+                modifier = Modifier.align(Alignment.TopEnd)
+            )
             EnterWordTextField(
                 uiState = uiState,
                 onWordChanged = onWordChanged,
-                onAddWordsClick = onAddWordsClick
+                onAddWordsClick = onAddWordsClick,
+                modifier = Modifier.align(Alignment.Center)
             )
         }
 
@@ -77,6 +88,27 @@ private fun AddWordsScreen(
             )
         }
     }
+}
+
+@Composable
+private fun OpenDictionaryButton(
+    word: String,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+
+    AppOutlinedButton(
+        text = stringResource(id = R.string.vocabulary_add_words_screen_dictionary_button),
+        onClick = {
+            val link = DictionaryUtils.getDictionaryUrl(word)
+            context.openLink(Uri.parse(link))
+        },
+        modifier = modifier
+            .padding(top = 16.dp, end = 16.dp),
+        leadingIcon = {
+            Icon(imageVector = Icons.Filled.HelpOutline, contentDescription = null)
+        }
+    )
 }
 
 @Composable
@@ -96,13 +128,14 @@ private fun EnterWordTextField(
     uiState: AddWordsUiState,
     onWordChanged: (String) -> Unit,
     onAddWordsClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val focusRequester = remember { FocusRequester() }
 
     AppTextField(
         value = uiState.word,
         onValueChange = onWordChanged,
-        modifier = Modifier
+        modifier = modifier
             .padding(horizontal = 16.dp)
             .focusRequester(focusRequester),
         maxLines = 1,
@@ -142,7 +175,7 @@ private fun WordNotFoundDialog(
         confirmButton = {
             AppAlertDialogDefaults.ConfirmButton(
                 onConfirm = onAddClick,
-                text = stringResource(id = R.string.vocabulary_add_Words_screen_not_found_dialog_confirm)
+                text = stringResource(id = R.string.vocabulary_add_words_screen_not_found_dialog_confirm)
             )
         },
         dismissButton = {
@@ -150,12 +183,12 @@ private fun WordNotFoundDialog(
         },
         title = {
             AppAlertDialogDefaults.Title(
-                text = stringResource(id = R.string.vocabulary_add_Words_screen_not_found_dialog_title)
+                text = stringResource(id = R.string.vocabulary_add_words_screen_not_found_dialog_title)
             )
         },
         body = {
             AppAlertDialogDefaults.TextBody(
-                text = stringResource(R.string.vocabulary_add_Words_screen_not_found_dialog_text, word)
+                text = stringResource(R.string.vocabulary_add_words_screen_not_found_dialog_text, word)
             )
         }
     )
