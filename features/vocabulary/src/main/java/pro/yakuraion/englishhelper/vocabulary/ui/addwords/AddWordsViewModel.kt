@@ -51,13 +51,10 @@ class AddWordsViewModel @AssistedInject constructor(
         viewModelScope.launch {
             if (!validateIsWordAlreadyExists(formattedWord)) return@launch
             uiState = uiState.copy(isAddButtonLoading = true)
-            when (addWordUseCase.addWord(formattedWord, withAudio)) {
-                AddWordUseCase.Result.WORD_AUDIO_NOT_FOUND -> {
-                    showWordNotFoundDialog()
-                }
-                else -> {
-                    uiState = uiState.copy(word = "")
-                }
+            if (addWordUseCase.addWord(formattedWord, withAudio) == AddWordUseCase.Result.WORD_AUDIO_NOT_FOUND) {
+                showWordNotFoundDialog()
+            } else {
+                uiState = uiState.copy(word = "")
             }
             uiState = uiState.copy(isAddButtonLoading = false)
         }
