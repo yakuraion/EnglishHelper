@@ -4,7 +4,6 @@ import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit4.MockKRule
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertSame
@@ -42,10 +41,10 @@ internal class GetNextWordToLearnTodayUseCaseTest : UseCaseTest<GetNextWordToLea
 
     @Test
     fun getNextWordToLearnToday() = runTest {
-        val word = useCase.getNextWordToLearnToday().first()!!
+        val word = useCase.getNextWordToLearnToday()
 
-        assertSame(FIRST_WORD, word.word)
-        assertSame(LEARNING_WORDS[0], word.learningWord)
+        assertSame(FIRST_WORD, word?.word)
+        assertSame(LEARNING_WORDS[0], word?.learningWord)
     }
 
     @Test
@@ -53,14 +52,14 @@ internal class GetNextWordToLearnTodayUseCaseTest : UseCaseTest<GetNextWordToLea
         val stateFlow = MutableStateFlow(LEARNING_WORDS)
         coEvery { getWordsToLearnUseCase.getWordsToLearnToday() } returns stateFlow
 
-        val wordFlow = useCase.getNextWordToLearnToday()
+        useCase.getNextWordToLearnToday()
 
         stateFlow.emit(LEARNING_WORDS.drop(1))
 
-        val word = wordFlow.first()!!
+        val secondWord = useCase.getNextWordToLearnToday()
 
-        assertSame(SECOND_WORD, word.word)
-        assertSame(LEARNING_WORDS[1], word.learningWord)
+        assertSame(SECOND_WORD, secondWord?.word)
+        assertSame(LEARNING_WORDS[1], secondWord?.learningWord)
     }
 
     companion object {

@@ -5,6 +5,7 @@ import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit4.MockKRule
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import pro.yakuraion.englishhelper.common.coroutines.Dispatchers
@@ -50,16 +51,34 @@ class AddWordUseCaseTest : UseCaseTest<AddWordUseCase>() {
 
     @Test
     fun addWord() = runTest {
-        useCase.addWord(NAME)
+        val result = useCase.addWord(NAME, true)
 
         coVerify { wordsRepository.addNewWord(NAME, soundsUri.toURI().toString(), LEARNING_DAY) }
+        assertEquals(AddWordUseCase.Result.SUCCESS, result)
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun addWordWithAlreadyExistedError() = runTest {
         coEvery { isWordAlreadyExistUseCase.isWordAlreadyExist(NAME) } returns true
 
-        useCase.addWord(NAME)
+        useCase.addWord(NAME, true)
+    }
+
+    @Test
+    fun addWordAndWordNotFound() = runTest {
+        coEvery { wordsSoundsRepository.downloadSoundForWorld(NAME) } returns null
+
+        val result = useCase.addWord(NAME, true)
+
+        assertEquals(AddWordUseCase.Result.WORD_AUDIO_NOT_FOUND, result)
+    }
+
+    @Test
+    fun addWordWithoutAudio() = runTest {
+        val result = useCase.addWord(NAME, false)
+
+        coVerify { wordsRepository.addNewWord(NAME, null, LEARNING_DAY) }
+        assertEquals(AddWordUseCase.Result.SUCCESS, result)
     }
 
     companion object {
