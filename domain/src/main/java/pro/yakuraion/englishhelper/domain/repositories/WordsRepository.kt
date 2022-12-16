@@ -4,8 +4,8 @@ import kotlinx.coroutines.flow.Flow
 import pro.yakuraion.englishhelper.domain.entities.CompletedWord
 import pro.yakuraion.englishhelper.domain.entities.WooordhuntWord
 import pro.yakuraion.englishhelper.domain.entities.Word
+import pro.yakuraion.englishhelper.domain.entities.WordExample
 import pro.yakuraion.englishhelper.domain.entities.learning.LearningWord
-import pro.yakuraion.englishhelper.domain.entities.learning.WordExample
 
 interface WordsRepository {
 

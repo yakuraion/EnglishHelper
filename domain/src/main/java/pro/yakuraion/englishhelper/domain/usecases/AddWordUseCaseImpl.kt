@@ -1,6 +1,5 @@
 package pro.yakuraion.englishhelper.domain.usecases
 
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
@@ -38,11 +37,14 @@ internal class AddWordUseCaseImpl @Inject constructor(
 
     private suspend fun addWordWithExtraInfo(name: String, currentDay: Int): AddWordUseCase.Result {
         return coroutineScope {
-            val wooordhuntWordDeferred = async { wordsRepository.getWooordhuntWord(name) }
-            val downloadedSoundUriDeferred = async { getDownloadedSoundUri(wooordhuntWordDeferred) }
-            val examplesDeferred = async { wordsExamplesRepository.downloadWordsExamples(name) }
+            val wooordhuntWord = wordsRepository.getWooordhuntWord(name)
+                ?: return@coroutineScope AddWordUseCase.Result.WORD_NOT_FOUND
 
-            val wooordhuntWord = wooordhuntWordDeferred.await()
+            val downloadedSoundUriDeferred = async { getDownloadedSoundUri(wooordhuntWord) }
+            val examplesDeferred = async {
+                wordsExamplesRepository.getWordsExamples(wooordhuntWord.name, wooordhuntWord.forms)
+            }
+
             val downloadSoundUri = downloadedSoundUriDeferred.await()
             val examples = examplesDeferred.await()
 
@@ -60,9 +62,8 @@ internal class AddWordUseCaseImpl @Inject constructor(
         }
     }
 
-    private suspend fun getDownloadedSoundUri(wooordhuntWordDeferred: Deferred<WooordhuntWord?>): String? {
-        return wooordhuntWordDeferred.await()
-            ?.let { word -> wordsSoundsRepository.downloadSoundForWorld(word.name, word.soundUri) }
+    private suspend fun getDownloadedSoundUri(word: WooordhuntWord): String? {
+        return wordsSoundsRepository.downloadSoundForWorld(word.name, word.soundUri)
             ?.toURI()
             ?.toString()
     }

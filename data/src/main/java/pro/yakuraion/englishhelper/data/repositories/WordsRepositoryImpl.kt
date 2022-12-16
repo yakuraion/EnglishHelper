@@ -11,9 +11,9 @@ import pro.yakuraion.englishhelper.data.repositories.inner.InnerWordsRepository
 import pro.yakuraion.englishhelper.domain.entities.CompletedWord
 import pro.yakuraion.englishhelper.domain.entities.WooordhuntWord
 import pro.yakuraion.englishhelper.domain.entities.Word
+import pro.yakuraion.englishhelper.domain.entities.WordExample
 import pro.yakuraion.englishhelper.domain.entities.learning.LearningWord
 import pro.yakuraion.englishhelper.domain.entities.learning.MemorizationLevel
-import pro.yakuraion.englishhelper.domain.entities.learning.WordExample
 import pro.yakuraion.englishhelper.domain.repositories.WordsRepository
 import javax.inject.Inject
 

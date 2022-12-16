@@ -4,7 +4,7 @@ import pro.yakuraion.englishhelper.data.converters.getWord
 import pro.yakuraion.englishhelper.data.converters.getWordEntity
 import pro.yakuraion.englishhelper.data.database.daos.WordsDao
 import pro.yakuraion.englishhelper.domain.entities.Word
-import pro.yakuraion.englishhelper.domain.entities.learning.WordExample
+import pro.yakuraion.englishhelper.domain.entities.WordExample
 import javax.inject.Inject
 
 internal class InnerWordsRepository @Inject constructor(
