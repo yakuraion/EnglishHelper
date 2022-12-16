@@ -1,21 +1,19 @@
 package pro.yakuraion.englishhelper.data.repositories
 
 import android.content.Context
+import android.net.Uri
 import pro.yakuraion.englishhelper.common.downloadFile
-import pro.yakuraion.englishhelper.data.network.wooordhunt.WooordhuntParser
 import pro.yakuraion.englishhelper.domain.repositories.WordsSoundsRepository
 import java.io.File
 import javax.inject.Inject
 
 internal class WordsSoundsRepositoryImpl @Inject constructor(
-    private val context: Context,
-    private val wooordhuntParser: WooordhuntParser
+    private val context: Context
 ) : WordsSoundsRepository {
 
-    override suspend fun downloadSoundForWorld(name: String): File? {
-        val downloadUri = wooordhuntParser.getWord(name).soundUri ?: return null
+    override suspend fun downloadSoundForWorld(name: String, soundUri: Uri): File? {
         val file = getSoundFile(name)
-        val result = downloadFile(downloadUri.toString(), file)
+        val result = downloadFile(soundUri.toString(), file)
         return if (result) file else null
     }
 

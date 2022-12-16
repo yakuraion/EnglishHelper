@@ -3,11 +3,13 @@ package pro.yakuraion.englishhelper.data.repositories
 import androidx.room.withTransaction
 import kotlinx.coroutines.flow.Flow
 import pro.yakuraion.englishhelper.data.database.AppDatabase
+import pro.yakuraion.englishhelper.data.network.wooordhunt.WooordhuntParser
 import pro.yakuraion.englishhelper.data.repositories.inner.InnerCompletedWordsRepository
 import pro.yakuraion.englishhelper.data.repositories.inner.InnerLearningWordsRepository
 import pro.yakuraion.englishhelper.data.repositories.inner.InnerTodayLearningWordsRepository
 import pro.yakuraion.englishhelper.data.repositories.inner.InnerWordsRepository
 import pro.yakuraion.englishhelper.domain.entities.CompletedWord
+import pro.yakuraion.englishhelper.domain.entities.WooordhuntWord
 import pro.yakuraion.englishhelper.domain.entities.Word
 import pro.yakuraion.englishhelper.domain.entities.learning.LearningWord
 import pro.yakuraion.englishhelper.domain.entities.learning.MemorizationLevel
@@ -17,6 +19,7 @@ import javax.inject.Inject
 
 internal class WordsRepositoryImpl @Inject constructor(
     private val appDatabase: AppDatabase,
+    private val wooordhuntParser: WooordhuntParser,
     private val innerWordsRepository: InnerWordsRepository,
     private val innerLearningWordsRepository: InnerLearningWordsRepository,
     private val innerCompletedWordsRepository: InnerCompletedWordsRepository,
@@ -25,6 +28,10 @@ internal class WordsRepositoryImpl @Inject constructor(
 
     override suspend fun getWordByName(name: String): Word? {
         return innerWordsRepository.getWordByName(name)
+    }
+
+    override suspend fun getWooordhuntWord(name: String): WooordhuntWord? {
+        return wooordhuntParser.getWord(name)
     }
 
     override fun getTodayLearningWords(): Flow<List<LearningWord>> {

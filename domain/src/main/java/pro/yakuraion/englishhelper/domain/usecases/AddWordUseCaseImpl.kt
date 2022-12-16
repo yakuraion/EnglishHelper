@@ -1,9 +1,11 @@
 package pro.yakuraion.englishhelper.domain.usecases
 
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import pro.yakuraion.englishhelper.common.coroutines.Dispatchers
+import pro.yakuraion.englishhelper.domain.entities.WooordhuntWord
 import pro.yakuraion.englishhelper.domain.repositories.LearningRepository
 import pro.yakuraion.englishhelper.domain.repositories.WordsExamplesRepository
 import pro.yakuraion.englishhelper.domain.repositories.WordsRepository
@@ -36,21 +38,33 @@ internal class AddWordUseCaseImpl @Inject constructor(
 
     private suspend fun addWordWithExtraInfo(name: String, currentDay: Int): AddWordUseCase.Result {
         return coroutineScope {
-            val soundUriDeferred = async { wordsSoundsRepository.downloadSoundForWorld(name)?.toURI()?.toString() }
+            val wooordhuntWordDeferred = async { wordsRepository.getWooordhuntWord(name) }
+            val downloadedSoundUriDeferred = async { getDownloadedSoundUri(wooordhuntWordDeferred) }
             val examplesDeferred = async { wordsExamplesRepository.downloadWordsExamples(name) }
-            val soundUri = soundUriDeferred.await()
+
+            val wooordhuntWord = wooordhuntWordDeferred.await()
+            val downloadSoundUri = downloadedSoundUriDeferred.await()
             val examples = examplesDeferred.await()
-            if (soundUri == null) {
+
+            if (downloadSoundUri == null) {
                 return@coroutineScope AddWordUseCase.Result.WORD_NOT_FOUND
             }
+
             wordsRepository.addNewWord(
                 name = name,
-                soundUri = soundUri,
+                soundUri = downloadSoundUri,
                 examples = examples,
                 firstDayToLearn = currentDay
             )
             return@coroutineScope AddWordUseCase.Result.SUCCESS
         }
+    }
+
+    private suspend fun getDownloadedSoundUri(wooordhuntWordDeferred: Deferred<WooordhuntWord?>): String? {
+        return wooordhuntWordDeferred.await()
+            ?.let { word -> wordsSoundsRepository.downloadSoundForWorld(word.name, word.soundUri) }
+            ?.toURI()
+            ?.toString()
     }
 
     private suspend fun addWordWithoutExtraInfo(name: String, currentDay: Int): AddWordUseCase.Result {

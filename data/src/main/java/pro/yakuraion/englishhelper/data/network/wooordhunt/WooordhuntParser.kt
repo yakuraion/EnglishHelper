@@ -1,9 +1,12 @@
 package pro.yakuraion.englishhelper.data.network.wooordhunt
 
-import android.net.Uri
 import com.android.volley.RequestQueue
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.StringRequest
+import org.jsoup.Jsoup
+import pro.yakuraion.englishhelper.data.network.wooordhunt.extractors.WooordhuntFormsExtractor
+import pro.yakuraion.englishhelper.data.network.wooordhunt.extractors.WooordhuntSoundExtractor
+import pro.yakuraion.englishhelper.domain.entities.WooordhuntWord
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.coroutines.resume
@@ -12,16 +15,24 @@ import kotlin.coroutines.suspendCoroutine
 
 @Singleton
 internal class WooordhuntParser @Inject constructor(
-    private val queue: RequestQueue
+    private val queue: RequestQueue,
+    private val soundExtractor: WooordhuntSoundExtractor,
+    private val formsExtractor: WooordhuntFormsExtractor,
 ) {
 
-    suspend fun getWord(name: String): WooordhuntWord {
+    suspend fun getWord(name: String): WooordhuntWord? {
         return suspendCoroutine { continuation ->
             requestWordHtml(
                 name,
                 onResult = { html ->
-                    val soundUri = getSoundUriFromHtml(html)
-                    val word = WooordhuntWord(soundUri = soundUri)
+                    val document = Jsoup.parse(html)
+
+                    val soundUri = soundExtractor.extract(html)
+                    val forms = formsExtractor.extract(name, document)
+
+                    val word = soundUri?.let {
+                        WooordhuntWord(name, soundUri, forms)
+                    }
                     continuation.resume(word)
                 },
                 onError = { continuation.resumeWithException(it) }
@@ -39,18 +50,10 @@ internal class WooordhuntParser @Inject constructor(
         queue.add(request)
     }
 
-    private fun getSoundUriFromHtml(html: String): Uri? {
-        return US_SOUND_REGEX.find(html)
-            ?.value
-            ?.trim('"')
-            ?.let { Uri.parse("$BASE_URL$it") }
-    }
-
     companion object {
 
-        private const val BASE_URL = "https://wooordhunt.ru"
-        private const val BASE_WORD_URL = "$BASE_URL/word"
+        const val BASE_URL = "https://wooordhunt.ru"
 
-        private val US_SOUND_REGEX = "\"[/a-z]*/us/[/a-z]*\\.mp3\"".toRegex()
+        private const val BASE_WORD_URL = "$BASE_URL/word"
     }
 }

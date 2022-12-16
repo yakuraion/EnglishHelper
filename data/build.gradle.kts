@@ -13,4 +13,5 @@ dependencies {
     implementation(project(":domain"))
 
     implementation(libs.gson)
+    implementation(libs.jsoup)
 }
