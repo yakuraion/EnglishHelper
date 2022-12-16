@@ -70,7 +70,7 @@ class AddWordUseCaseTest : UseCaseTest<AddWordUseCase>() {
 
         val result = useCase.addWord(NAME, true)
 
-        assertEquals(AddWordUseCase.Result.WORD_AUDIO_NOT_FOUND, result)
+        assertEquals(AddWordUseCase.Result.WORD_NOT_FOUND, result)
     }
 
     @Test

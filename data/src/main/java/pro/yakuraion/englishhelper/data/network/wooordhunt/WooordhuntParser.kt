@@ -1,10 +1,9 @@
-package pro.yakuraion.englishhelper.data.siteparsers.wooordhunt
+package pro.yakuraion.englishhelper.data.network.wooordhunt
 
-import android.content.Context
 import android.net.Uri
+import com.android.volley.RequestQueue
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.coroutines.resume
@@ -12,9 +11,9 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 @Singleton
-internal class WooordhuntParser @Inject constructor(context: Context) {
-
-    private val queue = Volley.newRequestQueue(context)
+internal class WooordhuntParser @Inject constructor(
+    private val queue: RequestQueue
+) {
 
     suspend fun getWord(name: String): WooordhuntWord {
         return suspendCoroutine { continuation ->

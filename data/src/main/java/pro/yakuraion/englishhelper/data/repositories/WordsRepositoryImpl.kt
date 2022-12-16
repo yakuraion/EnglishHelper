@@ -11,6 +11,7 @@ import pro.yakuraion.englishhelper.domain.entities.CompletedWord
 import pro.yakuraion.englishhelper.domain.entities.Word
 import pro.yakuraion.englishhelper.domain.entities.learning.LearningWord
 import pro.yakuraion.englishhelper.domain.entities.learning.MemorizationLevel
+import pro.yakuraion.englishhelper.domain.entities.learning.WordExample
 import pro.yakuraion.englishhelper.domain.repositories.WordsRepository
 import javax.inject.Inject
 
@@ -42,9 +43,14 @@ internal class WordsRepositoryImpl @Inject constructor(
         return innerCompletedWordsRepository.getWords()
     }
 
-    override suspend fun addNewWord(name: String, soundUri: String?, firstDayToLearn: Int) {
+    override suspend fun addNewWord(
+        name: String,
+        soundUri: String?,
+        examples: List<WordExample>,
+        firstDayToLearn: Int
+    ) {
         appDatabase.withTransaction {
-            innerWordsRepository.addWord(name, soundUri)
+            innerWordsRepository.addWord(name, soundUri, examples)
             innerLearningWordsRepository.addWord(name, nextDayToLearn = firstDayToLearn)
             innerTodayLearningWordsRepository.addWord(name)
         }

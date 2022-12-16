@@ -1,6 +1,5 @@
 package pro.yakuraion.englishhelper.data.database.entities
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -10,5 +9,6 @@ import androidx.room.PrimaryKey
 internal class WordEntity(
     @PrimaryKey val name: String,
     // todo: rename to soundUri
-    @ColumnInfo val soundFile: String?
+    val soundFile: String?,
+    val examplesJson: String
 )

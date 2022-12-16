@@ -12,6 +12,7 @@ import javax.inject.Singleton
         SharedPreferencesModule::class,
         DatabaseModule::class,
         DaosModule::class,
+        NetworkModule::class,
         RepositoriesModule::class
     ]
 )

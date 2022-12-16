@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import pro.yakuraion.englishhelper.domain.entities.CompletedWord
 import pro.yakuraion.englishhelper.domain.entities.Word
 import pro.yakuraion.englishhelper.domain.entities.learning.LearningWord
+import pro.yakuraion.englishhelper.domain.entities.learning.WordExample
 
 interface WordsRepository {
 
@@ -17,7 +18,12 @@ interface WordsRepository {
 
     fun getCompletedWords(): Flow<List<CompletedWord>>
 
-    suspend fun addNewWord(name: String, soundUri: String?, firstDayToLearn: Int)
+    suspend fun addNewWord(
+        name: String,
+        soundUri: String?,
+        examples: List<WordExample>,
+        firstDayToLearn: Int
+    )
 
     suspend fun deleteWord(name: String)
 

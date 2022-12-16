@@ -2,7 +2,7 @@ package pro.yakuraion.englishhelper.data.repositories
 
 import android.content.Context
 import pro.yakuraion.englishhelper.common.downloadFile
-import pro.yakuraion.englishhelper.data.siteparsers.wooordhunt.WooordhuntParser
+import pro.yakuraion.englishhelper.data.network.wooordhunt.WooordhuntParser
 import pro.yakuraion.englishhelper.domain.repositories.WordsSoundsRepository
 import java.io.File
 import javax.inject.Inject

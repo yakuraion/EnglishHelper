@@ -54,6 +54,8 @@ room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 
+gson = { module = "com.google.code.gson:gson", version = "2.10" }
+
 volley = { module = "com.android.volley:volley", version = "1.2.1" }
 
 junit = { module = "junit:junit", version = "4.13.2" }

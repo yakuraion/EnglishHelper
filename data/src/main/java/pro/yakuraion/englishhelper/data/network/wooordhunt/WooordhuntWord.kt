@@ -1,4 +1,4 @@
-package pro.yakuraion.englishhelper.data.siteparsers.wooordhunt
+package pro.yakuraion.englishhelper.data.network.wooordhunt
 
 import android.net.Uri
 

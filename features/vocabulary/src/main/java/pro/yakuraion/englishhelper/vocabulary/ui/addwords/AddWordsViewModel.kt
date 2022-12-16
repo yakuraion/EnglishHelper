@@ -42,16 +42,16 @@ class AddWordsViewModel @AssistedInject constructor(
         hideWordNotFoundDialog()
         addWord(
             word = uiState.word,
-            withAudio = false
+            withExtraInfo = false
         )
     }
 
-    private fun addWord(word: String, withAudio: Boolean = true) {
+    private fun addWord(word: String, withExtraInfo: Boolean = true) {
         val formattedWord = word.trim()
         viewModelScope.launch {
             if (!validateIsWordAlreadyExists(formattedWord)) return@launch
             uiState = uiState.copy(isAddButtonLoading = true)
-            if (addWordUseCase.addWord(formattedWord, withAudio) == AddWordUseCase.Result.WORD_AUDIO_NOT_FOUND) {
+            if (addWordUseCase.addWord(formattedWord, withExtraInfo) == AddWordUseCase.Result.WORD_NOT_FOUND) {
                 showWordNotFoundDialog()
             } else {
                 uiState = uiState.copy(word = "")
