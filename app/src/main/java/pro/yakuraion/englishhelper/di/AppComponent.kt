@@ -2,7 +2,9 @@ package pro.yakuraion.englishhelper.di
 
 import android.content.Context
 import dagger.Component
+import pro.yakuraion.englishhelper.BuildConfig
 import pro.yakuraion.englishhelper.common.coroutines.Dispatchers
+import pro.yakuraion.englishhelper.data.DataConfiguration
 import pro.yakuraion.englishhelper.data.di.DaggerDataComponent
 import pro.yakuraion.englishhelper.data.di.DataComponent
 import pro.yakuraion.englishhelper.domain.di.DaggerDomainComponent
@@ -37,7 +39,15 @@ interface AppComponent : UseCasesProvider {
         private fun getDataComponent(context: Context): DataComponent {
             return DaggerDataComponent.builder()
                 .context(context)
+                .configuration(getDataConfiguration())
                 .build()
+        }
+
+        private fun getDataConfiguration(): DataConfiguration {
+            return DataConfiguration(
+                wordsServiceHost = BuildConfig.NETWORK_WORDS_HOST,
+                wordsServiceKey = BuildConfig.NETWORK_WORDS_KEY
+            )
         }
 
         private fun getDomainComponent(

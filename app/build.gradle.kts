@@ -8,6 +8,9 @@ plugins {
     id("data-uses-convention")
 }
 
+val customProperties = Properties()
+customProperties.load(FileInputStream(rootProject.file("custom.properties")))
+
 android {
     namespace = "pro.yakuraion.englishhelper"
 
@@ -15,6 +18,9 @@ android {
         applicationId = "pro.yakuraion.englishhelper"
         versionCode = 3
         versionName = "0.3.0"
+
+        buildConfigField("String", "NETWORK_WORDS_HOST", "\"${customProperties["network.words.host"]}\"")
+        buildConfigField("String", "NETWORK_WORDS_KEY", "\"${customProperties["network.words.key"]}\"")
     }
 
     val releaseKeystorePropertiesFile = file(

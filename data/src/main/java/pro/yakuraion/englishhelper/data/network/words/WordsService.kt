@@ -1,6 +1,7 @@
 package pro.yakuraion.englishhelper.data.network.words
 
 import com.android.volley.RequestQueue
+import pro.yakuraion.englishhelper.data.DataConfiguration
 import pro.yakuraion.englishhelper.data.network.volley.GsonRequest
 import pro.yakuraion.englishhelper.data.network.words.responses.WordsExamplesResponse
 import javax.inject.Inject
@@ -11,6 +12,7 @@ import kotlin.coroutines.suspendCoroutine
 
 @Singleton
 internal class WordsService @Inject constructor(
+    private val configuration: DataConfiguration,
     private val queue: RequestQueue
 ) {
 
@@ -28,17 +30,17 @@ internal class WordsService @Inject constructor(
         }
     }
 
+    private fun getAuthHeaders(): Map<String, String> {
+        return mapOf(
+            "X-RapidAPI-Host" to configuration.wordsServiceHost,
+            "X-RapidAPI-Key" to configuration.wordsServiceKey
+        )
+    }
+
     companion object {
 
         private fun getUrl(path: String): String {
             return "https://wordsapiv1.p.rapidapi.com/$path"
-        }
-
-        private fun getAuthHeaders(): Map<String, String> {
-            return mapOf(
-                "X-RapidAPI-Host" to "example",
-                "X-RapidAPI-Key" to "example"
-            )
         }
     }
 }

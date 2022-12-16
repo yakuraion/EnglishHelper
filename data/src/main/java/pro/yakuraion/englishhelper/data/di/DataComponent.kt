@@ -3,6 +3,7 @@ package pro.yakuraion.englishhelper.data.di
 import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
+import pro.yakuraion.englishhelper.data.DataConfiguration
 import pro.yakuraion.englishhelper.domain.di.RepositoriesProvider
 import javax.inject.Singleton
 
@@ -25,5 +26,8 @@ interface DataComponent : RepositoriesProvider {
 
         @BindsInstance
         fun context(context: Context): Builder
+
+        @BindsInstance
+        fun configuration(dataConfiguration: DataConfiguration): Builder
     }
 }
