@@ -1,4 +1,4 @@
-package pro.yakuraion.englishhelper.vocabulary.ui.testing
+package pro.yakuraion.englishhelper.vocabulary.ui.testing.states
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -25,17 +25,18 @@ import pro.yakuraion.englishhelper.commonui.compose.widgets.buttons.AppButtonWit
 import pro.yakuraion.englishhelper.vocabulary.R
 
 @Composable
-fun TestingWordSimple(
-    word: String,
-    onWordTested: () -> Unit
+fun TestingContentLite(
+    state: TestingUiState.Lite,
+    onWordTested: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = modifier.fillMaxSize()) {
         Column(modifier = Modifier.align(Alignment.Center)) {
             val spaceHeight = 16.dp
             TitleText()
             Spacer(modifier = Modifier.height(spaceHeight))
             WordText(
-                word = word,
+                word = state.word,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
             Spacer(modifier = Modifier.height(spaceHeight))
@@ -103,8 +104,8 @@ private fun AdditionalText(
 @Composable
 private fun TestingWordSimplePreview() {
     AppTheme {
-        TestingWordSimple(
-            word = "some word",
+        TestingContentLite(
+            state = TestingUiState.Lite(0, "word", ""),
             onWordTested = {}
         )
     }

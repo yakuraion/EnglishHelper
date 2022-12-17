@@ -1,4 +1,4 @@
-package pro.yakuraion.englishhelper.vocabulary.ui.testing
+package pro.yakuraion.englishhelper.vocabulary.ui.testing.states
 
 import pro.yakuraion.englishhelper.domain.entities.WordExample
 
@@ -8,17 +8,17 @@ sealed class TestingUiState {
 
     object NoMoreWords : TestingUiState()
 
-    data class WordSimple(
-        val queueId: Long,
-        val word: String,
-        val linkUrl: String
-    ) : TestingUiState()
-
-    data class WordWithAudio(
+    data class Regular(
         val queueId: Long, // to distinguish two words with same name following one by one
         val word: String,
         val soundUri: String,
         val examples: List<WordExample>,
-        val linkUrl: String
+        val dictionaryUrl: String
+    ) : TestingUiState()
+
+    data class Lite(
+        val queueId: Long, // to distinguish two words with same name following one by one
+        val word: String,
+        val dictionaryUrl: String
     ) : TestingUiState()
 }

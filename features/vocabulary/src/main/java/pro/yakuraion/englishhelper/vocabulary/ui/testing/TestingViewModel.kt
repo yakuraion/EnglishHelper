@@ -17,6 +17,7 @@ import pro.yakuraion.englishhelper.domain.usecases.GetNextWordToLearnTodayUseCas
 import pro.yakuraion.englishhelper.domain.usecases.MoveLearningWordToNextLevelUseCase
 import pro.yakuraion.englishhelper.domain.usecases.MoveLearningWordToPreviousLevelUseCase
 import pro.yakuraion.englishhelper.domain.utils.DictionaryUtils
+import pro.yakuraion.englishhelper.vocabulary.ui.testing.states.TestingUiState
 import kotlin.properties.Delegates
 import kotlin.random.Random
 
@@ -56,19 +57,19 @@ class TestingViewModel @AssistedInject constructor(
                 TestingUiState.NoMoreWords
             }
             word.word.soundUri != null -> {
-                TestingUiState.WordWithAudio(
+                TestingUiState.Regular(
                     queueId = Random.nextLong(),
                     word = word.word.name,
                     soundUri = word.word.soundUri!!,
                     examples = word.word.examples,
-                    linkUrl = DictionaryUtils.getDictionaryUrl(word.word.name)
+                    dictionaryUrl = DictionaryUtils.getDictionaryUrl(word.word.name)
                 )
             }
             else -> {
-                TestingUiState.WordSimple(
+                TestingUiState.Lite(
                     queueId = Random.nextLong(),
                     word = word.word.name,
-                    linkUrl = DictionaryUtils.getDictionaryUrl(word.word.name)
+                    dictionaryUrl = DictionaryUtils.getDictionaryUrl(word.word.name)
                 )
             }
         }
