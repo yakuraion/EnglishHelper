@@ -1,7 +1,6 @@
 package pro.yakuraion.englishhelper.vocabulary.ui.testing
 
 import android.content.res.Configuration
-import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,17 +8,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.HelpOutline
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,8 +23,6 @@ import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 import pro.yakuraion.englishhelper.commonui.compose.widgets.AppTopAppBar
 import pro.yakuraion.englishhelper.commonui.compose.widgets.buttons.AppArrowBackButton
 import pro.yakuraion.englishhelper.commonui.compose.widgets.buttons.AppButtonWithText
-import pro.yakuraion.englishhelper.commonui.compose.widgets.buttons.AppOutlinedButton
-import pro.yakuraion.englishhelper.commonui.openLink
 import pro.yakuraion.englishhelper.vocabulary.R
 import pro.yakuraion.englishhelper.vocabulary.di.viewmodel.daggerViewModel
 
@@ -75,23 +68,22 @@ private fun TestingScreen(
                     )
                 }
                 is TestingUiState.WordSimple -> {
-                    WordSimple(
+                    TestingWordSimple(
                         word = uiState.word,
-                        dictionaryUrl = uiState.linkUrl,
-                        onVisitedDictionary = onVisitedDictionary,
-                        onWordTested = onWordTested,
-                        modifier = alignModifier
+                        onWordTested = onWordTested
                     )
                 }
                 is TestingUiState.WordWithAudio -> {
-                    WordWithAudio(
-                        queueId = uiState.queueId,
-                        word = uiState.word,
-                        soundUri = uiState.soundUri,
-                        dictionaryUrl = uiState.linkUrl,
-                        onVisitedDictionary = onVisitedDictionary,
-                        onWordTested = onWordTested,
-                        modifier = alignModifier
+                    TestingWordWithAudio(
+                        state = rememberTestingWordWithAudioState(
+                            queueId = uiState.queueId,
+                            word = uiState.word,
+                            soundUri = uiState.soundUri,
+                            examples = uiState.examples,
+                            dictionaryUrl = uiState.linkUrl
+                        ),
+                        onDictionaryViewed = onVisitedDictionary,
+                        onWordTested = onWordTested
                     )
                 }
             }
@@ -141,78 +133,6 @@ private fun NoMoreWords(
     }
 }
 
-@Composable
-private fun WordSimple(
-    word: String,
-    dictionaryUrl: String,
-    onVisitedDictionary: () -> Unit,
-    onWordTested: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    TestingLayout(
-        dictionaryUrl = dictionaryUrl,
-        onVisitedDictionary = onVisitedDictionary,
-        modifier = modifier
-    ) {
-        TestingWordSimple(
-            word = word,
-            onWordTested = onWordTested
-        )
-    }
-}
-
-@Composable
-private fun WordWithAudio(
-    queueId: Long,
-    word: String,
-    soundUri: String,
-    dictionaryUrl: String,
-    onVisitedDictionary: () -> Unit,
-    onWordTested: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    TestingLayout(
-        dictionaryUrl = dictionaryUrl,
-        onVisitedDictionary = onVisitedDictionary,
-        modifier = modifier
-    ) {
-        TestingWordWithAudio(
-            state = rememberTestingWordWithAudioState(
-                queueId = queueId,
-                word = word,
-                soundUri = soundUri
-            ),
-            onWordTested = onWordTested
-        )
-    }
-}
-
-@Composable
-private fun TestingLayout(
-    dictionaryUrl: String,
-    onVisitedDictionary: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
-) {
-    Box(modifier = modifier.fillMaxSize()) {
-        val context = LocalContext.current
-        AppOutlinedButton(
-            text = stringResource(id = R.string.vocabulary_testing_screen_help_button),
-            onClick = {
-                context.openLink(Uri.parse(dictionaryUrl))
-                onVisitedDictionary()
-            },
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(top = 16.dp, end = 16.dp),
-            leadingIcon = {
-                Icon(imageVector = Icons.Filled.HelpOutline, contentDescription = null)
-            }
-        )
-        content()
-    }
-}
-
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
@@ -241,7 +161,8 @@ private fun TestingScreenWithAudioPreview() {
                 0,
                 word = "word",
                 soundUri = "",
-                linkUrl = ""
+                linkUrl = "",
+                examples = emptyList()
             ),
             onBackClick = {},
             onVisitedDictionary = {},

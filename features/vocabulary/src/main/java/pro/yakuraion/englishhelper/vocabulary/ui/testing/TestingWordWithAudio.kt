@@ -1,6 +1,7 @@
 package pro.yakuraion.englishhelper.vocabulary.ui.testing
 
 import android.content.res.Configuration
+import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,6 +17,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -32,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,12 +44,16 @@ import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 import pro.yakuraion.englishhelper.commonui.compose.widgets.AppTextField
 import pro.yakuraion.englishhelper.commonui.compose.widgets.CustomTextFieldActionIcon
 import pro.yakuraion.englishhelper.commonui.compose.widgets.CustomTextFieldError
+import pro.yakuraion.englishhelper.commonui.openLink
 import pro.yakuraion.englishhelper.domain.entities.WordExample
 import pro.yakuraion.englishhelper.vocabulary.R
+
+private val smallActionButtonSize = 60.dp
 
 @Composable
 fun TestingWordWithAudio(
     state: TestingWordWithAudioState,
+    onDictionaryViewed: () -> Unit,
     onWordTested: () -> Unit
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
@@ -54,6 +61,8 @@ fun TestingWordWithAudio(
             AudioWithShowedExamples(
                 soundUri = state.soundUri,
                 examples = state.examples,
+                dictionaryUrl = state.dictionaryUrl,
+                onDictionaryViewed = onDictionaryViewed,
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
@@ -61,7 +70,9 @@ fun TestingWordWithAudio(
         } else {
             AudioWithHiddenExamples(
                 soundUri = state.soundUri,
+                dictionaryUrl = state.dictionaryUrl,
                 onExamplesShowClick = { state.onExamplesShowClick() },
+                onDictionaryViewed = onDictionaryViewed,
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
@@ -85,7 +96,9 @@ fun TestingWordWithAudio(
 @Composable
 private fun AudioWithHiddenExamples(
     soundUri: String,
+    dictionaryUrl: String,
     onExamplesShowClick: () -> Unit,
+    onDictionaryViewed: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(modifier = modifier) {
@@ -95,10 +108,16 @@ private fun AudioWithHiddenExamples(
                 .size(100.dp)
                 .align(Alignment.Center)
         )
-
         ShowExamplesButton(
             onClick = onExamplesShowClick,
-            modifier = Modifier.align(Alignment.BottomEnd)
+            modifier = Modifier.align(Alignment.BottomStart)
+        )
+        DictionaryButton(
+            dictionaryUrl = dictionaryUrl,
+            onDictionaryViewed = onDictionaryViewed,
+            modifier = Modifier
+                .size(smallActionButtonSize)
+                .align(Alignment.BottomEnd)
         )
     }
 }
@@ -107,6 +126,8 @@ private fun AudioWithHiddenExamples(
 private fun AudioWithShowedExamples(
     soundUri: String,
     examples: List<WordExample>,
+    dictionaryUrl: String,
+    onDictionaryViewed: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier) {
@@ -117,12 +138,18 @@ private fun AudioWithShowedExamples(
                 .align(Alignment.Bottom)
         )
         Spacer(modifier = Modifier.width(16.dp))
-        PlaySoundButton(
-            soundUri = soundUri,
-            modifier = Modifier
-                .size(60.dp)
-                .align(Alignment.Bottom)
-        )
+        Column(modifier = Modifier.align(Alignment.Bottom)) {
+            PlaySoundButton(
+                soundUri = soundUri,
+                modifier = Modifier.size(smallActionButtonSize)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            DictionaryButton(
+                dictionaryUrl = dictionaryUrl,
+                onDictionaryViewed = onDictionaryViewed,
+                modifier = Modifier.size(smallActionButtonSize)
+            )
+        }
     }
 }
 
@@ -145,28 +172,6 @@ private fun ExamplesText(
         color = MaterialTheme.colorScheme.secondary,
         style = MaterialTheme.typography.bodyMedium
     )
-}
-
-@Composable
-private fun PlaySoundButton(
-    soundUri: String,
-    modifier: Modifier = Modifier
-) {
-    val context = LocalContext.current
-    val iconSizeInPercent = 0.6f
-
-    Button(
-        onClick = { MediaPlayerUtils.playSound(context, soundUri) },
-        modifier = modifier,
-        shape = CircleShape,
-        contentPadding = PaddingValues(0.dp)
-    ) {
-        Icon(
-            imageVector = Icons.Filled.VolumeUp,
-            contentDescription = null,
-            modifier = Modifier.fillMaxSize(iconSizeInPercent)
-        )
-    }
 }
 
 @Composable
@@ -222,6 +227,58 @@ private fun getWrongAnswerErrorText(isError: Boolean): String {
 }
 
 @Composable
+private fun PlaySoundButton(
+    soundUri: String,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    ActionButton(
+        icon = Icons.Filled.VolumeUp,
+        onClick = { MediaPlayerUtils.playSound(context, soundUri) },
+        modifier = modifier
+    )
+}
+
+@Composable
+private fun DictionaryButton(
+    dictionaryUrl: String,
+    onDictionaryViewed: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    ActionButton(
+        icon = Icons.Default.Translate,
+        onClick = {
+            context.openLink(Uri.parse(dictionaryUrl))
+            onDictionaryViewed()
+        },
+        modifier = modifier
+    )
+}
+
+@Composable
+private fun ActionButton(
+    icon: ImageVector,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val iconSizeInPercent = 0.6f
+
+    Button(
+        onClick = onClick,
+        modifier = modifier,
+        shape = CircleShape,
+        contentPadding = PaddingValues(0.dp)
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(iconSizeInPercent)
+        )
+    }
+}
+
+@Composable
 private fun PlaySoundEffect(queueId: Long, soundUri: String) {
     val context = LocalContext.current
     LaunchedEffect(queueId, soundUri) {
@@ -233,7 +290,8 @@ class TestingWordWithAudioState(
     val queueId: Long,
     val word: String,
     val soundUri: String,
-    val examples: List<WordExample>
+    val examples: List<WordExample>,
+    val dictionaryUrl: String
 ) {
 
     var answer: String by mutableStateOf("")
@@ -271,10 +329,11 @@ fun rememberTestingWordWithAudioState(
     queueId: Long,
     word: String,
     soundUri: String,
-    examples: List<WordExample>
+    examples: List<WordExample>,
+    dictionaryUrl: String,
 ): TestingWordWithAudioState {
-    return remember(queueId, word, soundUri, examples) {
-        TestingWordWithAudioState(queueId, word, soundUri, examples)
+    return remember(queueId, word, soundUri, examples, dictionaryUrl) {
+        TestingWordWithAudioState(queueId, word, soundUri, examples, dictionaryUrl)
     }
 }
 
@@ -288,8 +347,10 @@ private fun TestingWordWithAudioPreview() {
                 queueId = 0,
                 word = "word",
                 soundUri = "",
-                examples = emptyList()
+                examples = emptyList(),
+                dictionaryUrl = ""
             ),
+            onDictionaryViewed = {},
             onWordTested = {}
         )
     }
@@ -306,11 +367,13 @@ private fun TestingWordWithAudioAndExamplesPreview() {
             soundUri = "",
             examples = List(5) { index ->
                 WordExample("Some sentence of %s number $index", "word")
-            }
+            },
+            dictionaryUrl = ""
         )
         state.onExamplesShowClick()
         TestingWordWithAudio(
             state = state,
+            onDictionaryViewed = {},
             onWordTested = {}
         )
     }
