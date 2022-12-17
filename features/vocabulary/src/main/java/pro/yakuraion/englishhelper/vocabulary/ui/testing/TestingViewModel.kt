@@ -60,6 +60,7 @@ class TestingViewModel @AssistedInject constructor(
                     queueId = Random.nextLong(),
                     word = word.word.name,
                     soundUri = word.word.soundUri!!,
+                    examples = word.word.examples,
                     linkUrl = DictionaryUtils.getDictionaryUrl(word.word.name)
                 )
             }

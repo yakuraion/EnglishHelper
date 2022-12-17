@@ -2,16 +2,26 @@ package pro.yakuraion.englishhelper.vocabulary.ui.testing
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -31,6 +41,7 @@ import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 import pro.yakuraion.englishhelper.commonui.compose.widgets.AppTextField
 import pro.yakuraion.englishhelper.commonui.compose.widgets.CustomTextFieldActionIcon
 import pro.yakuraion.englishhelper.commonui.compose.widgets.CustomTextFieldError
+import pro.yakuraion.englishhelper.domain.entities.WordExample
 import pro.yakuraion.englishhelper.vocabulary.R
 
 @Composable
@@ -38,24 +49,102 @@ fun TestingWordWithAudio(
     state: TestingWordWithAudioState,
     onWordTested: () -> Unit
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        PlaySoundButton(
-            soundUri = state.soundUri,
-            modifier = Modifier.align(Alignment.Center)
-        )
+    Column(modifier = Modifier.fillMaxSize()) {
+        if (state.isExamplesShowing) {
+            AudioWithShowedExamples(
+                soundUri = state.soundUri,
+                examples = state.examples,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            )
+        } else {
+            AudioWithHiddenExamples(
+                soundUri = state.soundUri,
+                onExamplesShowClick = { state.onExamplesShowClick() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         AnswerTextField(
             answer = state.answer,
             onAnswerChanged = { state.onAnswerChanged(it) },
             onDoneClick = { state.onDoneClick(onWordTested) },
             isActionEnabled = state.isActionEnabled,
-            isWrongAnswer = state.isWrongAnswer,
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(16.dp)
+            isWrongAnswer = state.isWrongAnswer
         )
 
         PlaySoundEffect(state.queueId, state.soundUri)
     }
+}
+
+@Composable
+private fun AudioWithHiddenExamples(
+    soundUri: String,
+    onExamplesShowClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Box(modifier = modifier) {
+        PlaySoundButton(
+            soundUri = soundUri,
+            modifier = Modifier
+                .size(100.dp)
+                .align(Alignment.Center)
+        )
+
+        ShowExamplesButton(
+            onClick = onExamplesShowClick,
+            modifier = Modifier.align(Alignment.BottomEnd)
+        )
+    }
+}
+
+@Composable
+private fun AudioWithShowedExamples(
+    soundUri: String,
+    examples: List<WordExample>,
+    modifier: Modifier = Modifier
+) {
+    Row(modifier = modifier) {
+        ExamplesText(
+            examples = examples,
+            modifier = Modifier
+                .weight(1f)
+                .align(Alignment.Bottom)
+        )
+        Spacer(modifier = Modifier.width(16.dp))
+        PlaySoundButton(
+            soundUri = soundUri,
+            modifier = Modifier
+                .size(60.dp)
+                .align(Alignment.Bottom)
+        )
+    }
+}
+
+@Composable
+private fun ExamplesText(
+    examples: List<WordExample>,
+    modifier: Modifier = Modifier
+) {
+    val text = examples
+        .map { it.sentence.format("___") }
+        .mapIndexed { index, sentence -> "$index. $sentence." }
+        .joinToString(separator = "\n")
+        .repeat(3)
+
+    val scrollState = rememberScrollState()
+
+    Text(
+        text = text,
+        modifier = modifier.verticalScroll(scrollState),
+        color = MaterialTheme.colorScheme.secondary,
+        style = MaterialTheme.typography.bodyMedium
+    )
 }
 
 @Composable
@@ -64,18 +153,29 @@ private fun PlaySoundButton(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+    val iconSizeInPercent = 0.6f
 
     Button(
         onClick = { MediaPlayerUtils.playSound(context, soundUri) },
-        modifier = modifier.size(100.dp),
+        modifier = modifier,
         shape = CircleShape,
-        contentPadding = PaddingValues(16.dp)
+        contentPadding = PaddingValues(0.dp)
     ) {
         Icon(
             imageVector = Icons.Filled.VolumeUp,
             contentDescription = null,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(iconSizeInPercent)
         )
+    }
+}
+
+@Composable
+private fun ShowExamplesButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    TextButton(onClick = onClick, modifier = modifier) {
+        Text(text = stringResource(id = R.string.vocabulary_testing_screen_show_examples))
     }
 }
 
@@ -132,7 +232,8 @@ private fun PlaySoundEffect(queueId: Long, soundUri: String) {
 class TestingWordWithAudioState(
     val queueId: Long,
     val word: String,
-    val soundUri: String
+    val soundUri: String,
+    val examples: List<WordExample>
 ) {
 
     var answer: String by mutableStateOf("")
@@ -142,6 +243,9 @@ class TestingWordWithAudioState(
         get() = answer.length > 2
 
     var isWrongAnswer by mutableStateOf(false)
+        private set
+
+    var isExamplesShowing: Boolean by mutableStateOf(false)
         private set
 
     fun onAnswerChanged(answer: String) {
@@ -156,16 +260,21 @@ class TestingWordWithAudioState(
             isWrongAnswer = true
         }
     }
+
+    fun onExamplesShowClick() {
+        isExamplesShowing = true
+    }
 }
 
 @Composable
 fun rememberTestingWordWithAudioState(
     queueId: Long,
     word: String,
-    soundUri: String
+    soundUri: String,
+    examples: List<WordExample>
 ): TestingWordWithAudioState {
-    return remember(queueId, word, soundUri) {
-        TestingWordWithAudioState(queueId, word, soundUri)
+    return remember(queueId, word, soundUri, examples) {
+        TestingWordWithAudioState(queueId, word, soundUri, examples)
     }
 }
 
@@ -178,8 +287,30 @@ private fun TestingWordWithAudioPreview() {
             state = TestingWordWithAudioState(
                 queueId = 0,
                 word = "word",
-                soundUri = ""
+                soundUri = "",
+                examples = emptyList()
             ),
+            onWordTested = {}
+        )
+    }
+}
+
+@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun TestingWordWithAudioAndExamplesPreview() {
+    AppTheme {
+        val state = rememberTestingWordWithAudioState(
+            queueId = 0,
+            word = "word",
+            soundUri = "",
+            examples = List(5) { index ->
+                WordExample("Some sentence of %s number $index", "word")
+            }
+        )
+        state.onExamplesShowClick()
+        TestingWordWithAudio(
+            state = state,
             onWordTested = {}
         )
     }
