@@ -13,9 +13,11 @@ class TestingContentRegularState(uiState: TestingUiState.Regular) {
 
     val word = uiState.word
 
+    val soundUri = uiState.soundUri
+
     val examples = uiState.examples
 
-    val soundUri = uiState.soundUri
+    val revealExamples = uiState.revealExamples
 
     val dictionaryUri = uiState.dictionaryUrl
 

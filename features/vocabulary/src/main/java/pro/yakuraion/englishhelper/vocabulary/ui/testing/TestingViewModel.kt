@@ -62,6 +62,7 @@ class TestingViewModel @AssistedInject constructor(
                     word = word.word.name,
                     soundUri = word.word.soundUri!!,
                     examples = word.word.examples,
+                    revealExamples = false,
                     dictionaryUrl = DictionaryUtils.getDictionaryUrl(word.word.name)
                 )
             }
@@ -80,16 +81,19 @@ class TestingViewModel @AssistedInject constructor(
     }
 
     fun onWordTested() {
-        wordFull?.learningWord?.let { learningWord ->
-            viewModelScope.launch {
-                if (isDictionaryVisited) {
-                    moveLearningWordToPreviousLevelUseCase.moveLearningWordToPreviousLevel(learningWord)
-                } else {
-                    moveLearningWordToNextLevelUseCase.moveLearningWordToNextLevel(learningWord)
-                }
-                loadNextWord()
-            }
+        (uiState as? TestingUiState.Regular)?.let { uiState ->
+            this.uiState = uiState.copy(revealExamples = true)
         }
+//        wordFull?.learningWord?.let { learningWord ->
+//            viewModelScope.launch {
+//                if (isDictionaryVisited) {
+//                    moveLearningWordToPreviousLevelUseCase.moveLearningWordToPreviousLevel(learningWord)
+//                } else {
+//                    moveLearningWordToNextLevelUseCase.moveLearningWordToNextLevel(learningWord)
+//                }
+//                loadNextWord()
+//            }
+//        }
     }
 
     @AssistedFactory

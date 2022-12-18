@@ -107,6 +107,7 @@ private fun TestingRegularPreview() {
                 word = "word",
                 soundUri = "",
                 examples = emptyList(),
+                revealExamples = false,
                 dictionaryUrl = "",
             ),
             onBackClick = {},

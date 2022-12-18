@@ -39,6 +39,7 @@ fun TestingContentRegularExamplesShowed(
     Row(modifier = modifier) {
         ExamplesText(
             examples = state.examples,
+            revealExamples = state.revealExamples,
             modifier = Modifier
                 .weight(1f)
                 .align(Alignment.Bottom)
@@ -66,6 +67,7 @@ fun TestingContentRegularExamplesShowed(
 @Composable
 private fun ExamplesText(
     examples: List<WordExample>,
+    revealExamples: Boolean,
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
@@ -82,7 +84,7 @@ private fun ExamplesText(
         bottomFade = min(scrollMaxOffsetDp - scrollOffsetInDp, maxFadeSize)
     ) {
         Text(
-            text = examples.toText(),
+            text = examples.toText(replaceWithGaps = !revealExamples),
             modifier = Modifier.verticalScroll(scrollState),
             color = MaterialTheme.colorScheme.secondary,
             style = MaterialTheme.typography.bodyMedium
@@ -90,21 +92,28 @@ private fun ExamplesText(
     }
 }
 
-private fun List<WordExample>.toText(): AnnotatedString {
+@Composable
+private fun List<WordExample>.toText(replaceWithGaps: Boolean): AnnotatedString {
     var result = buildAnnotatedString { }
-    val replaceString = "\uFF3F".repeat(3)
     forEachIndexed { index, wordExample ->
+        val (stringToReplace, styleToReplace) = if (replaceWithGaps) {
+            "\uFF3F".repeat(3) to SpanStyle(fontWeight = FontWeight.Bold, letterSpacing = 0.sp)
+        } else {
+            wordExample.missedWord to SpanStyle(color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
+        }
+
         var orderedSentence = "$index. ${wordExample.sentence}."
         if (index != lastIndex) {
             orderedSentence += "\n"
         }
+
         result += buildAnnotatedString {
             val parts = orderedSentence.split("%s")
             parts.forEachIndexed { index, part ->
                 append(part)
                 if (index != parts.lastIndex) {
-                    withStyle(SpanStyle(fontWeight = FontWeight.Bold, letterSpacing = 0.sp)) {
-                        append(replaceString)
+                    withStyle(styleToReplace) {
+                        append(stringToReplace)
                     }
                 }
             }
@@ -127,6 +136,7 @@ private fun Preview() {
                     examples = List(10) { index ->
                         WordExample("Sentence with given %s #$index", "word")
                     },
+                    revealExamples = false,
                     dictionaryUrl = ""
                 )
             )

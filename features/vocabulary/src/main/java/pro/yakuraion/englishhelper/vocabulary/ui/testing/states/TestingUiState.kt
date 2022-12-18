@@ -13,7 +13,8 @@ sealed class TestingUiState {
         val word: String,
         val soundUri: String,
         val examples: List<WordExample>,
-        val dictionaryUrl: String
+        val revealExamples: Boolean,
+        val dictionaryUrl: String,
     ) : TestingUiState()
 
     data class Lite(
