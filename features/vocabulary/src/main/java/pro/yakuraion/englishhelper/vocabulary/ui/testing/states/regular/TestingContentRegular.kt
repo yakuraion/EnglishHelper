@@ -26,6 +26,7 @@ import pro.yakuraion.englishhelper.vocabulary.ui.testing.states.TestingUiState
 @Composable
 fun TestingContentRegular(
     uiState: TestingUiState.Regular,
+    onShowExamplesClick: () -> Unit,
     onVisitedDictionary: () -> Unit,
     onWordTested: () -> Unit,
     modifier: Modifier = Modifier
@@ -37,7 +38,7 @@ fun TestingContentRegular(
             .fillMaxWidth()
             .weight(1f)
 
-        if (state.isExamplesShowing) {
+        if (state.showExamples) {
             TestingContentRegularExamplesShowed(
                 state = state,
                 onVisitedDictionary = onVisitedDictionary,
@@ -46,7 +47,7 @@ fun TestingContentRegular(
         } else {
             TestingContentRegularExamplesHidden(
                 state = state,
-                onExamplesShowClick = { state.onExamplesShowClick() },
+                onShowExamplesClick = onShowExamplesClick,
                 onVisitedDictionary = onVisitedDictionary,
                 modifier = examplesModifier
             )

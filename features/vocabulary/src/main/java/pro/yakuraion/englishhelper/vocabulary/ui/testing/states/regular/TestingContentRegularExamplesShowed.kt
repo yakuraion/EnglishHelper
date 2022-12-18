@@ -1,6 +1,5 @@
 package pro.yakuraion.englishhelper.vocabulary.ui.testing.states.regular
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,14 +19,11 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
-import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 import pro.yakuraion.englishhelper.commonui.compose.widgets.layout.AppFadingEdgesBox
 import pro.yakuraion.englishhelper.domain.entities.WordExample
-import pro.yakuraion.englishhelper.vocabulary.ui.testing.states.TestingUiState
 
 @Composable
 fun TestingContentRegularExamplesShowed(
@@ -92,9 +87,11 @@ private fun ExamplesText(
     }
 }
 
+@Suppress("MagicNumber")
 @Composable
 private fun List<WordExample>.toText(replaceWithGaps: Boolean): AnnotatedString {
     var result = buildAnnotatedString { }
+
     forEachIndexed { index, wordExample ->
         val (stringToReplace, styleToReplace) = if (replaceWithGaps) {
             "\uFF3F".repeat(3) to SpanStyle(fontWeight = FontWeight.Bold, letterSpacing = 0.sp)
@@ -120,32 +117,4 @@ private fun List<WordExample>.toText(replaceWithGaps: Boolean): AnnotatedString 
         }
     }
     return result
-}
-
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Preview
-@Composable
-private fun Preview() {
-    AppTheme {
-        Scaffold {
-            val state = rememberTestingContentRegularState(
-                uiState = TestingUiState.Regular(
-                    queueId = 0,
-                    word = "word",
-                    soundUri = "",
-                    examples = List(10) { index ->
-                        WordExample("Sentence with given %s #$index", "word")
-                    },
-                    revealExamples = false,
-                    dictionaryUrl = ""
-                )
-            )
-            state.onExamplesShowClick()
-
-            TestingContentRegularExamplesShowed(
-                state = state,
-                onVisitedDictionary = {}
-            )
-        }
-    }
 }

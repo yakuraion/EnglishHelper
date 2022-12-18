@@ -17,6 +17,8 @@ class TestingContentRegularState(uiState: TestingUiState.Regular) {
 
     val examples = uiState.examples
 
+    val showExamples = uiState.showExamples
+
     val revealExamples = uiState.revealExamples
 
     val dictionaryUri = uiState.dictionaryUrl
@@ -29,13 +31,6 @@ class TestingContentRegularState(uiState: TestingUiState.Regular) {
 
     var isWrongAnswer by mutableStateOf(false)
         private set
-
-    var isExamplesShowing: Boolean by mutableStateOf(false)
-        private set
-
-    fun onExamplesShowClick() {
-        isExamplesShowing = true
-    }
 
     fun onAnswerChanged(answer: String) {
         this.answer = answer

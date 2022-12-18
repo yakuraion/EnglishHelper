@@ -62,6 +62,7 @@ class TestingViewModel @AssistedInject constructor(
                     word = word.word.name,
                     soundUri = word.word.soundUri!!,
                     examples = word.word.examples,
+                    showExamples = false,
                     revealExamples = false,
                     dictionaryUrl = DictionaryUtils.getDictionaryUrl(word.word.name)
                 )
@@ -73,6 +74,12 @@ class TestingViewModel @AssistedInject constructor(
                     dictionaryUrl = DictionaryUtils.getDictionaryUrl(word.word.name)
                 )
             }
+        }
+    }
+
+    fun onShowExamplesClick() {
+        (uiState as? TestingUiState.Regular)?.let { uiState ->
+            this.uiState = uiState.copy(showExamples = true)
         }
     }
 

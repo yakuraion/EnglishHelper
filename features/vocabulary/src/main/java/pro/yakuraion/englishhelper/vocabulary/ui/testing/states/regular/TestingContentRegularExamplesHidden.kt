@@ -14,7 +14,7 @@ import pro.yakuraion.englishhelper.vocabulary.R
 @Composable
 fun TestingContentRegularExamplesHidden(
     state: TestingContentRegularState,
-    onExamplesShowClick: () -> Unit,
+    onShowExamplesClick: () -> Unit,
     onVisitedDictionary: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -26,7 +26,7 @@ fun TestingContentRegularExamplesHidden(
                 .align(Alignment.Center)
         )
         ShowExamplesButton(
-            onClick = onExamplesShowClick,
+            onClick = onShowExamplesClick,
             modifier = Modifier.align(Alignment.BottomStart)
         )
         TestingContentRegularDictionaryButton(
