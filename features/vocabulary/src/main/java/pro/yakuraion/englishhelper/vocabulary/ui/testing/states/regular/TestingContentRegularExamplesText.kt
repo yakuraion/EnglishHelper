@@ -1,5 +1,10 @@
 package pro.yakuraion.englishhelper.vocabulary.ui.testing.states.regular
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.with
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -20,6 +25,7 @@ import kotlinx.collections.immutable.ImmutableList
 import pro.yakuraion.englishhelper.commonui.compose.widgets.layout.AppFadingEdgesBox
 import pro.yakuraion.englishhelper.domain.entities.WordExample
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun TestingContentRegularExamplesText(
     examples: ImmutableList<WordExample>,
@@ -39,13 +45,21 @@ fun TestingContentRegularExamplesText(
         topFade = min(scrollOffsetInDp, maxFadeSize),
         bottomFade = min(scrollMaxOffsetDp - scrollOffsetInDp, maxFadeSize)
     ) {
-        Text(
-            text = examples.toText(replaceWithGaps = !revealExamples),
-            modifier = Modifier.verticalScroll(scrollState),
-            color = MaterialTheme.colorScheme.secondary,
-            textAlign = TextAlign.Justify,
-            style = MaterialTheme.typography.bodyMedium
-        )
+        val text = examples.toText(replaceWithGaps = !revealExamples)
+        AnimatedContent(
+            targetState = text,
+            transitionSpec = {
+                fadeIn() with fadeOut()
+            }
+        ) { targetText ->
+            Text(
+                text = targetText,
+                modifier = Modifier.verticalScroll(scrollState),
+                color = MaterialTheme.colorScheme.secondary,
+                textAlign = TextAlign.Justify,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
     }
 }
 
