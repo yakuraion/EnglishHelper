@@ -1,16 +1,23 @@
 package pro.yakuraion.englishhelper.vocabulary.ui.testing.states.regular
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.updateTransition
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -73,28 +80,33 @@ fun TestingContentRegular(
             onHideClick = { state.onHideExamplesClick() },
             modifier = Modifier.constrainAs(showHideExamplesButtonRef) {
                 start.linkTo(parent.start)
-                if (state.showExamples) {
-                    top.linkTo(parent.top)
-                } else {
-                    bottom.linkTo(answerTextFieldRef.top, margin = 16.dp)
-                }
+                bottom.linkTo(answerTextFieldRef.top, margin = 8.dp)
             }
         )
 
-        if (state.showExamples) {
-            TestingContentRegularExamplesText(
-                examples = state.uiState.examples,
-                revealExamples = state.uiState.isAnswered,
-                modifier = Modifier
-                    .constrainAs(examplesTextRef) {
-                        start.linkTo(parent.start)
-                        top.linkTo(showHideExamplesButtonRef.bottom, margin = 8.dp)
-                        end.linkTo(dictionaryButtonRef.start, margin = 16.dp)
-                        bottom.linkTo(answerTextFieldRef.top, margin = 16.dp)
-                        width = Dimension.fillToConstraints
-                        height = Dimension.fillToConstraints
-                    }
-            )
+        Box(
+            modifier = Modifier
+                .constrainAs(examplesTextRef) {
+                    start.linkTo(parent.start)
+                    top.linkTo(parent.top)
+                    end.linkTo(dictionaryButtonRef.start, margin = 16.dp)
+                    bottom.linkTo(showHideExamplesButtonRef.top, margin = 8.dp)
+                    width = Dimension.fillToConstraints
+                    height = Dimension.fillToConstraints
+                },
+            contentAlignment = Alignment.BottomCenter
+        ) {
+            AnimatedVisibility(
+                visible = state.showExamples,
+                enter = fadeIn() + expandVertically(),
+                exit = fadeOut() + shrinkVertically()
+            ) {
+                TestingContentRegularExamplesText(
+                    examples = state.uiState.examples,
+                    revealExamples = state.uiState.isAnswered,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
         }
 
         TestingContentRegularAnswerTextField(
