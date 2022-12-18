@@ -55,7 +55,7 @@ fun AppTextField(
     placeholderText: String = "",
     error: CustomTextFieldError? = null,
     actionIcon: CustomTextFieldActionIcon? = null,
-    shapes: CustomTextFieldShapes = CustomTextFieldDefaults.shapes(),
+    shapes: AppTextFieldShapes = AppTextFieldDefaults.shapes(),
 ) {
     Column(modifier = modifier) {
         ErrorBorderBox(
@@ -224,12 +224,12 @@ data class CustomTextFieldError(
     val text: String
 )
 
-data class CustomTextFieldShapes(
+data class AppTextFieldShapes(
     val shape: Shape,
     val actionShape: Shape
 )
 
-object CustomTextFieldDefaults {
+object AppTextFieldDefaults {
 
     private val CornerRadius = 8.dp
 
@@ -241,7 +241,7 @@ object CustomTextFieldDefaults {
             bottomEnd = CornerRadius,
             bottomStart = 0.dp
         )
-    ) = CustomTextFieldShapes(
+    ) = AppTextFieldShapes(
         shape = shape,
         actionShape = actionShape
     )

@@ -1,6 +1,7 @@
 package pro.yakuraion.englishhelper.vocabulary.ui.testing.states.regular
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateDp
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -32,6 +34,7 @@ import pro.yakuraion.englishhelper.vocabulary.ui.testing.states.TestingUiState
 fun TestingContentRegular(
     uiState: TestingUiState.Regular,
     onVisitedDictionary: () -> Unit,
+    onWordAnswered: () -> Unit,
     onWordTested: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -40,6 +43,8 @@ fun TestingContentRegular(
     ConstraintLayout(modifier = modifier.fillMaxSize()) {
         val (dictionaryButtonRef, playSoundButtonRef, showHideExamplesButtonRef, examplesTextRef, answerTextFieldRef) =
             createRefs()
+
+        val textInputTopGuideline = createGuidelineFromBottom(TextFieldDefaults.MinHeight + 16.dp)
 
         TestingContentRegularDictionaryButton(
             dictionaryUrl = state.uiState.dictionaryUrl,
@@ -109,18 +114,29 @@ fun TestingContentRegular(
             }
         }
 
-        TestingContentRegularAnswerTextField(
-            answer = state.answer,
-            onAnswerChanged = { state.onAnswerChanged(it) },
-            onDoneClick = { state.onDoneClick(onWordTested) },
-            isActionEnabled = state.isActionEnabled,
-            isWrongAnswer = state.isWrongAnswer,
+        Crossfade(
+            targetState = state.uiState.isAnswered,
             modifier = Modifier.constrainAs(answerTextFieldRef) {
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
-                bottom.linkTo(parent.bottom)
+                top.linkTo(textInputTopGuideline)
             }
-        )
+        ) { isAnswered ->
+            if (isAnswered) {
+                TestingContentRegularContinueButton(
+                    onClick = onWordTested,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            } else {
+                TestingContentRegularAnswerTextField(
+                    answer = state.answer,
+                    onAnswerChanged = { state.onAnswerChanged(it) },
+                    onDoneClick = { state.onDoneClick(onWordAnswered) },
+                    isActionEnabled = state.isActionEnabled,
+                    isWrongAnswer = state.isWrongAnswer
+                )
+            }
+        }
     }
 
     PlaySoundEffect(state.uiState.queueId, state.uiState.soundUri)

@@ -26,6 +26,7 @@
     <string name="vocabulary_testing_screen_wrong_answer_error">Wrong answer!</string>
     <string name="vocabulary_testing_screen_show_examples">Show examples</string>
     <string name="vocabulary_testing_screen_hide_examples">Hide examples</string>
+    <string name="vocabulary_testing_screen_continue_button">Continue</string>
 
     <string name="vocabulary_list_words_screen_title">Your words</string>
     <string name="vocabulary_list_words_screen_tab_in_progress_title">In studying</string>

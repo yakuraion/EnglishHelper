@@ -33,6 +33,7 @@ fun TestingScreen(
         uiState = viewModel.uiState,
         onBackClick = onBackClick,
         onVisitedDictionary = { viewModel.onVisitedDictionary() },
+        onWordAnswered = { viewModel.onWordAnswered() },
         onWordTested = { viewModel.onWordTested() }
     )
 }
@@ -42,6 +43,7 @@ private fun TestingScreen(
     uiState: TestingUiState,
     onBackClick: () -> Unit,
     onVisitedDictionary: () -> Unit,
+    onWordAnswered: () -> Unit,
     onWordTested: () -> Unit
 ) {
     Scaffold(
@@ -77,6 +79,7 @@ private fun TestingScreen(
                     TestingContentRegular(
                         uiState = uiState,
                         onVisitedDictionary = onVisitedDictionary,
+                        onWordAnswered = onWordAnswered,
                         onWordTested = onWordTested
                     )
                 }
@@ -112,6 +115,28 @@ private fun TestingRegularPreview() {
             ),
             onBackClick = {},
             onVisitedDictionary = {},
+            onWordAnswered = {},
+            onWordTested = {}
+        )
+    }
+}
+
+@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun TestingRegularAnsweredPreview() {
+    AppTheme {
+        TestingScreen(
+            uiState = TestingUiState.Regular(
+                0,
+                word = "word",
+                soundUri = "",
+                examples = persistentListOf(),
+                dictionaryUrl = "",
+            ).apply { isAnswered = true },
+            onBackClick = {},
+            onVisitedDictionary = {},
+            onWordAnswered = {},
             onWordTested = {}
         )
     }
@@ -130,6 +155,7 @@ private fun TestingLitePreview() {
             ),
             onBackClick = {},
             onVisitedDictionary = {},
+            onWordAnswered = {},
             onWordTested = {}
         )
     }
@@ -144,6 +170,7 @@ private fun TestingNoMoreWordsPreview() {
             uiState = TestingUiState.NoMoreWords,
             onBackClick = {},
             onVisitedDictionary = {},
+            onWordAnswered = {},
             onWordTested = {}
         )
     }
@@ -158,6 +185,7 @@ private fun TestingLoadingPreview() {
             uiState = TestingUiState.Loading,
             onBackClick = {},
             onVisitedDictionary = {},
+            onWordAnswered = {},
             onWordTested = {}
         )
     }
