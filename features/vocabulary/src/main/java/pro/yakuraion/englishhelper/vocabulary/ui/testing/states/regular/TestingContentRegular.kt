@@ -1,25 +1,18 @@
 package pro.yakuraion.englishhelper.vocabulary.ui.testing.states.regular
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Done
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import pro.yakuraion.englishhelper.commonui.MediaPlayerUtils
-import pro.yakuraion.englishhelper.commonui.compose.widgets.AppTextField
-import pro.yakuraion.englishhelper.commonui.compose.widgets.CustomTextFieldActionIcon
-import pro.yakuraion.englishhelper.commonui.compose.widgets.CustomTextFieldError
 import pro.yakuraion.englishhelper.vocabulary.R
 import pro.yakuraion.englishhelper.vocabulary.ui.testing.states.TestingUiState
 
@@ -33,79 +26,88 @@ fun TestingContentRegular(
 ) {
     val state = rememberTestingContentRegularState(uiState = uiState)
 
-    Column(modifier = modifier.fillMaxSize()) {
-        val examplesModifier = Modifier
-            .fillMaxWidth()
-            .weight(1f)
+    ConstraintLayout(modifier = modifier.fillMaxSize()) {
+        val (dictionaryButtonRef, playSoundButtonRef, showExamplesButtonRef, examplesTextRef, answerTextFieldRef) =
+            createRefs()
 
-        if (state.showExamples) {
-            TestingContentRegularExamplesShowed(
-                state = state,
-                onVisitedDictionary = onVisitedDictionary,
-                modifier = examplesModifier
-            )
-        } else {
-            TestingContentRegularExamplesHidden(
-                state = state,
-                onShowExamplesClick = onShowExamplesClick,
-                onVisitedDictionary = onVisitedDictionary,
-                modifier = examplesModifier
+        TestingContentRegularDictionaryButton(
+            dictionaryUrl = state.dictionaryUri,
+            onVisitedDictionary = onVisitedDictionary,
+            modifier = Modifier
+                .size(TestingContentRegularActionButtonsDefaults.size)
+                .constrainAs(dictionaryButtonRef) {
+                    end.linkTo(parent.end)
+                    bottom.linkTo(answerTextFieldRef.top, margin = 16.dp)
+                }
+        )
+
+        TestingContentRegularPlaySoundButton(
+            soundUri = state.soundUri,
+            modifier = Modifier
+                .size(if (state.showExamples) TestingContentRegularActionButtonsDefaults.size else 100.dp)
+                .constrainAs(playSoundButtonRef) {
+                    if (state.showExamples) {
+                        end.linkTo(parent.end)
+                        bottom.linkTo(dictionaryButtonRef.top, margin = 16.dp)
+                    } else {
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        top.linkTo(parent.top)
+                        bottom.linkTo(answerTextFieldRef.top)
+                    }
+                }
+        )
+
+        if (!state.showExamples) {
+            ShowExamplesButton(
+                onClick = onShowExamplesClick,
+                modifier = Modifier.constrainAs(showExamplesButtonRef) {
+                    start.linkTo(parent.start)
+                    bottom.linkTo(answerTextFieldRef.top, margin = 16.dp)
+                }
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        if (state.showExamples) {
+            TestingContentRegularExamplesText(
+                examples = state.examples,
+                revealExamples = state.revealExamples,
+                modifier = Modifier
+                    .constrainAs(examplesTextRef) {
+                        start.linkTo(parent.start)
+                        top.linkTo(parent.top)
+                        end.linkTo(dictionaryButtonRef.start, margin = 16.dp)
+                        bottom.linkTo(answerTextFieldRef.top, margin = 16.dp)
+                        width = Dimension.fillToConstraints
+                        height = Dimension.fillToConstraints
+                    }
+            )
+        }
 
-        AnswerTextField(
+        TestingContentRegularAnswerTextField(
             answer = state.answer,
             onAnswerChanged = { state.onAnswerChanged(it) },
             onDoneClick = { state.onDoneClick(onWordTested) },
             isActionEnabled = state.isActionEnabled,
-            isWrongAnswer = state.isWrongAnswer
+            isWrongAnswer = state.isWrongAnswer,
+            modifier = Modifier.constrainAs(answerTextFieldRef) {
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+                bottom.linkTo(parent.bottom)
+            }
         )
-
-        PlaySoundEffect(state.queueId, state.soundUri)
     }
+
+    PlaySoundEffect(state.queueId, state.soundUri)
 }
 
 @Composable
-private fun AnswerTextField(
-    answer: String,
-    onAnswerChanged: (String) -> Unit,
-    onDoneClick: () -> Unit,
-    isActionEnabled: Boolean,
-    isWrongAnswer: Boolean,
+private fun ShowExamplesButton(
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val focusRequester = remember { FocusRequester() }
-
-    AppTextField(
-        value = answer,
-        onValueChange = onAnswerChanged,
-        modifier = modifier.focusRequester(focusRequester),
-        maxLines = 1,
-        placeholderText = stringResource(id = R.string.vocabulary_testing_screen_answer_placeholder),
-        actionIcon = CustomTextFieldActionIcon(
-            icon = Icons.Default.Done,
-            onClick = onDoneClick,
-            isEnabled = isActionEnabled
-        ),
-        error = CustomTextFieldError(
-            isError = isWrongAnswer,
-            text = getWrongAnswerErrorText(isWrongAnswer)
-        )
-    )
-
-    LaunchedEffect(Unit) {
-        focusRequester.requestFocus()
-    }
-}
-
-@Composable
-private fun getWrongAnswerErrorText(isError: Boolean): String {
-    return if (isError) {
-        stringResource(id = R.string.vocabulary_testing_screen_wrong_answer_error)
-    } else {
-        ""
+    TextButton(onClick = onClick, modifier = modifier) {
+        Text(text = stringResource(id = R.string.vocabulary_testing_screen_show_examples))
     }
 }
 
