@@ -16,9 +16,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
+import androidx.compose.ui.unit.sp
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 import pro.yakuraion.englishhelper.commonui.compose.widgets.layout.AppFadingEdgesBox
 import pro.yakuraion.englishhelper.domain.entities.WordExample
@@ -84,11 +90,27 @@ private fun ExamplesText(
     }
 }
 
-private fun List<WordExample>.toText(): String {
-    return map { it.sentence.format("___") }
-        .mapIndexed { index, sentence -> "$index. $sentence." }
-        .joinToString(separator = "\n")
-        .repeat(3)
+private fun List<WordExample>.toText(): AnnotatedString {
+    var result = buildAnnotatedString { }
+    val replaceString = "\uFF3F".repeat(3)
+    forEachIndexed { index, wordExample ->
+        var orderedSentence = "$index. ${wordExample.sentence}."
+        if (index != lastIndex) {
+            orderedSentence += "\n"
+        }
+        result += buildAnnotatedString {
+            val parts = orderedSentence.split("%s")
+            parts.forEachIndexed { index, part ->
+                append(part)
+                if (index != parts.lastIndex) {
+                    withStyle(SpanStyle(fontWeight = FontWeight.Bold, letterSpacing = 0.sp)) {
+                        append(replaceString)
+                    }
+                }
+            }
+        }
+    }
+    return result
 }
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
