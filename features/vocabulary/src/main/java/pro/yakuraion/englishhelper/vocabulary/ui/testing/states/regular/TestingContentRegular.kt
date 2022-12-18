@@ -52,7 +52,7 @@ fun TestingContentRegular(
             modifier = Modifier
                 .constrainAs(playSoundButtonRef) {
                     start.linkTo(parent.start)
-                    top.linkTo(parent.top)
+                    top.linkTo(parent.top, margin = 16.dp)
                     end.linkTo(parent.end)
                     bottom.linkTo(dictionaryButtonRef.top, margin = 16.dp)
                     width = Dimension.fillToConstraints
