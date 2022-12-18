@@ -1,11 +1,20 @@
 package pro.yakuraion.englishhelper.vocabulary.ui.testing.states.regular
 
+import androidx.compose.animation.core.CubicBezierEasing
+import androidx.compose.animation.core.Transition
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.updateTransition
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -36,22 +45,27 @@ fun TestingContentRegular(
                 }
         )
 
-        TestingContentRegularPlaySoundButton(
-            soundUri = state.uiState.soundUri,
+        val playButtonTransition = updateTransition(targetState = state.showExamples, label = "PlayButton animation")
+        val playButtonAlignment = playButtonTransition.animatePlayButtonAlignment()
+        val playButtonSize = playButtonTransition.animatePlayButtonSize()
+        Box(
             modifier = Modifier
-                .size(if (state.showExamples) TestingContentRegularActionButtonsDefaults.size else 100.dp)
                 .constrainAs(playSoundButtonRef) {
-                    if (state.showExamples) {
-                        end.linkTo(parent.end)
-                        bottom.linkTo(dictionaryButtonRef.top, margin = 16.dp)
-                    } else {
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        top.linkTo(parent.top)
-                        bottom.linkTo(answerTextFieldRef.top)
-                    }
+                    start.linkTo(parent.start)
+                    top.linkTo(parent.top)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(dictionaryButtonRef.top, margin = 16.dp)
+                    width = Dimension.fillToConstraints
+                    height = Dimension.fillToConstraints
                 }
-        )
+        ) {
+            TestingContentRegularPlaySoundButton(
+                soundUri = state.uiState.soundUri,
+                modifier = Modifier
+                    .size(playButtonSize)
+                    .align(playButtonAlignment)
+            )
+        }
 
         TestingContentRegularShowHideExamplesButton(
             isShowDisplay = !state.showExamples,
@@ -106,4 +120,23 @@ private fun PlaySoundEffect(queueId: Long, soundUri: String) {
     LaunchedEffect(queueId) {
         MediaPlayerUtils.playSound(context, soundUri)
     }
+}
+
+@Composable
+private fun Transition<Boolean>.animatePlayButtonAlignment(): BiasAlignment {
+    val value by animateFloat(label = "PlayButton alignment value") { showExamples ->
+        if (showExamples) 1f else 0f
+    }
+    val xEasier = CubicBezierEasing(0f, 0.55f, 0.45f, 1f)
+    val yEasier = CubicBezierEasing(0.55f, 0f, 1f, 0.45f)
+    val x = xEasier.transform(value)
+    val y = yEasier.transform(value)
+    return BiasAlignment(x, y)
+}
+
+@Composable
+private fun Transition<Boolean>.animatePlayButtonSize(): Dp {
+    return animateDp(label = "PlayButton size") { showExamples ->
+        if (showExamples) TestingContentRegularActionButtonsDefaults.size else 100.dp
+    }.value
 }
