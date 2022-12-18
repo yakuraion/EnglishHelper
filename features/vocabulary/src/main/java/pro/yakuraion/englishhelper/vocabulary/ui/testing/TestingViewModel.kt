@@ -79,10 +79,6 @@ class TestingViewModel @AssistedInject constructor(
         isDictionaryVisited = true
     }
 
-    fun onWordAnswered() {
-        (uiState as? TestingUiState.Regular)?.let { it.isAnswered = true }
-    }
-
     fun onWordTested() {
         wordFull?.learningWord?.let { learningWord ->
             viewModelScope.launch {
@@ -91,9 +87,22 @@ class TestingViewModel @AssistedInject constructor(
                 } else {
                     moveLearningWordToNextLevelUseCase.moveLearningWordToNextLevel(learningWord)
                 }
-                loadNextWord()
+                when (val uiState = uiState) {
+                    is TestingUiState.Lite -> {
+                        loadNextWord()
+                    }
+                    is TestingUiState.Regular -> {
+                        uiState.isAnswered = true
+                    }
+                    else -> {}
+                }
             }
         }
+    }
+
+    // only for Regular state
+    fun onContinueClick() {
+        loadNextWord()
     }
 
     @AssistedFactory

@@ -33,8 +33,8 @@ fun TestingScreen(
         uiState = viewModel.uiState,
         onBackClick = onBackClick,
         onVisitedDictionary = { viewModel.onVisitedDictionary() },
-        onWordAnswered = { viewModel.onWordAnswered() },
-        onWordTested = { viewModel.onWordTested() }
+        onWordTested = { viewModel.onWordTested() },
+        onContinueClick = { viewModel.onContinueClick() }
     )
 }
 
@@ -43,8 +43,8 @@ private fun TestingScreen(
     uiState: TestingUiState,
     onBackClick: () -> Unit,
     onVisitedDictionary: () -> Unit,
-    onWordAnswered: () -> Unit,
-    onWordTested: () -> Unit
+    onWordTested: () -> Unit,
+    onContinueClick: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -79,8 +79,8 @@ private fun TestingScreen(
                     TestingContentRegular(
                         uiState = uiState,
                         onVisitedDictionary = onVisitedDictionary,
-                        onWordAnswered = onWordAnswered,
-                        onWordTested = onWordTested
+                        onWordTested = onWordTested,
+                        onContinueClick = onContinueClick
                     )
                 }
             }
@@ -115,8 +115,8 @@ private fun TestingRegularPreview() {
             ),
             onBackClick = {},
             onVisitedDictionary = {},
-            onWordAnswered = {},
-            onWordTested = {}
+            onWordTested = {},
+            onContinueClick = {}
         )
     }
 }
@@ -136,8 +136,8 @@ private fun TestingRegularAnsweredPreview() {
             ).apply { isAnswered = true },
             onBackClick = {},
             onVisitedDictionary = {},
-            onWordAnswered = {},
-            onWordTested = {}
+            onWordTested = {},
+            onContinueClick = {}
         )
     }
 }
@@ -155,8 +155,8 @@ private fun TestingLitePreview() {
             ),
             onBackClick = {},
             onVisitedDictionary = {},
-            onWordAnswered = {},
-            onWordTested = {}
+            onWordTested = {},
+            onContinueClick = {}
         )
     }
 }
@@ -170,8 +170,8 @@ private fun TestingNoMoreWordsPreview() {
             uiState = TestingUiState.NoMoreWords,
             onBackClick = {},
             onVisitedDictionary = {},
-            onWordAnswered = {},
-            onWordTested = {}
+            onWordTested = {},
+            onContinueClick = {}
         )
     }
 }
@@ -185,8 +185,8 @@ private fun TestingLoadingPreview() {
             uiState = TestingUiState.Loading,
             onBackClick = {},
             onVisitedDictionary = {},
-            onWordAnswered = {},
-            onWordTested = {}
+            onWordTested = {},
+            onContinueClick = {}
         )
     }
 }

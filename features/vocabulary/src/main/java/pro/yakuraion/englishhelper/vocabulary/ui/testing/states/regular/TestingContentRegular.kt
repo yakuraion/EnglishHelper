@@ -34,8 +34,8 @@ import pro.yakuraion.englishhelper.vocabulary.ui.testing.states.TestingUiState
 fun TestingContentRegular(
     uiState: TestingUiState.Regular,
     onVisitedDictionary: () -> Unit,
-    onWordAnswered: () -> Unit,
     onWordTested: () -> Unit,
+    onContinueClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val state = rememberTestingContentRegularState(uiState = uiState)
@@ -124,14 +124,14 @@ fun TestingContentRegular(
         ) { isAnswered ->
             if (isAnswered) {
                 TestingContentRegularContinueButton(
-                    onClick = onWordTested,
+                    onClick = onContinueClick,
                     modifier = Modifier.fillMaxWidth()
                 )
             } else {
                 TestingContentRegularAnswerTextField(
                     answer = state.answer,
                     onAnswerChanged = { state.onAnswerChanged(it) },
-                    onDoneClick = { state.onDoneClick(onWordAnswered) },
+                    onDoneClick = { state.onDoneClick(onWordTested) },
                     isActionEnabled = state.isActionEnabled,
                     isWrongAnswer = state.isWrongAnswer
                 )
