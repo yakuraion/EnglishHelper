@@ -31,7 +31,6 @@ fun TestingScreen(
     TestingScreen(
         uiState = viewModel.uiState,
         onBackClick = onBackClick,
-        onShowExamplesClick = { viewModel.onShowExamplesClick() },
         onVisitedDictionary = { viewModel.onVisitedDictionary() },
         onWordTested = { viewModel.onWordTested() }
     )
@@ -41,7 +40,6 @@ fun TestingScreen(
 private fun TestingScreen(
     uiState: TestingUiState,
     onBackClick: () -> Unit,
-    onShowExamplesClick: () -> Unit,
     onVisitedDictionary: () -> Unit,
     onWordTested: () -> Unit
 ) {
@@ -77,7 +75,6 @@ private fun TestingScreen(
                 is TestingUiState.Regular -> {
                     TestingContentRegular(
                         uiState = uiState,
-                        onShowExamplesClick = onShowExamplesClick,
                         onVisitedDictionary = onVisitedDictionary,
                         onWordTested = onWordTested
                     )
@@ -110,12 +107,9 @@ private fun TestingRegularPreview() {
                 word = "word",
                 soundUri = "",
                 examples = emptyList(),
-                showExamples = false,
-                revealExamples = false,
                 dictionaryUrl = "",
             ),
             onBackClick = {},
-            onShowExamplesClick = {},
             onVisitedDictionary = {},
             onWordTested = {}
         )
@@ -134,7 +128,6 @@ private fun TestingLitePreview() {
                 dictionaryUrl = ""
             ),
             onBackClick = {},
-            onShowExamplesClick = {},
             onVisitedDictionary = {},
             onWordTested = {}
         )
@@ -149,7 +142,6 @@ private fun TestingNoMoreWordsPreview() {
         TestingScreen(
             uiState = TestingUiState.NoMoreWords,
             onBackClick = {},
-            onShowExamplesClick = {},
             onVisitedDictionary = {},
             onWordTested = {}
         )
@@ -164,7 +156,6 @@ private fun TestingLoadingPreview() {
         TestingScreen(
             uiState = TestingUiState.Loading,
             onBackClick = {},
-            onShowExamplesClick = {},
             onVisitedDictionary = {},
             onWordTested = {}
         )
