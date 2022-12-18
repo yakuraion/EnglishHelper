@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.persistentListOf
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 import pro.yakuraion.englishhelper.commonui.compose.widgets.AppTopAppBar
 import pro.yakuraion.englishhelper.commonui.compose.widgets.buttons.AppArrowBackButton
@@ -106,7 +107,7 @@ private fun TestingRegularPreview() {
                 0,
                 word = "word",
                 soundUri = "",
-                examples = emptyList(),
+                examples = persistentListOf(),
                 dictionaryUrl = "",
             ),
             onBackClick = {},

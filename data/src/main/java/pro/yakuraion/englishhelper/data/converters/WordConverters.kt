@@ -1,6 +1,7 @@
 package pro.yakuraion.englishhelper.data.converters
 
 import com.google.gson.Gson
+import kotlinx.collections.immutable.toImmutableList
 import pro.yakuraion.englishhelper.data.database.entities.WordEntity
 import pro.yakuraion.englishhelper.domain.entities.Word
 import pro.yakuraion.englishhelper.domain.entities.WordExample
@@ -17,6 +18,6 @@ internal fun getWord(entity: WordEntity): Word {
     return Word(
         name = entity.name,
         soundUri = entity.soundFile,
-        examples = Gson().fromJson(entity.examplesJson, Array<WordExample>::class.java).toList()
+        examples = Gson().fromJson(entity.examplesJson, Array<WordExample>::class.java).toList().toImmutableList()
     )
 }

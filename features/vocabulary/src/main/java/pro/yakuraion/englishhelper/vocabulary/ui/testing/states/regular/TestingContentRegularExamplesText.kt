@@ -16,12 +16,13 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
+import kotlinx.collections.immutable.ImmutableList
 import pro.yakuraion.englishhelper.commonui.compose.widgets.layout.AppFadingEdgesBox
 import pro.yakuraion.englishhelper.domain.entities.WordExample
 
 @Composable
 fun TestingContentRegularExamplesText(
-    examples: List<WordExample>,
+    examples: ImmutableList<WordExample>,
     revealExamples: Boolean,
     modifier: Modifier = Modifier
 ) {
@@ -50,7 +51,7 @@ fun TestingContentRegularExamplesText(
 
 @Suppress("MagicNumber")
 @Composable
-private fun List<WordExample>.toText(replaceWithGaps: Boolean): AnnotatedString {
+private fun ImmutableList<WordExample>.toText(replaceWithGaps: Boolean): AnnotatedString {
     var result = buildAnnotatedString { }
 
     forEachIndexed { index, wordExample ->
