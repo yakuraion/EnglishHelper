@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a9feb937d2fb8c4613f93969683f20e2",
+    "identityHash": "c5fc9d08e6dc61ac43df9a6e47192c13",
     "entities": [
       {
         "tableName": "word",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `soundFile` TEXT, `examplesJson` TEXT NOT NULL, PRIMARY KEY(`name`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `soundFile` TEXT, PRIMARY KEY(`name`))",
         "fields": [
           {
             "fieldPath": "name",
@@ -19,12 +19,6 @@
             "columnName": "soundFile",
             "affinity": "TEXT",
             "notNull": false
-          },
-          {
-            "fieldPath": "examplesJson",
-            "columnName": "examplesJson",
-            "affinity": "TEXT",
-            "notNull": true
           }
         ],
         "primaryKey": {
@@ -160,7 +154,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a9feb937d2fb8c4613f93969683f20e2')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c5fc9d08e6dc61ac43df9a6e47192c13')"
     ]
   }
 }
