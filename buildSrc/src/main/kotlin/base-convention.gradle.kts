@@ -19,6 +19,8 @@ configure<BaseExtension> {
     defaultConfig {
         minSdk = 24
         targetSdk = 33
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -76,4 +78,10 @@ dependencies {
 
     add("testImplementation", versionCatalog.findLibrary("junit").get())
     add("testImplementation", versionCatalog.findLibrary("mockk").get())
+
+    add("androidTestImplementation", versionCatalog.findLibrary("androidx-test-core").get())
+    add("androidTestImplementation", versionCatalog.findLibrary("androidx-test-core-ktx").get())
+    add("androidTestImplementation", versionCatalog.findLibrary("androidx-test-junit").get())
+    add("androidTestImplementation", versionCatalog.findLibrary("androidx-test-junit-ktx").get())
+    add("androidTestImplementation", versionCatalog.findLibrary("androidx-test-runner").get())
 }

@@ -16,7 +16,8 @@ configure<BaseExtension> {
 dependencies {
     add("implementation", versionCatalog.findLibrary("androidx-core-ktx").get())
     add("implementation", versionCatalog.findLibrary("android-lifecycle").get())
-    add("androidTestImplementation", versionCatalog.findLibrary("androidx-junit").get())
+
+    add("androidTestImplementation", versionCatalog.findLibrary("androidx-test-espresso").get())
 
     add("implementation", versionCatalog.findLibrary("compose-material-icons-extended").get())
     add("implementation", versionCatalog.findLibrary("compose-material3").get())
@@ -37,6 +38,4 @@ dependencies {
 
     add("debugImplementation", versionCatalog.findLibrary("custom-view").get())
     add("debugImplementation", versionCatalog.findLibrary("custom-view-pooling-container").get())
-
-    add("androidTestImplementation", versionCatalog.findLibrary("espresso").get())
 }

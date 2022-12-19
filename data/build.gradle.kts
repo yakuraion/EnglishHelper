@@ -18,7 +18,7 @@ android {
     }
 
     sourceSets {
-        get("androidTest").assets.srcDir(files(roomSchemaLocation))
+        get("androidTest").assets.srcDir(roomSchemaLocation)
     }
 }
 
