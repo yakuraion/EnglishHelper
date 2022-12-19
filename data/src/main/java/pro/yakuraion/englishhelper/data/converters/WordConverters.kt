@@ -14,6 +14,14 @@ internal fun getWordEntity(name: String, soundUri: String?, examples: List<WordE
     )
 }
 
+internal fun getWordEntity(word: Word): WordEntity {
+    return getWordEntity(
+        name = word.name,
+        soundUri = word.soundUri,
+        examples = word.examples
+    )
+}
+
 internal fun getWord(entity: WordEntity): Word {
     return Word(
         name = entity.name,

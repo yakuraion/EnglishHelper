@@ -3,7 +3,9 @@ package pro.yakuraion.englishhelper.data.preferences
 import android.content.SharedPreferences
 import java.util.*
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 internal class Preferences @Inject constructor(private val sharedPreferences: SharedPreferences) {
 
     var learningDay: Int

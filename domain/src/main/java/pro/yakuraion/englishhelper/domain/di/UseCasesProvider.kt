@@ -11,8 +11,11 @@ import pro.yakuraion.englishhelper.domain.usecases.LearnCompletedWordAgainUseCas
 import pro.yakuraion.englishhelper.domain.usecases.MoveLearningWordToNextLevelUseCase
 import pro.yakuraion.englishhelper.domain.usecases.MoveLearningWordToPreviousLevelUseCase
 import pro.yakuraion.englishhelper.domain.usecases.ResetLearningWordProgressUseCase
+import pro.yakuraion.englishhelper.domain.usecases.UpdateDatabaseAfterMigrationsUseCase
 
 interface UseCasesProvider {
+
+    fun provideUpdateDatabaseAfterMigrationsUseCase(): UpdateDatabaseAfterMigrationsUseCase
 
     fun provideGetLearningWordsUseCase(): GetLearningWordsUseCase
 

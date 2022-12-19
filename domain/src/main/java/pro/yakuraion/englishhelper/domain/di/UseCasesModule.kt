@@ -24,10 +24,16 @@ import pro.yakuraion.englishhelper.domain.usecases.MoveLearningWordToPreviousLev
 import pro.yakuraion.englishhelper.domain.usecases.MoveLearningWordToPreviousLevelUseCaseImpl
 import pro.yakuraion.englishhelper.domain.usecases.ResetLearningWordProgressUseCase
 import pro.yakuraion.englishhelper.domain.usecases.ResetLearningWordProgressUseCaseImpl
+import pro.yakuraion.englishhelper.domain.usecases.UpdateDatabaseAfterMigrationsUseCase
+import pro.yakuraion.englishhelper.domain.usecases.UpdateDatabaseAfterMigrationsUseCaseImpl
 import javax.inject.Singleton
 
 @Module
 internal interface UseCasesModule {
+
+    @Singleton
+    @Binds
+    fun bindsUpdateDatabaseAfterMigrationsUseCaseImpl(impl: UpdateDatabaseAfterMigrationsUseCaseImpl): UpdateDatabaseAfterMigrationsUseCase
 
     @Singleton
     @Binds

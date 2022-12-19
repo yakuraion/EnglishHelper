@@ -8,7 +8,7 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class NetworkModule {
+internal class NetworkModule {
 
     @Singleton
     @Provides

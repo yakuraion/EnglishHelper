@@ -12,6 +12,7 @@ import javax.inject.Singleton
     modules = [
         SharedPreferencesModule::class,
         DatabaseModule::class,
+        DatabaseUpdatersModule::class,
         DaosModule::class,
         NetworkModule::class,
         RepositoriesModule::class
