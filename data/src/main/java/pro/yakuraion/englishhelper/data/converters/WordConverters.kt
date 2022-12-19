@@ -9,7 +9,7 @@ import pro.yakuraion.englishhelper.domain.entities.WordExample
 internal fun getWordEntity(name: String, soundUri: String?, examples: List<WordExample>): WordEntity {
     return WordEntity(
         name = name,
-        soundFile = soundUri,
+        soundUri = soundUri,
         examplesJson = Gson().toJson(examples)
     )
 }
@@ -17,7 +17,7 @@ internal fun getWordEntity(name: String, soundUri: String?, examples: List<WordE
 internal fun getWord(entity: WordEntity): Word {
     return Word(
         name = entity.name,
-        soundUri = entity.soundFile,
+        soundUri = entity.soundUri,
         examples = Gson().fromJson(entity.examplesJson, Array<WordExample>::class.java).toList().toImmutableList()
     )
 }

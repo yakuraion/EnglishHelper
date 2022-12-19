@@ -8,7 +8,6 @@ import androidx.room.PrimaryKey
 )
 internal class WordEntity(
     @PrimaryKey val name: String,
-    // todo: rename to soundUri
-    val soundFile: String?,
+    val soundUri: String?,
     val examplesJson: String
 )
