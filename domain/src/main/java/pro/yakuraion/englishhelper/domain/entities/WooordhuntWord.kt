@@ -5,5 +5,6 @@ import android.net.Uri
 class WooordhuntWord(
     val name: String,
     val soundUri: Uri,
-    val forms: List<String>
+    val forms: List<String>,
+    val examples: List<String>
 )

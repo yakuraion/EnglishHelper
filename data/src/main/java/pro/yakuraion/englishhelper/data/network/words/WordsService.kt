@@ -10,6 +10,8 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
+// todo: maybe delete in the future
+
 @Singleton
 internal class WordsService @Inject constructor(
     private val configuration: DataConfiguration,

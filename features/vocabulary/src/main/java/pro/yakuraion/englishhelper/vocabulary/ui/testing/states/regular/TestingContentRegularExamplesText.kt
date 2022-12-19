@@ -75,9 +75,9 @@ private fun ImmutableList<WordExample>.toText(replaceWithGaps: Boolean): Annotat
             wordExample.missedWord to SpanStyle(color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
         }
 
-        var orderedSentence = "$index. ${wordExample.sentence}."
+        var orderedSentence = "${index + 1}. ${wordExample.sentence}"
         if (index != lastIndex) {
-            orderedSentence += "\n"
+            orderedSentence += "\n\n"
         }
 
         result += buildAnnotatedString {

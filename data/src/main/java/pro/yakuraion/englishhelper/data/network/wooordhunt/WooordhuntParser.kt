@@ -4,6 +4,7 @@ import com.android.volley.RequestQueue
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.StringRequest
 import org.jsoup.Jsoup
+import pro.yakuraion.englishhelper.data.network.wooordhunt.extractors.WooordhuntExamplesExtractor
 import pro.yakuraion.englishhelper.data.network.wooordhunt.extractors.WooordhuntFormsExtractor
 import pro.yakuraion.englishhelper.data.network.wooordhunt.extractors.WooordhuntSoundExtractor
 import pro.yakuraion.englishhelper.domain.entities.WooordhuntWord
@@ -18,6 +19,7 @@ internal class WooordhuntParser @Inject constructor(
     private val queue: RequestQueue,
     private val soundExtractor: WooordhuntSoundExtractor,
     private val formsExtractor: WooordhuntFormsExtractor,
+    private val examplesExtractor: WooordhuntExamplesExtractor
 ) {
 
     suspend fun getWord(name: String): WooordhuntWord? {
@@ -29,9 +31,10 @@ internal class WooordhuntParser @Inject constructor(
 
                     val soundUri = soundExtractor.extract(html)
                     val forms = formsExtractor.extract(name, document)
+                    val examples = examplesExtractor.extract(document)
 
                     val word = soundUri?.let {
-                        WooordhuntWord(name, soundUri, forms)
+                        WooordhuntWord(name, soundUri, forms, examples)
                     }
                     continuation.resume(word)
                 },
