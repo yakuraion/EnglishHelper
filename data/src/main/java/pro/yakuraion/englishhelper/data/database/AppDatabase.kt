@@ -18,8 +18,7 @@ import pro.yakuraion.englishhelper.data.database.entities.WordEntity
         TodayLearningWordEntity::class,
         CompletedWordEntity::class
     ],
-    version = 1,
-    exportSchema = false
+    version = 1
 )
 internal abstract class AppDatabase : RoomDatabase() {
 
