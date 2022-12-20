@@ -22,6 +22,7 @@ include(":domain")
 include(":common")
 include(":common-ui")
 include(":common-tests")
+include(":features:startup")
 include(":features:vocabulary")
 
 includeBuild("plugins/code-check") {
