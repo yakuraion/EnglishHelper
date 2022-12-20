@@ -51,6 +51,14 @@ android {
             resValue("string", "app_name", "EnglishHelper (debug)")
         }
     }
+
+    applicationVariants.all {
+        outputs.forEach { output ->
+            if (output is com.android.build.gradle.internal.api.BaseVariantOutputImpl) {
+                output.outputFileName = "$applicationId-v$versionName.${output.outputFile.extension}"
+            }
+        }
+    }
 }
 
 dependencies {
