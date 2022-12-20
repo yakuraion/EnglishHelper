@@ -16,8 +16,8 @@ android {
 
     defaultConfig {
         applicationId = "pro.yakuraion.englishhelper"
-        versionCode = 3
-        versionName = "0.3.0"
+        versionCode = 4
+        versionName = "0.4.0"
 
         buildConfigField("String", "NETWORK_WORDS_HOST", "\"${customProperties["network.words.host"]}\"")
         buildConfigField("String", "NETWORK_WORDS_KEY", "\"${customProperties["network.words.key"]}\"")
