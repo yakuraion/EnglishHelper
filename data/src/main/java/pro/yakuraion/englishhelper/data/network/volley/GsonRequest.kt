@@ -15,9 +15,12 @@ import java.nio.charset.Charset
  *
  * Taken from https://google.github.io/volley/request-custom.html
  *
+ * @param T The result of the request
  * @param url URL of the request to make
  * @param clazz Relevant class object, for Gson's reflection
  * @param headers Map of request headers
+ * @param listener Listener to be notified about the result
+ * @param errorListener Listener to be notified about the error
  */
 class GsonRequest<T>(
     url: String,

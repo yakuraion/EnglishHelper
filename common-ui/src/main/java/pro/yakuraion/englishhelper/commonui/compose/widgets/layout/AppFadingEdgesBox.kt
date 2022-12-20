@@ -88,6 +88,7 @@ fun AppFadingEdgesBox(
     )
 }
 
+@Suppress("MagicNumber")
 @Preview
 @Composable
 private fun Preview() {

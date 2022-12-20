@@ -33,7 +33,9 @@ internal interface UseCasesModule {
 
     @Singleton
     @Binds
-    fun bindsUpdateDatabaseAfterMigrationsUseCaseImpl(impl: UpdateDatabaseAfterMigrationsUseCaseImpl): UpdateDatabaseAfterMigrationsUseCase
+    fun bindsUpdateDatabaseAfterMigrationsUseCaseImpl(
+        impl: UpdateDatabaseAfterMigrationsUseCaseImpl
+    ): UpdateDatabaseAfterMigrationsUseCase
 
     @Singleton
     @Binds
