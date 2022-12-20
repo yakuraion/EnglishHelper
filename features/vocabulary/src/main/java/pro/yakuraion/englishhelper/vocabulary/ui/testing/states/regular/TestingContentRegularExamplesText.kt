@@ -78,13 +78,12 @@ private fun ImmutableList<WordExample>.toText(replaceWithGaps: Boolean): Annotat
             )
         }
 
-        var orderedSentence = "${index + 1}. ${wordExample.sentence}"
-        if (index != lastIndex) {
-            orderedSentence += "\n\n"
-        }
-
         result += buildAnnotatedString {
-            val parts = orderedSentence.split("%s")
+            withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                append("${index + 1}. ")
+            }
+
+            val parts = wordExample.sentence.split("%s")
             parts.forEachIndexed { index, part ->
                 append(part)
                 if (index != parts.lastIndex) {
@@ -92,6 +91,9 @@ private fun ImmutableList<WordExample>.toText(replaceWithGaps: Boolean): Annotat
                         append(stringToReplace)
                     }
                 }
+            }
+            if (index != lastIndex) {
+                append("\n\n")
             }
         }
     }
