@@ -55,7 +55,7 @@ fun TestingContentRegularExamplesText(
             Text(
                 text = targetText,
                 modifier = Modifier.verticalScroll(scrollState),
-                color = MaterialTheme.colorScheme.secondary,
+                color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Justify,
                 style = MaterialTheme.typography.bodyMedium
             )
@@ -72,7 +72,10 @@ private fun ImmutableList<WordExample>.toText(replaceWithGaps: Boolean): Annotat
         val (stringToReplace, styleToReplace) = if (replaceWithGaps) {
             "\uFF3F".repeat(3) to SpanStyle(fontWeight = FontWeight.Bold, letterSpacing = 0.sp)
         } else {
-            wordExample.missedWord to SpanStyle(color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
+            wordExample.missedWord to SpanStyle(
+                color = MaterialTheme.colorScheme.tertiary,
+                fontWeight = FontWeight.Bold
+            )
         }
 
         var orderedSentence = "${index + 1}. ${wordExample.sentence}"
