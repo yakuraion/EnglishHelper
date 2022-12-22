@@ -6,7 +6,7 @@ import pro.yakuraion.englishhelper.domain.entities.WordExtra
 import pro.yakuraion.englishhelper.domain.repositories.WordsRepository
 import javax.inject.Inject
 
-class GetWordExtraUseCaseImpl @Inject constructor(
+internal class GetWordExtraUseCaseImpl @Inject constructor(
     private val dispatchers: Dispatchers,
     private val wordsRepository: WordsRepository
 ) : GetWordExtraUseCase {
