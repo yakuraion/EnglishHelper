@@ -6,14 +6,19 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.with
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -22,6 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
+import pro.yakuraion.englishhelper.commonui.compose.widgets.AppAlertDialog
+import pro.yakuraion.englishhelper.commonui.compose.widgets.AppAlertDialogDefaults
 import pro.yakuraion.englishhelper.commonui.compose.widgets.layout.AppFadingEdgesBox
 import pro.yakuraion.englishhelper.domain.entities.WordExtra
 
@@ -33,6 +40,10 @@ fun TestingContentRegularExamplesText(
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
+
+    val enableShowTranslate = revealExamples
+
+    var ruTranslateToShow: String? by remember { mutableStateOf(null) }
 
     val scrollMaxOffsetDp = with(LocalDensity.current) { scrollState.maxValue.toDp() }
     val scrollOffsetInDp = with(LocalDensity.current) { scrollState.value.toDp() }
@@ -52,14 +63,29 @@ fun TestingContentRegularExamplesText(
                 fadeIn() with fadeOut()
             }
         ) { targetText ->
-            Text(
+            ClickableText(
                 text = targetText,
                 modifier = Modifier.verticalScroll(scrollState),
-                color = MaterialTheme.colorScheme.onBackground,
-                textAlign = TextAlign.Justify,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium +
+                    TextStyle(color = MaterialTheme.colorScheme.onBackground, textAlign = TextAlign.Justify),
+                onClick = { offset ->
+                    if (enableShowTranslate) {
+                        val annotations = targetText
+                            .getStringAnnotations(tag = "ruTranslate", start = offset, end = offset)
+                        val ruTranslate = annotations.firstOrNull()?.item
+                        ruTranslate?.let { ruTranslateToShow = it }
+                    }
+                }
             )
         }
+    }
+
+    if (ruTranslateToShow != null) {
+        AppAlertDialog(
+            onDismissRequest = { ruTranslateToShow = null },
+            confirmButton = { AppAlertDialogDefaults.ConfirmButton(onConfirm = { ruTranslateToShow = null }) },
+            body = { AppAlertDialogDefaults.TextBody(text = ruTranslateToShow.orEmpty()) }
+        )
     }
 }
 
@@ -79,6 +105,7 @@ private fun ImmutableList<WordExtra.Example>.toText(replaceWithGaps: Boolean): A
         }
 
         result += buildAnnotatedString {
+            pushStringAnnotation(tag = "ruTranslate", annotation = wordExample.ruTranslate)
             withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
                 append("${index + 1}. ")
             }
