@@ -28,7 +28,7 @@ data class WooordhuntWord(
             }
 
             return foundForm?.let {
-                val sentenceWithGap = sentence.replace(foundForm, "%s")
+                val sentenceWithGap = sentence.replace(foundForm, "%s", ignoreCase = true)
                 WordExtra.Example(
                     sentenceWithGap = sentenceWithGap,
                     missedWord = foundForm,
