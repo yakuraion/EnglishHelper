@@ -47,7 +47,7 @@ class AddWordsViewModel @AssistedInject constructor(
     }
 
     private fun addWord(word: String, withExtraInfo: Boolean = true) {
-        val formattedWord = word.trim()
+        val formattedWord = word.trim().lowercase()
         viewModelScope.launch {
             if (!validateIsWordAlreadyExists(formattedWord)) return@launch
             uiState = uiState.copy(isAddButtonLoading = true)
