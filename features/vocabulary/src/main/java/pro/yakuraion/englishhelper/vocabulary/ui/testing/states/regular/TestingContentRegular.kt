@@ -49,6 +49,7 @@ fun TestingContentRegular(
         TestingContentRegularDictionaryButton(
             dictionaryUrl = state.uiState.dictionaryUrl,
             onVisitedDictionary = onVisitedDictionary,
+            showAlert = !state.uiState.isAnswered,
             modifier = Modifier
                 .size(TestingContentRegularActionButtonsDefaults.size)
                 .constrainAs(dictionaryButtonRef) {

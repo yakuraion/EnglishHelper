@@ -27,6 +27,8 @@
     <string name="vocabulary_testing_screen_show_examples">Show examples</string>
     <string name="vocabulary_testing_screen_hide_examples">Hide examples</string>
     <string name="vocabulary_testing_screen_continue_button">Continue</string>
+    <string name="vocabulary_testing_screen_dictionary_alert_dialog_title">Are you sure?</string>
+    <string name="vocabulary_testing_screen_dictionary_alert_dialog_body">If you open the dictionary before you give the right answer, the level of the word will be decreased.</string>
 
     <string name="vocabulary_list_words_screen_title">Your words</string>
     <string name="vocabulary_list_words_screen_tab_in_progress_title">In studying</string>

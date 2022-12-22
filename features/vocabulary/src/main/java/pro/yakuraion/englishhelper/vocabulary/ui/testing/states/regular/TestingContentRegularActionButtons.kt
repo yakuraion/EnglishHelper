@@ -10,12 +10,20 @@ import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import pro.yakuraion.englishhelper.commonui.MediaPlayerUtils
+import pro.yakuraion.englishhelper.commonui.compose.widgets.AppAlertDialog
+import pro.yakuraion.englishhelper.commonui.compose.widgets.AppAlertDialogDefaults
 import pro.yakuraion.englishhelper.commonui.openLink
+import pro.yakuraion.englishhelper.vocabulary.R
 
 @Composable
 fun TestingContentRegularPlaySoundButton(
@@ -34,17 +42,49 @@ fun TestingContentRegularPlaySoundButton(
 fun TestingContentRegularDictionaryButton(
     dictionaryUrl: String,
     onVisitedDictionary: () -> Unit,
+    showAlert: Boolean,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+    val openDictionary = {
+        context.openLink(Uri.parse(dictionaryUrl))
+        onVisitedDictionary()
+    }
+    var isAlertDialogShowing by remember { mutableStateOf(false) }
+
     ActionButton(
         icon = Icons.Default.Translate,
         onClick = {
-            context.openLink(Uri.parse(dictionaryUrl))
-            onVisitedDictionary()
+            if (showAlert) {
+                isAlertDialogShowing = true
+            } else {
+                openDictionary()
+            }
         },
         modifier = modifier
     )
+
+    if (isAlertDialogShowing) {
+        AppAlertDialog(
+            onDismissRequest = { isAlertDialogShowing = false },
+            confirmButton = {
+                AppAlertDialogDefaults.ConfirmButton(onConfirm = openDictionary)
+            },
+            dismissButton = {
+                AppAlertDialogDefaults.DismissButton(onDismissClick = { isAlertDialogShowing = false })
+            },
+            title = {
+                AppAlertDialogDefaults.Title(
+                    text = stringResource(id = R.string.vocabulary_testing_screen_dictionary_alert_dialog_title)
+                )
+            },
+            body = {
+                AppAlertDialogDefaults.TextBody(
+                    text = stringResource(id = R.string.vocabulary_testing_screen_dictionary_alert_dialog_body)
+                )
+            }
+        )
+    }
 }
 
 @Composable
