@@ -16,6 +16,7 @@ import kotlinx.collections.immutable.persistentListOf
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 import pro.yakuraion.englishhelper.commonui.compose.widgets.AppTopAppBar
 import pro.yakuraion.englishhelper.commonui.compose.widgets.buttons.AppArrowBackButton
+import pro.yakuraion.englishhelper.domain.entities.WordExtra
 import pro.yakuraion.englishhelper.vocabulary.R
 import pro.yakuraion.englishhelper.vocabulary.di.viewmodel.daggerViewModel
 import pro.yakuraion.englishhelper.vocabulary.ui.testing.states.TestingContentLite
@@ -108,9 +109,11 @@ private fun TestingRegularPreview() {
         TestingScreen(
             uiState = TestingUiState.Regular(
                 0,
-                word = "word",
-                soundUri = "",
-                examples = persistentListOf(),
+                wordExtra = WordExtra(
+                    name = "word",
+                    soundUri = "",
+                    examples = persistentListOf()
+                ),
                 dictionaryUrl = "",
             ),
             onBackClick = {},
@@ -129,9 +132,11 @@ private fun TestingRegularAnsweredPreview() {
         TestingScreen(
             uiState = TestingUiState.Regular(
                 0,
-                word = "word",
-                soundUri = "",
-                examples = persistentListOf(),
+                wordExtra = WordExtra(
+                    name = "word",
+                    soundUri = "",
+                    examples = persistentListOf()
+                ),
                 dictionaryUrl = "",
             ).apply { isAnswered = true },
             onBackClick = {},

@@ -53,7 +53,7 @@ class AddWordUseCaseTest : UseCaseTest<AddWordUseCase>() {
     fun addWord() = runTest {
         val result = useCase.addWord(NAME, true)
 
-        coVerify { wordsRepository.addNewWord(NAME, soundsUri.toURI().toString(), LEARNING_DAY) }
+        coVerify { wordsRepository.addNewLiteWord(NAME, soundsUri.toURI().toString(), LEARNING_DAY) }
         assertEquals(AddWordUseCase.Result.SUCCESS, result)
     }
 
@@ -77,7 +77,7 @@ class AddWordUseCaseTest : UseCaseTest<AddWordUseCase>() {
     fun addWordWithoutAudio() = runTest {
         val result = useCase.addWord(NAME, false)
 
-        coVerify { wordsRepository.addNewWord(NAME, null, LEARNING_DAY) }
+        coVerify { wordsRepository.addNewLiteWord(NAME, null, LEARNING_DAY) }
         assertEquals(AddWordUseCase.Result.SUCCESS, result)
     }
 

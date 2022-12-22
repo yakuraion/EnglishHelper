@@ -7,7 +7,5 @@ import androidx.room.PrimaryKey
     tableName = "word"
 )
 internal class WordEntity(
-    @PrimaryKey val name: String,
-    val soundUri: String?,
-    val examplesJson: String
+    @PrimaryKey val name: String
 )

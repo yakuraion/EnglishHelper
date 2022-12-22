@@ -1,10 +1,12 @@
 package pro.yakuraion.englishhelper.domain.usecases
 
+import android.net.Uri
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import pro.yakuraion.englishhelper.common.coroutines.Dispatchers
 import pro.yakuraion.englishhelper.domain.entities.WooordhuntWord
-import pro.yakuraion.englishhelper.domain.entities.WordExample
+import pro.yakuraion.englishhelper.domain.entities.WordExtra
 import pro.yakuraion.englishhelper.domain.repositories.LearningRepository
 import pro.yakuraion.englishhelper.domain.repositories.WordsRepository
 import pro.yakuraion.englishhelper.domain.repositories.WordsSoundsRepository
@@ -20,35 +22,40 @@ internal class AddWordUseCaseImpl @Inject constructor(
 
     override suspend fun addWord(
         name: String,
-        withExtraInfo: Boolean
+        withExtra: Boolean
     ): AddWordUseCase.Result {
         require(!isWordAlreadyExistUseCase.isWordAlreadyExist(name)) { "Word '$name' has been already added" }
         return withContext(dispatchers.ioDispatcher) {
             val currentDay = learningRepository.getLearningDay()
-            if (withExtraInfo) {
-                addWordWithExtraInfo(name, currentDay)
+            if (withExtra) {
+                addWordWithExtra(name, currentDay)
             } else {
-                addWordWithoutExtraInfo(name, currentDay)
+                addWordWithoutExtra(name, currentDay)
             }
         }
     }
 
-    private suspend fun addWordWithExtraInfo(name: String, currentDay: Int): AddWordUseCase.Result {
+    private suspend fun addWordWithExtra(name: String, currentDay: Int): AddWordUseCase.Result {
         return coroutineScope {
-            val wooordhuntWord = wordsRepository.getWooordhuntWord(name)
+            val wooordhuntWord = wordsRepository.downloadWoooordhuntWord(name)
                 ?: return@coroutineScope AddWordUseCase.Result.WORD_NOT_FOUND
 
-            val examples = wooordhuntWord.examples.mapNotNull { sentence ->
-                WordExample.fromFilledSentence(sentence, wooordhuntWord.forms)
-            }
-
-            val downloadSoundUri = getDownloadedSoundUri(wooordhuntWord)
+            val soundFileUri = getDownloadedSoundUri(wooordhuntWord)
                 ?: return@coroutineScope AddWordUseCase.Result.WORD_NOT_FOUND
+
+            val examples = wooordhuntWord.examples.mapNotNull { it.toExtraExample(wooordhuntWord.wordForms) }
+                .toImmutableList()
+
+            val extra = WordExtra(
+                name = wooordhuntWord.name,
+                soundUri = soundFileUri,
+                examples = examples
+            )
 
             wordsRepository.addNewWord(
                 name = name,
-                soundUri = downloadSoundUri,
-                examples = examples,
+                html = wooordhuntWord.html,
+                extra = extra,
                 firstDayToLearn = currentDay
             )
             return@coroutineScope AddWordUseCase.Result.SUCCESS
@@ -56,16 +63,14 @@ internal class AddWordUseCaseImpl @Inject constructor(
     }
 
     private suspend fun getDownloadedSoundUri(word: WooordhuntWord): String? {
-        return wordsSoundsRepository.downloadSoundForWorld(word.name, word.soundUri)
+        return wordsSoundsRepository.downloadSoundForWorld(word.name, Uri.parse(word.soundUri))
             ?.toURI()
             ?.toString()
     }
 
-    private suspend fun addWordWithoutExtraInfo(name: String, currentDay: Int): AddWordUseCase.Result {
-        wordsRepository.addNewWord(
+    private suspend fun addWordWithoutExtra(name: String, currentDay: Int): AddWordUseCase.Result {
+        wordsRepository.addNewLiteWord(
             name = name,
-            soundUri = null,
-            examples = emptyList(),
             firstDayToLearn = currentDay
         )
         return AddWordUseCase.Result.SUCCESS

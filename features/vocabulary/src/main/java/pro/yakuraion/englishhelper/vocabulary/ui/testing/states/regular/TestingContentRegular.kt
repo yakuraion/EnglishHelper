@@ -72,7 +72,7 @@ fun TestingContentRegular(
                 }
         ) {
             TestingContentRegularPlaySoundButton(
-                soundUri = state.uiState.soundUri,
+                soundUri = state.uiState.wordExtra.soundUri,
                 modifier = Modifier
                     .size(playButtonSize)
                     .align(playButtonAlignment)
@@ -107,7 +107,7 @@ fun TestingContentRegular(
                 exit = fadeOut() + shrinkVertically()
             ) {
                 TestingContentRegularExamplesText(
-                    examples = state.uiState.examples,
+                    examples = state.uiState.wordExtra.examples,
                     revealExamples = state.uiState.isAnswered,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -139,7 +139,7 @@ fun TestingContentRegular(
         }
     }
 
-    PlaySoundEffect(state.uiState.queueId, state.uiState.soundUri)
+    PlaySoundEffect(state.uiState.queueId, state.uiState.wordExtra.soundUri)
 }
 
 @Composable

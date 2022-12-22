@@ -1,18 +1,17 @@
 package pro.yakuraion.englishhelper.data.network.wooordhunt.extractors
 
-import android.net.Uri
-import pro.yakuraion.englishhelper.data.network.wooordhunt.WooordhuntParser
+import pro.yakuraion.englishhelper.data.network.wooordhunt.WooordhuntHtmlDownloader
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 internal class WooordhuntSoundExtractor @Inject constructor() {
 
-    fun extract(html: String): Uri? {
+    fun extract(html: String): String? {
         return US_SOUND_REGEX.find(html)
             ?.value
             ?.trim('"')
-            ?.let { Uri.parse("${WooordhuntParser.BASE_URL}$it") }
+            ?.let { "${WooordhuntHtmlDownloader.BASE_URL}$it" }
     }
 
     companion object {

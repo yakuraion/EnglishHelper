@@ -3,8 +3,7 @@ package pro.yakuraion.englishhelper.vocabulary.ui.testing.states
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import kotlinx.collections.immutable.ImmutableList
-import pro.yakuraion.englishhelper.domain.entities.WordExample
+import pro.yakuraion.englishhelper.domain.entities.WordExtra
 
 sealed class TestingUiState {
 
@@ -14,9 +13,7 @@ sealed class TestingUiState {
 
     data class Regular(
         val queueId: Long, // to distinguish two words with same name following one by one
-        val word: String,
-        val soundUri: String,
-        val examples: ImmutableList<WordExample>,
+        val wordExtra: WordExtra,
         val dictionaryUrl: String
     ) : TestingUiState() {
 

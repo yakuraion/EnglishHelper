@@ -35,7 +35,7 @@ class TestingContentRegularState(val uiState: TestingUiState.Regular) {
     }
 
     fun onDoneClick(onRightAnswer: () -> Unit) {
-        if (uiState.word.equals(answer.trim(), false)) {
+        if (uiState.wordExtra.name.equals(answer.trim(), false)) {
             onRightAnswer()
         } else {
             isWrongAnswer = true

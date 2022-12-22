@@ -12,8 +12,10 @@ import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pro.yakuraion.englishhelper.commonui.di.viewmodel.AssistedSavedStateViewModelFactory
-import pro.yakuraion.englishhelper.domain.entities.learning.LearningWordFull
+import pro.yakuraion.englishhelper.domain.entities.WordExtra
+import pro.yakuraion.englishhelper.domain.entities.learning.LearningWord
 import pro.yakuraion.englishhelper.domain.usecases.GetNextWordToLearnTodayUseCase
+import pro.yakuraion.englishhelper.domain.usecases.GetWordExtraUseCase
 import pro.yakuraion.englishhelper.domain.usecases.MoveLearningWordToNextLevelUseCase
 import pro.yakuraion.englishhelper.domain.usecases.MoveLearningWordToPreviousLevelUseCase
 import pro.yakuraion.englishhelper.domain.utils.DictionaryUtils
@@ -24,6 +26,7 @@ import kotlin.random.Random
 class TestingViewModel @AssistedInject constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
     private val getNextWordToLearnTodayUseCase: GetNextWordToLearnTodayUseCase,
+    private val getWordExtraUseCase: GetWordExtraUseCase,
     private val moveLearningWordToNextLevelUseCase: MoveLearningWordToNextLevelUseCase,
     private val moveLearningWordToPreviousLevelUseCase: MoveLearningWordToPreviousLevelUseCase
 ) : ViewModel() {
@@ -31,11 +34,12 @@ class TestingViewModel @AssistedInject constructor(
     var uiState: TestingUiState by mutableStateOf(TestingUiState.Loading)
         private set
 
-    private var wordFullJob: Job? by Delegates.observable(null) { _, oldValue, _ ->
+    private var loadNextWordJob: Job? by Delegates.observable(null) { _, oldValue, _ ->
         oldValue?.cancel()
     }
 
-    private var wordFull: LearningWordFull? = null
+    private var learningWord: LearningWord? = null
+    private var wordExtra: WordExtra? = null
 
     private var isDictionaryVisited = false
 
@@ -44,32 +48,31 @@ class TestingViewModel @AssistedInject constructor(
     }
 
     private fun loadNextWord() {
-        wordFullJob = viewModelScope.launch {
-            wordFull = getNextWordToLearnTodayUseCase.getNextWordToLearnToday()
+        loadNextWordJob = viewModelScope.launch {
+            learningWord = getNextWordToLearnTodayUseCase.getNextWordToLearnToday()
+            wordExtra = learningWord?.let { getWordExtraUseCase.getWordExtra(it.name) }
             isDictionaryVisited = false
-            uiState = getUiState(wordFull)
+            uiState = getUiState(learningWord, wordExtra)
         }
     }
 
-    private fun getUiState(word: LearningWordFull?): TestingUiState {
+    private fun getUiState(learningWord: LearningWord?, wordExtra: WordExtra?): TestingUiState {
         return when {
-            word == null -> {
+            learningWord == null -> {
                 TestingUiState.NoMoreWords
             }
-            word.word.soundUri != null -> {
-                TestingUiState.Regular(
+            wordExtra == null -> {
+                TestingUiState.Lite(
                     queueId = Random.nextLong(),
-                    word = word.word.name,
-                    soundUri = word.word.soundUri!!,
-                    examples = word.word.examples,
-                    dictionaryUrl = DictionaryUtils.getDictionaryUrl(word.word.name)
+                    word = learningWord.name,
+                    dictionaryUrl = DictionaryUtils.getDictionaryUrl(learningWord.name)
                 )
             }
             else -> {
-                TestingUiState.Lite(
+                TestingUiState.Regular(
                     queueId = Random.nextLong(),
-                    word = word.word.name,
-                    dictionaryUrl = DictionaryUtils.getDictionaryUrl(word.word.name)
+                    wordExtra = wordExtra,
+                    dictionaryUrl = DictionaryUtils.getDictionaryUrl(wordExtra.name)
                 )
             }
         }
@@ -80,7 +83,7 @@ class TestingViewModel @AssistedInject constructor(
     }
 
     fun onWordTested() {
-        wordFull?.learningWord?.let { learningWord ->
+        learningWord?.let { learningWord ->
             viewModelScope.launch {
                 if (isDictionaryVisited) {
                     moveLearningWordToPreviousLevelUseCase.moveLearningWordToPreviousLevel(learningWord)

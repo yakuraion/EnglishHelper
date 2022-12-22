@@ -4,14 +4,16 @@ import kotlinx.coroutines.flow.Flow
 import pro.yakuraion.englishhelper.domain.entities.CompletedWord
 import pro.yakuraion.englishhelper.domain.entities.WooordhuntWord
 import pro.yakuraion.englishhelper.domain.entities.Word
-import pro.yakuraion.englishhelper.domain.entities.WordExample
+import pro.yakuraion.englishhelper.domain.entities.WordExtra
 import pro.yakuraion.englishhelper.domain.entities.learning.LearningWord
 
 interface WordsRepository {
 
     suspend fun getWordByName(name: String): Word?
 
-    suspend fun getWooordhuntWord(name: String): WooordhuntWord?
+    suspend fun getWordExtraByName(name: String): WordExtra?
+
+    suspend fun downloadWoooordhuntWord(word: String): WooordhuntWord?
 
     fun getTodayLearningWords(): Flow<List<LearningWord>>
 
@@ -21,10 +23,15 @@ interface WordsRepository {
 
     fun getCompletedWords(): Flow<List<CompletedWord>>
 
+    suspend fun addNewLiteWord(
+        name: String,
+        firstDayToLearn: Int
+    )
+
     suspend fun addNewWord(
         name: String,
-        soundUri: String?,
-        examples: List<WordExample>,
+        html: String,
+        extra: WordExtra,
         firstDayToLearn: Int
     )
 

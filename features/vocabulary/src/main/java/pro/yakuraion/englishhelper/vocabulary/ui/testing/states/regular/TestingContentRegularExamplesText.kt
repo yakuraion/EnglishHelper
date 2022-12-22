@@ -23,12 +23,12 @@ import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
 import pro.yakuraion.englishhelper.commonui.compose.widgets.layout.AppFadingEdgesBox
-import pro.yakuraion.englishhelper.domain.entities.WordExample
+import pro.yakuraion.englishhelper.domain.entities.WordExtra
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun TestingContentRegularExamplesText(
-    examples: ImmutableList<WordExample>,
+    examples: ImmutableList<WordExtra.Example>,
     revealExamples: Boolean,
     modifier: Modifier = Modifier
 ) {
@@ -65,7 +65,7 @@ fun TestingContentRegularExamplesText(
 
 @Suppress("MagicNumber")
 @Composable
-private fun ImmutableList<WordExample>.toText(replaceWithGaps: Boolean): AnnotatedString {
+private fun ImmutableList<WordExtra.Example>.toText(replaceWithGaps: Boolean): AnnotatedString {
     var result = buildAnnotatedString { }
 
     forEachIndexed { index, wordExample ->
@@ -83,7 +83,7 @@ private fun ImmutableList<WordExample>.toText(replaceWithGaps: Boolean): Annotat
                 append("${index + 1}. ")
             }
 
-            val parts = wordExample.sentence.split("%s")
+            val parts = wordExample.sentenceWithGap.split("%s")
             parts.forEachIndexed { index, part ->
                 append(part)
                 if (index != parts.lastIndex) {

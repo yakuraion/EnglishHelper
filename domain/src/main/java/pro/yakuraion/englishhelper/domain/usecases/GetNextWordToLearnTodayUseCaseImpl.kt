@@ -1,20 +1,16 @@
 package pro.yakuraion.englishhelper.domain.usecases
 
 import kotlinx.coroutines.flow.first
-import pro.yakuraion.englishhelper.domain.entities.learning.LearningWordFull
-import pro.yakuraion.englishhelper.domain.repositories.WordsRepository
+import pro.yakuraion.englishhelper.domain.entities.learning.LearningWord
 import javax.inject.Inject
 
 internal class GetNextWordToLearnTodayUseCaseImpl @Inject constructor(
-    private val getWordsToLearnUseCase: GetWordsToLearnUseCase,
-    private val wordsRepository: WordsRepository
+    private val getWordsToLearnUseCase: GetWordsToLearnUseCase
 ) : GetNextWordToLearnTodayUseCase {
 
-    override suspend fun getNextWordToLearnToday(): LearningWordFull? {
-        val learningWord = getWordsToLearnUseCase.getWordsToLearnToday()
+    override suspend fun getNextWordToLearnToday(): LearningWord? {
+        return getWordsToLearnUseCase.getWordsToLearnToday()
             .first()
             .firstOrNull()
-        val word = learningWord?.let { wordsRepository.getWordByName(it.name) }
-        return word?.let { LearningWordFull(word, learningWord) }
     }
 }

@@ -12,6 +12,8 @@ import pro.yakuraion.englishhelper.domain.usecases.GetLearningWordsUseCase
 import pro.yakuraion.englishhelper.domain.usecases.GetLearningWordsUseCaseImpl
 import pro.yakuraion.englishhelper.domain.usecases.GetNextWordToLearnTodayUseCase
 import pro.yakuraion.englishhelper.domain.usecases.GetNextWordToLearnTodayUseCaseImpl
+import pro.yakuraion.englishhelper.domain.usecases.GetWordExtraUseCase
+import pro.yakuraion.englishhelper.domain.usecases.GetWordExtraUseCaseImpl
 import pro.yakuraion.englishhelper.domain.usecases.GetWordsToLearnUseCase
 import pro.yakuraion.englishhelper.domain.usecases.GetWordsToLearnUseCaseImpl
 import pro.yakuraion.englishhelper.domain.usecases.IsWordAlreadyExistUseCase
@@ -36,6 +38,10 @@ internal interface UseCasesModule {
     fun bindsUpdateDatabaseAfterMigrationsUseCaseImpl(
         impl: UpdateDatabaseAfterMigrationsUseCaseImpl
     ): UpdateDatabaseAfterMigrationsUseCase
+
+    @Singleton
+    @Binds
+    fun bindsGetWordExtraUseCase(impl: GetWordExtraUseCaseImpl): GetWordExtraUseCase
 
     @Singleton
     @Binds

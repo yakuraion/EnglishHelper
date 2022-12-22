@@ -7,7 +7,9 @@ import pro.yakuraion.englishhelper.data.converters.getLearningWordEntity
 import pro.yakuraion.englishhelper.data.database.daos.LearningWordsDao
 import pro.yakuraion.englishhelper.domain.entities.learning.LearningWord
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 internal class InnerLearningWordsRepository @Inject constructor(
     private val learningWordsDao: LearningWordsDao
 ) {

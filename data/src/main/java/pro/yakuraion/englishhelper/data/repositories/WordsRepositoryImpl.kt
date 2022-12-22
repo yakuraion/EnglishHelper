@@ -3,15 +3,17 @@ package pro.yakuraion.englishhelper.data.repositories
 import androidx.room.withTransaction
 import kotlinx.coroutines.flow.Flow
 import pro.yakuraion.englishhelper.data.database.AppDatabase
-import pro.yakuraion.englishhelper.data.network.wooordhunt.WooordhuntParser
+import pro.yakuraion.englishhelper.data.network.wooordhunt.WooordhuntHtmlDownloader
+import pro.yakuraion.englishhelper.data.network.wooordhunt.WooordhuntHtmlParser
 import pro.yakuraion.englishhelper.data.repositories.inner.InnerCompletedWordsRepository
 import pro.yakuraion.englishhelper.data.repositories.inner.InnerLearningWordsRepository
 import pro.yakuraion.englishhelper.data.repositories.inner.InnerTodayLearningWordsRepository
+import pro.yakuraion.englishhelper.data.repositories.inner.InnerWordsExtrasRepository
 import pro.yakuraion.englishhelper.data.repositories.inner.InnerWordsRepository
 import pro.yakuraion.englishhelper.domain.entities.CompletedWord
 import pro.yakuraion.englishhelper.domain.entities.WooordhuntWord
 import pro.yakuraion.englishhelper.domain.entities.Word
-import pro.yakuraion.englishhelper.domain.entities.WordExample
+import pro.yakuraion.englishhelper.domain.entities.WordExtra
 import pro.yakuraion.englishhelper.domain.entities.learning.LearningWord
 import pro.yakuraion.englishhelper.domain.entities.learning.MemorizationLevel
 import pro.yakuraion.englishhelper.domain.repositories.WordsRepository
@@ -19,19 +21,27 @@ import javax.inject.Inject
 
 internal class WordsRepositoryImpl @Inject constructor(
     private val appDatabase: AppDatabase,
-    private val wooordhuntParser: WooordhuntParser,
     private val innerWordsRepository: InnerWordsRepository,
+    private val innerWordsExtrasRepository: InnerWordsExtrasRepository,
     private val innerLearningWordsRepository: InnerLearningWordsRepository,
     private val innerCompletedWordsRepository: InnerCompletedWordsRepository,
     private val innerTodayLearningWordsRepository: InnerTodayLearningWordsRepository,
+    private val wooordhuntHtmlDownloader: WooordhuntHtmlDownloader,
+    private val wooordhuntHtmlParser: WooordhuntHtmlParser
 ) : WordsRepository {
 
     override suspend fun getWordByName(name: String): Word? {
         return innerWordsRepository.getWordByName(name)
     }
 
-    override suspend fun getWooordhuntWord(name: String): WooordhuntWord? {
-        return wooordhuntParser.getWord(name)
+    override suspend fun getWordExtraByName(name: String): WordExtra? {
+        return innerWordsExtrasRepository.getByName(name)
+    }
+
+    override suspend fun downloadWoooordhuntWord(word: String): WooordhuntWord? {
+        return wooordhuntHtmlDownloader.downloadHtml(word)?.let { html ->
+            wooordhuntHtmlParser.parse(word, html)
+        }
     }
 
     override fun getTodayLearningWords(): Flow<List<LearningWord>> {
@@ -50,14 +60,18 @@ internal class WordsRepositoryImpl @Inject constructor(
         return innerCompletedWordsRepository.getWords()
     }
 
-    override suspend fun addNewWord(
-        name: String,
-        soundUri: String?,
-        examples: List<WordExample>,
-        firstDayToLearn: Int
-    ) {
+    override suspend fun addNewLiteWord(name: String, firstDayToLearn: Int) {
         appDatabase.withTransaction {
-            innerWordsRepository.addWord(name, soundUri, examples)
+            innerWordsRepository.addWord(name)
+            innerLearningWordsRepository.addWord(name, nextDayToLearn = firstDayToLearn)
+            innerTodayLearningWordsRepository.addWord(name)
+        }
+    }
+
+    override suspend fun addNewWord(name: String, html: String, extra: WordExtra, firstDayToLearn: Int) {
+        appDatabase.withTransaction {
+            innerWordsRepository.addWord(name)
+            innerWordsExtrasRepository.addWord(extra, html)
             innerLearningWordsRepository.addWord(name, nextDayToLearn = firstDayToLearn)
             innerTodayLearningWordsRepository.addWord(name)
         }
