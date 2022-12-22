@@ -1,5 +1,6 @@
 package pro.yakuraion.englishhelper.data.database
 
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import pro.yakuraion.englishhelper.data.database.daos.CompletedWordsDao
@@ -20,6 +21,9 @@ import pro.yakuraion.englishhelper.data.database.entities.WordExtraEntity
         LearningWordEntity::class,
         TodayLearningWordEntity::class,
         CompletedWordEntity::class
+    ],
+    autoMigrations = [
+        AutoMigration(from = 2, to = 3, spec = Migration_2_3_Spec::class)
     ],
     version = 3
 )

@@ -11,7 +11,7 @@ import pro.yakuraion.englishhelper.domain.repositories.WordsSoundsRepository
 import javax.inject.Inject
 
 @Suppress("ClassName")
-internal class DatabaseUpdaterFrom_1 @Inject constructor(
+internal class DatabaseUpdaterTo_3 @Inject constructor(
     private val innerWordsRepository: InnerWordsRepository,
     private val innerWordsExtrasRepository: InnerWordsExtrasRepository,
     private val wordsSoundsRepository: WordsSoundsRepository,

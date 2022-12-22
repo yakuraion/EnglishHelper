@@ -13,13 +13,13 @@ internal class DatabaseUpdateRepositoryImpl @Inject constructor(
 ) : DatabaseUpdateRepository {
 
     override fun getIsNeedToUpdateDatabase(): Boolean {
-        return databaseUpdaters.any { it.key >= databaseInfoPreferences.lastDatabaseVersion }
+        return databaseUpdaters.any { it.key > databaseInfoPreferences.lastDatabaseVersion }
     }
 
     override suspend fun updateDatabase() {
         val actualDatabaseVersion = database.openHelper.readableDatabase.version
         while (databaseInfoPreferences.lastDatabaseVersion != actualDatabaseVersion) {
-            databaseUpdaters[databaseInfoPreferences.lastDatabaseVersion]?.update()
+            databaseUpdaters[databaseInfoPreferences.lastDatabaseVersion + 1]?.update()
             databaseInfoPreferences.lastDatabaseVersion += 1
         }
     }
