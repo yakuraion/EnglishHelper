@@ -25,8 +25,4 @@ include(":common-tests")
 include(":features:startup")
 include(":features:vocabulary")
 
-includeBuild("plugins/code-check") {
-    dependencySubstitution {
-        substitute(module("pro.yakuraion.plugins.codecheck:code-check")).using(project(":"))
-    }
-}
+includeBuild("plugins/conventions")

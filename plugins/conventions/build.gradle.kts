@@ -6,5 +6,5 @@ dependencies {
     implementation(libs.android.application.plugin)
     implementation(libs.android.library.plugin)
     implementation(libs.kotlin.plugin)
-    implementation(libs.plugin.code.check)
+    implementation("pro.yakuraion.plugins:code-check:1.0")
 }

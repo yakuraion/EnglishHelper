@@ -15,7 +15,13 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         create("libs") {
-            from(files("../gradle/libs.versions.toml"))
+            from(files("../../gradle/libs.versions.toml"))
         }
+    }
+}
+
+includeBuild("../code-check") {
+    dependencySubstitution {
+        substitute(module("pro.yakuraion.plugins:code-check")).using(project(":"))
     }
 }

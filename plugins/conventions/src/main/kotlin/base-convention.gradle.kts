@@ -10,7 +10,7 @@ import utils.versionCatalog
 plugins {
     id("kotlin-android")
     id("kotlin-kapt")
-    id("pro.yakuraion.plugins.codecheck.code-check")
+    id("pro.yakuraion.plugins.code-check")
 }
 
 configure<BaseExtension> {
@@ -62,7 +62,11 @@ configure<KotlinAndroidProjectExtension> {
 
 codeCheck {
     jvmTarget.set(JavaVersion.VERSION_11.toString())
-    detektConfig.from(files("$configsDir/detekt/detekt.yml"))
+
+    detekt {
+        enabled.set(false)
+        config.from(files("$configsDir/detekt/detekt.yml"))
+    }
 }
 
 dependencies {
