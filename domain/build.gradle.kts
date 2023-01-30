@@ -7,12 +7,14 @@ android {
     namespace = "pro.yakuraion.englishhelper.domain"
 
     buildFeatures.compose = true
-    composeOptions.kotlinCompilerExtensionVersion = "1.3.2"
+    composeOptions.kotlinCompilerExtensionVersion = "1.4.0"
 }
 
 dependencies {
     implementation(project(":common"))
     testImplementation(project(":common-tests"))
 
+    val composeBom = platform(libs.compose.bom)
+    implementation(composeBom)
     implementation(libs.compose.runtime)
 }

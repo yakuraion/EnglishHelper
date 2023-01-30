@@ -10,7 +10,7 @@ configure<BaseExtension> {
     }
 
     buildFeatures.compose = true
-    composeOptions.kotlinCompilerExtensionVersion = "1.3.2"
+    composeOptions.kotlinCompilerExtensionVersion = "1.4.0"
 }
 
 dependencies {
@@ -19,14 +19,20 @@ dependencies {
 
     add("androidTestImplementation", versionCatalog.findLibrary("androidx-test-espresso").get())
 
-    add("implementation", versionCatalog.findLibrary("compose-material-icons-extended").get())
+    val composeBom = platform(versionCatalog.findLibrary("compose-bom").get())
+    add("implementation", composeBom)
+    add("debugImplementation", composeBom)
+    add("androidTestImplementation", composeBom)
+
     add("implementation", versionCatalog.findLibrary("compose-material3").get())
     add("implementation", versionCatalog.findLibrary("compose-tooling-preview").get())
-    add("implementation", versionCatalog.findLibrary("compose-constraint-layout").get())
-    add("implementation", versionCatalog.findLibrary("compose-activity").get())
-    add("implementation", versionCatalog.findLibrary("compose-viewmodel").get())
     add("debugImplementation", versionCatalog.findLibrary("compose-tooling").get())
     add("androidTestImplementation", versionCatalog.findLibrary("compose-junit").get())
+    add("implementation", versionCatalog.findLibrary("compose-icons-extended").get())
+
+    add("implementation", versionCatalog.findLibrary("compose-activity").get())
+    add("implementation", versionCatalog.findLibrary("compose-viewmodel").get())
+    add("implementation", versionCatalog.findLibrary("compose-constraint-layout").get())
 
     add("implementation", versionCatalog.findLibrary("accompanist-systemuicontroller").get())
     add("implementation", versionCatalog.findLibrary("accompanist-pager").get())
