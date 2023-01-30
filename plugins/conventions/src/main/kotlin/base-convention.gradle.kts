@@ -64,7 +64,6 @@ codeCheck {
     jvmTarget.set(JavaVersion.VERSION_11.toString())
 
     detekt {
-        enabled.set(false)
         config.from(files("$configsDir/detekt/detekt.yml"))
     }
 }
