@@ -1,7 +1,6 @@
 package pro.yakuraion.englishhelper.domain.usecases
 
 import io.mockk.coEvery
-import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit4.MockKRule
@@ -9,7 +8,6 @@ import io.mockk.slot
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -18,6 +16,8 @@ import pro.yakuraion.englishhelper.domain.entities.learning.LearningWord
 import pro.yakuraion.englishhelper.domain.entities.learning.MemorizationLevel
 import pro.yakuraion.englishhelper.domain.repositories.LearningRepository
 import pro.yakuraion.englishhelper.domain.repositories.WordsRepository
+import pro.yakuraion.englishhelper.domain.utils.DatesUtils
+import pro.yakuraion.englishhelper.domain.utils.LearningDatesUtils
 import java.util.*
 
 internal class GetWordsToLearnUseCaseImplTest : UseCaseTest<GetWordsToLearnUseCase>() {
@@ -31,41 +31,50 @@ internal class GetWordsToLearnUseCaseImplTest : UseCaseTest<GetWordsToLearnUseCa
     @MockK
     lateinit var learningRepository: LearningRepository
 
+    @MockK
+    lateinit var datesUtils: DatesUtils
+
+    private lateinit var learningDatesUtils: LearningDatesUtils
+
     override fun setUpMocks() {
         coEvery { wordsRepository.getLearningWordsAvailableToLearnBy(any()) } returns LEARNING_WORDS
+        coEvery { datesUtils.getIsDatesTheSame(any(), any()) } answers { callOriginal() }
+
+        learningDatesUtils = LearningDatesUtils(datesUtils)
     }
 
     override fun createUseCase(dispatchers: Dispatchers): GetWordsToLearnUseCase {
         return GetWordsToLearnUseCaseImpl(
             dispatchers,
             wordsRepository,
-            learningRepository
+            learningRepository,
+            datesUtils,
+            learningDatesUtils
         )
     }
 
     @Test
-    fun getNextWordToLearnToday() = runTest {
-        coEvery { learningRepository.getLastLearningDate() }
-    }
+    fun `get words to learn today when they are already configured`() = runTest {
+        val now = Calendar.getInstance()
 
-    @Test
-    fun getWordsToLearnToday() = runTest {
-        coEvery { learningRepository.getLastLearningDate() } returns Calendar.getInstance()
+        coEvery { wordsRepository.getTodayLearningWords() } returns flowOf(LEARNING_WORDS)
+        coEvery { learningRepository.getLastLearningDate() } returns now
+        coEvery { datesUtils.getCurrentDate() } returns now
 
-        val expectedWords = listOf(LearningWord("name", MemorizationLevel(1), 1))
-        coEvery { wordsRepository.getTodayLearningWords() } returns flowOf(expectedWords)
+        val result = useCase.getWordsToLearnToday().first()
 
-        val words = useCase.getWordsToLearnToday().first()
+        assertEquals(LEARNING_WORDS, result)
 
-        assertEquals(expectedWords, words)
-
-        coVerify(exactly = 0) { learningRepository.increaseLearningDay() }
         coVerify(exactly = 0) { wordsRepository.setTodayLearningWords(any()) }
+        coVerify(exactly = 0) { learningRepository.increaseLearningDay() }
     }
 
     @Test
-    fun getWordsToLearnTodayWithUpdateLearningDate() = runTest {
-        val lastLearningDate = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, -1) }
+    fun `get words to learn today when they are not configured yet`() = runTest {
+        val now = Calendar.getInstance()
+        val lastLearningDate = Calendar.getInstance().apply { add(Calendar.DATE, -2) }
+
+        coEvery { datesUtils.getCurrentDate() } returns now
         coEvery { learningRepository.getLastLearningDate() } returns lastLearningDate
         coEvery { learningRepository.getLearningDay() } returns CURRENT_LEARNING_DAY
 
@@ -75,32 +84,26 @@ internal class GetWordsToLearnUseCaseImplTest : UseCaseTest<GetWordsToLearnUseCa
             Unit
         }
 
-        val calendarSlot = slot<Calendar>()
-        coJustRun { learningRepository.setLastLearningDate(capture(calendarSlot)) }
+        val result = useCase.getWordsToLearnToday().first()
 
-        val words = useCase.getWordsToLearnToday().first()
-
-        assertThat(
-            "Not actual calendar is set to the learningRepository",
-            Calendar.getInstance().timeInMillis - calendarSlot.captured.timeInMillis < 1000
-        )
+        coVerify { learningRepository.setLastLearningDate(now) }
         coVerify(exactly = 1) { learningRepository.increaseLearningDay() }
 
-        assertEquals(20, words.count { it.name.startsWith("AA_") })
-        assertEquals(20, words.count { it.name.startsWith("AB_") })
-        assertEquals(20, words.count { it.name.startsWith("AC_") })
+        assertEquals(20, result.count { it.name.startsWith("AA_") })
+        assertEquals(20, result.count { it.name.startsWith("AB_") })
+        assertEquals(20, result.count { it.name.startsWith("AC_") })
 
-        assertEquals(20, words.count { it.name.startsWith("BA_") })
-        assertEquals(20, words.count { it.name.startsWith("BB_") })
-        assertEquals(20, words.count { it.name.startsWith("BC_") })
+        assertEquals(20, result.count { it.name.startsWith("BA_") })
+        assertEquals(20, result.count { it.name.startsWith("BB_") })
+        assertEquals(20, result.count { it.name.startsWith("BC_") })
 
-        assertEquals(20, words.count { it.name.startsWith("CA_") })
-        assertEquals(20, words.count { it.name.startsWith("CB_") })
-        assertEquals(10, words.count { it.name.startsWith("CC_") })
+        assertEquals(20, result.count { it.name.startsWith("CA_") })
+        assertEquals(20, result.count { it.name.startsWith("CB_") })
+        assertEquals(10, result.count { it.name.startsWith("CC_") })
 
-        assertEquals(10, words.count { it.name.startsWith("DA_") })
-        assertEquals(7, words.count { it.name.startsWith("DB_") })
-        assertEquals(5, words.count { it.name.startsWith("DC_") })
+        assertEquals(10, result.count { it.name.startsWith("DA_") })
+        assertEquals(7, result.count { it.name.startsWith("DB_") })
+        assertEquals(5, result.count { it.name.startsWith("DC_") })
     }
 
     companion object {
