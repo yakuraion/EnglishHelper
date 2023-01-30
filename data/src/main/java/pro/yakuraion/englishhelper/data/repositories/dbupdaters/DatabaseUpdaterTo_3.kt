@@ -1,11 +1,10 @@
 package pro.yakuraion.englishhelper.data.repositories.dbupdaters
 
-import kotlinx.collections.immutable.toImmutableList
 import pro.yakuraion.englishhelper.data.network.wooordhunt.WooordhuntHtmlDownloader
 import pro.yakuraion.englishhelper.data.network.wooordhunt.WooordhuntHtmlParser
 import pro.yakuraion.englishhelper.data.repositories.inner.InnerWordsExtrasRepository
 import pro.yakuraion.englishhelper.data.repositories.inner.InnerWordsRepository
-import pro.yakuraion.englishhelper.domain.entities.WordExtra
+import pro.yakuraion.englishhelper.domain.entities.converters.getWordExtra
 import pro.yakuraion.englishhelper.domain.repositories.WordsSoundsRepository
 import javax.inject.Inject
 
@@ -27,13 +26,7 @@ internal class DatabaseUpdaterTo_3 @Inject constructor(
                         ?.toURI()
                         ?.toString()
                     if (localFileSoundUri != null) {
-                        val wordExtra = WordExtra(
-                            name = wooordhuntWord.name,
-                            soundUri = localFileSoundUri,
-                            examples = wooordhuntWord.examples
-                                .mapNotNull { it.toExtraExample(wooordhuntWord.wordForms) }
-                                .toImmutableList()
-                        )
+                        val wordExtra = getWordExtra(wooordhuntWord, localFileSoundUri)
                         innerWordsExtrasRepository.addWord(wordExtra, html)
                     }
                 }
