@@ -63,7 +63,7 @@ internal class AddWordUseCaseImpl @Inject constructor(
     }
 
     private suspend fun getDownloadedSoundUri(word: WooordhuntWord): String? {
-        return wordsSoundsRepository.downloadSoundForWorld(word.name, Uri.parse(word.soundUri))
+        return wordsSoundsRepository.downloadSoundForWorld(word.name, word.soundUri)
             ?.toURI()
             ?.toString()
     }

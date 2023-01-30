@@ -9,6 +9,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import pro.yakuraion.englishhelper.common.coroutines.Dispatchers
+import pro.yakuraion.englishhelper.domain.fakes.WooordhuntWords
 import pro.yakuraion.englishhelper.domain.repositories.LearningRepository
 import pro.yakuraion.englishhelper.domain.repositories.WordsRepository
 import pro.yakuraion.englishhelper.domain.repositories.WordsSoundsRepository
@@ -31,12 +32,10 @@ class AddWordUseCaseTest : UseCaseTest<AddWordUseCase>() {
     @MockK
     lateinit var learningRepository: LearningRepository
 
-    private val soundsUri = File("")
-
     override fun setUpMocks() {
-        coEvery { isWordAlreadyExistUseCase.isWordAlreadyExist(NAME) } returns false
-        coEvery { wordsSoundsRepository.downloadSoundForWorld(NAME) } returns soundsUri
+        coEvery { isWordAlreadyExistUseCase.isWordAlreadyExist(any()) } returns false
         coEvery { learningRepository.getLearningDay() } returns LEARNING_DAY
+        coEvery { wordsSoundsRepository.downloadSoundForWorld(any(), any()) } returns File("")
     }
 
     override fun createUseCase(dispatchers: Dispatchers): AddWordUseCase {
@@ -49,41 +48,48 @@ class AddWordUseCaseTest : UseCaseTest<AddWordUseCase>() {
         )
     }
 
-    @Test
-    fun addWord() = runTest {
-        val result = useCase.addWord(NAME, true)
+    @Test(expected = IllegalArgumentException::class)
+    fun `add word that is already added`() = runTest {
+        val word = WooordhuntWords.Existed.WORD
+        coEvery { isWordAlreadyExistUseCase.isWordAlreadyExist(word.name) } returns true
 
-        coVerify { wordsRepository.addNewLiteWord(NAME, soundsUri.toURI().toString(), LEARNING_DAY) }
+        useCase.addWord(word.name, true)
+    }
+
+    @Test
+    fun `add word with extra that will be founded`() = runTest {
+        val word = WooordhuntWords.Existed.WORD
+        coEvery { wordsRepository.downloadWoooordhuntWord(word.name) } returns word
+
+        val result = useCase.addWord(word.name, true)
+
+        coVerify { wordsRepository.addNewWord(word.name, word.html, any(), LEARNING_DAY) }
         assertEquals(AddWordUseCase.Result.SUCCESS, result)
     }
 
-    @Test(expected = IllegalArgumentException::class)
-    fun addWordWithAlreadyExistedError() = runTest {
-        coEvery { isWordAlreadyExistUseCase.isWordAlreadyExist(NAME) } returns true
-
-        useCase.addWord(NAME, true)
-    }
-
     @Test
-    fun addWordAndWordNotFound() = runTest {
-        coEvery { wordsSoundsRepository.downloadSoundForWorld(NAME) } returns null
+    fun `add word with extra that will not be founded`() = runTest {
+        val word = WooordhuntWords.NotFound.TOOWOO
+        coEvery { wordsRepository.downloadWoooordhuntWord(word) } returns null
 
-        val result = useCase.addWord(NAME, true)
+        val result = useCase.addWord(word, true)
 
+        coVerify(exactly = 0) { wordsRepository.addNewWord(any(), any(), any(), any()) }
         assertEquals(AddWordUseCase.Result.WORD_NOT_FOUND, result)
     }
 
     @Test
-    fun addWordWithoutAudio() = runTest {
-        val result = useCase.addWord(NAME, false)
+    fun `add word without extra`() = runTest {
+        val word = WooordhuntWords.NotFound.TOOWOO
+        coEvery { wordsRepository.downloadWoooordhuntWord(word) } returns null
 
-        coVerify { wordsRepository.addNewLiteWord(NAME, null, LEARNING_DAY) }
+        val result = useCase.addWord(word, false)
+
+        coVerify { wordsRepository.addNewLiteWord(word, LEARNING_DAY) }
         assertEquals(AddWordUseCase.Result.SUCCESS, result)
     }
 
     companion object {
-
-        private const val NAME = "name"
 
         private const val LEARNING_DAY = 0
     }

@@ -1,6 +1,5 @@
 package pro.yakuraion.englishhelper.data.repositories.dbupdaters
 
-import android.net.Uri
 import kotlinx.collections.immutable.toImmutableList
 import pro.yakuraion.englishhelper.data.network.wooordhunt.WooordhuntHtmlDownloader
 import pro.yakuraion.englishhelper.data.network.wooordhunt.WooordhuntHtmlParser
@@ -23,8 +22,8 @@ internal class DatabaseUpdaterTo_3 @Inject constructor(
         innerWordsRepository.getAllWords().forEach { word ->
             wooordhuntHtmlDownloader.downloadHtml(word.name)?.let { html ->
                 wooordhuntHtmlParser.parse(word.name, html)?.let { wooordhuntWord ->
-                    val networkSoundUri = Uri.parse(wooordhuntWord.soundUri)
-                    val localFileSoundUri = wordsSoundsRepository.downloadSoundForWorld(word.name, networkSoundUri)
+                    val localFileSoundUri = wordsSoundsRepository
+                        .downloadSoundForWorld(word.name, wooordhuntWord.soundUri)
                         ?.toURI()
                         ?.toString()
                     if (localFileSoundUri != null) {

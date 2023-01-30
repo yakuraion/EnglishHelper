@@ -17,4 +17,6 @@ dependencies {
     val composeBom = platform(libs.compose.bom)
     implementation(composeBom)
     implementation(libs.compose.runtime)
+
+    implementation(libs.gson)
 }

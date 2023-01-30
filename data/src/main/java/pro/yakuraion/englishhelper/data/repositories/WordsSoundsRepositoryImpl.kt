@@ -1,7 +1,6 @@
 package pro.yakuraion.englishhelper.data.repositories
 
 import android.content.Context
-import android.net.Uri
 import pro.yakuraion.englishhelper.common.downloadFile
 import pro.yakuraion.englishhelper.domain.repositories.WordsSoundsRepository
 import java.io.File
@@ -11,9 +10,9 @@ internal class WordsSoundsRepositoryImpl @Inject constructor(
     private val context: Context
 ) : WordsSoundsRepository {
 
-    override suspend fun downloadSoundForWorld(name: String, soundUri: Uri): File? {
+    override suspend fun downloadSoundForWorld(name: String, soundUri: String): File? {
         val file = getSoundFile(name)
-        val result = downloadFile(soundUri.toString(), file)
+        val result = downloadFile(soundUri, file)
         return if (result) file else null
     }
 
