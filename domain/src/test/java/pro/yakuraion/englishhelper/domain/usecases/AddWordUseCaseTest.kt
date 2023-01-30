@@ -15,7 +15,7 @@ import pro.yakuraion.englishhelper.domain.repositories.WordsRepository
 import pro.yakuraion.englishhelper.domain.repositories.WordsSoundsRepository
 import java.io.File
 
-class AddWordUseCaseTest : UseCaseTest<AddWordUseCase>() {
+internal class AddWordUseCaseTest : UseCaseTest<AddWordUseCase>() {
 
     @get:Rule
     val mockkRule = MockKRule(this)
