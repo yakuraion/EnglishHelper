@@ -20,7 +20,7 @@ import pro.yakuraion.englishhelper.domain.utils.DatesUtils
 import pro.yakuraion.englishhelper.domain.utils.LearningDatesUtils
 import java.util.*
 
-internal class GetWordsToLearnUseCaseImplTest : UseCaseTest<GetWordsToLearnUseCase>() {
+internal class GetWordsToLearnUseCaseTest : UseCaseTest<GetWordsToLearnUseCase>() {
 
     @get:Rule
     val mockkRule = MockKRule(this)

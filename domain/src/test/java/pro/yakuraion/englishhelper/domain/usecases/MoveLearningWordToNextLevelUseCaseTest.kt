@@ -4,7 +4,9 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit4.MockKRule
+import io.mockk.slot
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertNotEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -16,9 +18,8 @@ import pro.yakuraion.englishhelper.domain.repositories.LearningRepository
 import pro.yakuraion.englishhelper.domain.repositories.WordsRepository
 
 @RunWith(Parameterized::class)
-internal class MoveLearningWordToNextLevelUseCaseImplTest(
+internal class MoveLearningWordToNextLevelUseCaseTest(
     private val word: LearningWord,
-    private val updatedWord: LearningWord?,
     private val addedToCompleted: Boolean
 ) : UseCaseTest<MoveLearningWordToNextLevelUseCase>() {
 
@@ -44,13 +45,19 @@ internal class MoveLearningWordToNextLevelUseCaseImplTest(
     }
 
     @Test
-    fun moveLearningWordToNextLevel() = runTest {
+    fun `move learning word to the next level`() = runTest {
+        val updatedWord = slot<LearningWord>()
+        coEvery { wordsRepository.updateTodayLearningDay(capture(updatedWord), any()) } returns Unit
+
         useCase.moveLearningWordToNextLevel(word)
 
         if (addedToCompleted) {
             coVerify { wordsRepository.completeWord(word) }
+            coVerify(exactly = 0) { wordsRepository.updateTodayLearningDay(any(), any()) }
         } else {
-            coVerify { wordsRepository.updateTodayLearningDay(updatedWord!!, false) }
+            coVerify { wordsRepository.updateTodayLearningDay(any(), false) }
+            coVerify(exactly = 0) { wordsRepository.completeWord(any()) }
+            assertNotEquals(word, updatedWord.captured)
         }
     }
 
@@ -63,27 +70,22 @@ internal class MoveLearningWordToNextLevelUseCaseImplTest(
         fun data() = listOf(
             arrayOf(
                 LearningWord("name", MemorizationLevel(0), 0),
-                LearningWord("name", MemorizationLevel(1), 1),
                 false,
             ),
             arrayOf(
                 LearningWord("name", MemorizationLevel(1), 0),
-                LearningWord("name", MemorizationLevel(2), 2),
                 false,
             ),
             arrayOf(
                 LearningWord("name", MemorizationLevel(2), 0),
-                LearningWord("name", MemorizationLevel(3), 4),
                 false,
             ),
             arrayOf(
                 LearningWord("name", MemorizationLevel(3), 0),
-                LearningWord("name", MemorizationLevel(4), 8),
                 false,
             ),
             arrayOf(
                 LearningWord("name", MemorizationLevel(4), 0),
-                null,
                 true,
             ),
         )
