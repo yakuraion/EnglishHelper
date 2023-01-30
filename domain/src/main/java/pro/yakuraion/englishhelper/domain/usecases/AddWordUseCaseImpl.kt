@@ -1,12 +1,10 @@
 package pro.yakuraion.englishhelper.domain.usecases
 
-import android.net.Uri
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import pro.yakuraion.englishhelper.common.coroutines.Dispatchers
 import pro.yakuraion.englishhelper.domain.entities.WooordhuntWord
-import pro.yakuraion.englishhelper.domain.entities.WordExtra
+import pro.yakuraion.englishhelper.domain.entities.converters.getWordExtra
 import pro.yakuraion.englishhelper.domain.repositories.LearningRepository
 import pro.yakuraion.englishhelper.domain.repositories.WordsRepository
 import pro.yakuraion.englishhelper.domain.repositories.WordsSoundsRepository
@@ -43,14 +41,7 @@ internal class AddWordUseCaseImpl @Inject constructor(
             val soundFileUri = getDownloadedSoundUri(wooordhuntWord)
                 ?: return@coroutineScope AddWordUseCase.Result.WORD_NOT_FOUND
 
-            val examples = wooordhuntWord.examples.mapNotNull { it.toExtraExample(wooordhuntWord.wordForms) }
-                .toImmutableList()
-
-            val extra = WordExtra(
-                name = wooordhuntWord.name,
-                soundUri = soundFileUri,
-                examples = examples
-            )
+            val extra = getWordExtra(wooordhuntWord, soundFileUri)
 
             wordsRepository.addNewWord(
                 name = name,
