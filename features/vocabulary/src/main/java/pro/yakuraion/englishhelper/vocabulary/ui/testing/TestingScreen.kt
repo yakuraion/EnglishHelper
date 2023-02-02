@@ -33,9 +33,11 @@ fun TestingScreen(
     TestingScreen(
         uiState = viewModel.uiState,
         onBackClick = onBackClick,
-        onVisitedDictionary = { viewModel.onVisitedDictionary() },
-        onWordTested = { viewModel.onWordTested() },
-        onContinueClick = { viewModel.onContinueClick() }
+        onRegularVisitedDictionary = { viewModel.onRegularVisitedDictionary() },
+        onRegularWordCheck = { viewModel.onRegularWordCheck() },
+        onLiteWordCheckSuccess = { viewModel.onLiteWordCheckSuccess() },
+        onLiteWordCheckFailed = { viewModel.onLiteWordCheckFailed() },
+        onContinueClick = { viewModel.onRegularContinueClick() }
     )
 }
 
@@ -43,8 +45,10 @@ fun TestingScreen(
 private fun TestingScreen(
     uiState: TestingUiState,
     onBackClick: () -> Unit,
-    onVisitedDictionary: () -> Unit,
-    onWordTested: () -> Unit,
+    onRegularVisitedDictionary: () -> Unit,
+    onRegularWordCheck: () -> Unit,
+    onLiteWordCheckSuccess: () -> Unit,
+    onLiteWordCheckFailed: () -> Unit,
     onContinueClick: () -> Unit
 ) {
     Scaffold(
@@ -73,14 +77,15 @@ private fun TestingScreen(
                 is TestingUiState.Lite -> {
                     TestingContentLite(
                         state = uiState,
-                        onWordTested = onWordTested
+                        onWordCheckSuccess = onLiteWordCheckSuccess,
+                        onWordCheckFailed = onLiteWordCheckFailed
                     )
                 }
                 is TestingUiState.Regular -> {
                     TestingContentRegular(
                         uiState = uiState,
-                        onVisitedDictionary = onVisitedDictionary,
-                        onWordTested = onWordTested,
+                        onVisitedDictionary = onRegularVisitedDictionary,
+                        onWordTested = onRegularWordCheck,
                         onContinueClick = onContinueClick
                     )
                 }
@@ -117,8 +122,10 @@ private fun TestingRegularPreview() {
                 dictionaryUrl = "",
             ),
             onBackClick = {},
-            onVisitedDictionary = {},
-            onWordTested = {},
+            onRegularVisitedDictionary = {},
+            onRegularWordCheck = {},
+            onLiteWordCheckSuccess = {},
+            onLiteWordCheckFailed = {},
             onContinueClick = {}
         )
     }
@@ -140,8 +147,10 @@ private fun TestingRegularAnsweredPreview() {
                 dictionaryUrl = "",
             ).apply { isAnswered = true },
             onBackClick = {},
-            onVisitedDictionary = {},
-            onWordTested = {},
+            onRegularVisitedDictionary = {},
+            onRegularWordCheck = {},
+            onLiteWordCheckSuccess = {},
+            onLiteWordCheckFailed = {},
             onContinueClick = {}
         )
     }
@@ -159,8 +168,10 @@ private fun TestingLitePreview() {
                 dictionaryUrl = ""
             ),
             onBackClick = {},
-            onVisitedDictionary = {},
-            onWordTested = {},
+            onRegularVisitedDictionary = {},
+            onRegularWordCheck = {},
+            onLiteWordCheckSuccess = {},
+            onLiteWordCheckFailed = {},
             onContinueClick = {}
         )
     }
@@ -174,8 +185,10 @@ private fun TestingNoMoreWordsPreview() {
         TestingScreen(
             uiState = TestingUiState.NoMoreWords,
             onBackClick = {},
-            onVisitedDictionary = {},
-            onWordTested = {},
+            onRegularVisitedDictionary = {},
+            onRegularWordCheck = {},
+            onLiteWordCheckSuccess = {},
+            onLiteWordCheckFailed = {},
             onContinueClick = {}
         )
     }
@@ -189,8 +202,10 @@ private fun TestingLoadingPreview() {
         TestingScreen(
             uiState = TestingUiState.Loading,
             onBackClick = {},
-            onVisitedDictionary = {},
-            onWordTested = {},
+            onRegularVisitedDictionary = {},
+            onRegularWordCheck = {},
+            onLiteWordCheckSuccess = {},
+            onLiteWordCheckFailed = {},
             onContinueClick = {}
         )
     }

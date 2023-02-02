@@ -78,11 +78,11 @@ class TestingViewModel @AssistedInject constructor(
         }
     }
 
-    fun onVisitedDictionary() {
+    fun onRegularVisitedDictionary() {
         isDictionaryVisited = true
     }
 
-    fun onWordTested() {
+    fun onRegularWordCheck() {
         learningWord?.let { learningWord ->
             viewModelScope.launch {
                 if (isDictionaryVisited) {
@@ -90,22 +90,31 @@ class TestingViewModel @AssistedInject constructor(
                 } else {
                     moveLearningWordToNextLevelUseCase.moveLearningWordToNextLevel(learningWord)
                 }
-                when (val uiState = uiState) {
-                    is TestingUiState.Lite -> {
-                        loadNextWord()
-                    }
-                    is TestingUiState.Regular -> {
-                        uiState.isAnswered = true
-                    }
-                    else -> {}
-                }
+                (uiState as TestingUiState.Regular).isAnswered = true
             }
         }
     }
 
-    // only for Regular state
-    fun onContinueClick() {
+    fun onRegularContinueClick() {
         loadNextWord()
+    }
+
+    fun onLiteWordCheckSuccess() {
+        learningWord?.let { learningWord ->
+            viewModelScope.launch {
+                moveLearningWordToNextLevelUseCase.moveLearningWordToNextLevel(learningWord)
+                loadNextWord()
+            }
+        }
+    }
+
+    fun onLiteWordCheckFailed() {
+        learningWord?.let { learningWord ->
+            viewModelScope.launch {
+                moveLearningWordToPreviousLevelUseCase.moveLearningWordToPreviousLevel(learningWord)
+                loadNextWord()
+            }
+        }
     }
 
     @AssistedFactory
