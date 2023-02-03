@@ -28,6 +28,7 @@ dependencies {
     add("implementation", versionCatalog.findLibrary("compose-tooling-preview").get())
     add("debugImplementation", versionCatalog.findLibrary("compose-tooling").get())
     add("androidTestImplementation", versionCatalog.findLibrary("compose-junit").get())
+    add("debugImplementation", versionCatalog.findLibrary("compose-test-manifest").get())
     add("implementation", versionCatalog.findLibrary("compose-icons-extended").get())
 
     add("implementation", versionCatalog.findLibrary("compose-activity").get())
