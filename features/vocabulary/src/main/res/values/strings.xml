@@ -6,6 +6,7 @@
     <string name="vocabulary_overview_screen_words_total_title">Your words</string>
     <string name="vocabulary_overview_screen_words_total_in_progress">In progress</string>
     <string name="vocabulary_overview_screen_words_total_completed">Completed</string>
+    <string name="vocabulary_overview_semantics_button_add_words">Add word</string>
 
     <string name="vocabulary_add_words_screen_title">Add new word</string>
     <string name="vocabulary_add_words_screen_type_word">Type word…</string>

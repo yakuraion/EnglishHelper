@@ -47,7 +47,7 @@ fun OverviewScreen(
 }
 
 @Composable
-private fun OverviewScreen(
+fun OverviewScreen(
     uiState: OverviewUiState,
     onAddWordsClick: () -> Unit,
     onStartTestingClick: () -> Unit,
@@ -124,7 +124,7 @@ private fun AddWordsButton(
     ) {
         Icon(
             imageVector = Icons.Default.Add,
-            contentDescription = null,
+            contentDescription = stringResource(id = R.string.vocabulary_overview_semantics_button_add_words),
             modifier = Modifier.size(FloatingActionButtonDefaults.LargeIconSize)
         )
     }
