@@ -68,7 +68,12 @@ fun TestingContentRegularDictionaryButton(
         AppAlertDialog(
             onDismissRequest = { isAlertDialogShowing = false },
             confirmButton = {
-                AppAlertDialogDefaults.ConfirmButton(onConfirm = openDictionary)
+                AppAlertDialogDefaults.ConfirmButton(
+                    onConfirm = {
+                        openDictionary()
+                        isAlertDialogShowing = false
+                    }
+                )
             },
             dismissButton = {
                 AppAlertDialogDefaults.DismissButton(onDismissClick = { isAlertDialogShowing = false })
