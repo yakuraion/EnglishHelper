@@ -12,7 +12,7 @@ internal class GetCompletedWordsUseCaseImpl @Inject constructor(
     private val wordsRepository: WordsRepository
 ) : GetCompletedWordsUseCase {
 
-    override suspend fun getCompletedWords(): Flow<List<CompletedWord>> {
+    override fun getCompletedWords(): Flow<List<CompletedWord>> {
         return wordsRepository.getCompletedWords()
             .flowOn(dispatchers.ioDispatcher)
     }

@@ -42,7 +42,8 @@ class ListWordsViewModel @AssistedInject constructor(
             getLearningWordsUseCase.getLearningWords().collect { words ->
                 inProgressWords = words.toImmutableList()
             }
-
+        }
+        viewModelScope.launch {
             getCompletedWordsUseCase.getCompletedWords().collect { words ->
                 completedWords = words.toImmutableList()
             }

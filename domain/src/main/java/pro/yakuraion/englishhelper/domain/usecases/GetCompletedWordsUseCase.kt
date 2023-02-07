@@ -5,5 +5,5 @@ import pro.yakuraion.englishhelper.domain.entities.CompletedWord
 
 interface GetCompletedWordsUseCase {
 
-    suspend fun getCompletedWords(): Flow<List<CompletedWord>>
+    fun getCompletedWords(): Flow<List<CompletedWord>>
 }
