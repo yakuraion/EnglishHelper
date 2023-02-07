@@ -1,23 +1,17 @@
 package pro.yakuraion.englishhelper.vocabulary.ui.overview
 
-import androidx.compose.ui.semantics.ProgressBarRangeInfo
-import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertTextContains
-import androidx.compose.ui.test.hasProgressBarRangeInfo
-import androidx.compose.ui.test.onNodeWithContentDescription
-import androidx.compose.ui.test.onNodeWithText
 import org.junit.Test
 import pro.yakuraion.englishhelper.commontestsui.ComposeTest
-import pro.yakuraion.englishhelper.vocabulary.R
+import pro.yakuraion.englishhelper.vocabulary.ui.overview.pages.overview
 
 class OverviewScreenTest : ComposeTest() {
 
     @Test
-    fun testNonZeroWordsToLearnToday() {
+    fun testContentState() {
         val uiState = OverviewUiState.Content(
             numberOfWordsToLearnToday = 12,
-            totalNumberOfInProgressWords = 0,
-            totalNumberOfCompletedWords = 0
+            totalNumberOfInProgressWords = 3,
+            totalNumberOfCompletedWords = 18
         )
         setScreen {
             OverviewScreen(
@@ -28,9 +22,14 @@ class OverviewScreenTest : ComposeTest() {
             )
         }
 
-        composeTestRule
-            .onNodeWithText(getString(R.string.vocabulary_overview_screen_testing_title))
-            .assertTextContains("12")
+        overview {
+            checkNumberOfWordsToCheckToday(12)
+            checkInProgressWords(3)
+            checkCompletedWords(18)
+            checkAddWordsIsDisplayed()
+            checkEmptyWordsToCheckTodayDoesNotExist()
+            checkLoadingDoesNotExist()
+        }
     }
 
     @Test
@@ -49,53 +48,10 @@ class OverviewScreenTest : ComposeTest() {
             )
         }
 
-        composeTestRule.onNodeWithText(getString(R.string.vocabulary_overview_screen_empty_testing_title))
-            .assertIsDisplayed()
-    }
-
-    @Test
-    fun testInProgressAndCompletedWords() {
-        val uiState = OverviewUiState.Content(
-            numberOfWordsToLearnToday = 0,
-            totalNumberOfInProgressWords = 12,
-            totalNumberOfCompletedWords = 46
-        )
-        setScreen {
-            OverviewScreen(
-                uiState = uiState,
-                onAddWordsClick = {},
-                onStartTestingClick = {},
-                onListWordsClick = {}
-            )
+        overview {
+            checkEmptyWordsToCheckTodayIsDisplayed()
+            checkNumberOfWordsToCheckTodayDoesNotExist()
         }
-
-        composeTestRule
-            .onNodeWithText(getString(R.string.vocabulary_overview_screen_words_total_in_progress))
-            .assertTextContains("12")
-        composeTestRule
-            .onNodeWithText(getString(R.string.vocabulary_overview_screen_words_total_completed))
-            .assertTextContains("46")
-    }
-
-    @Test
-    fun testAddWordsButton() {
-        val uiState = OverviewUiState.Content(
-            numberOfWordsToLearnToday = 0,
-            totalNumberOfInProgressWords = 0,
-            totalNumberOfCompletedWords = 0
-        )
-        setScreen {
-            OverviewScreen(
-                uiState = uiState,
-                onAddWordsClick = {},
-                onStartTestingClick = {},
-                onListWordsClick = {}
-            )
-        }
-
-        composeTestRule
-            .onNodeWithContentDescription(getString(R.string.vocabulary_overview_semantics_button_add_words))
-            .assertIsDisplayed()
     }
 
     @Test
@@ -110,7 +66,13 @@ class OverviewScreenTest : ComposeTest() {
             )
         }
 
-        composeTestRule.onNode(hasProgressBarRangeInfo(ProgressBarRangeInfo.Indeterminate))
-            .assertIsDisplayed()
+        overview {
+            checkLoadingIsDisplayed()
+            checkNumberOfWordsToCheckTodayDoesNotExist()
+            checkEmptyWordsToCheckTodayDoesNotExist()
+            checkInProgressWordsDoesNotExist()
+            checkCompletedWordsDoesNotExist()
+            checkAddWordsDoesNotExist()
+        }
     }
 }
