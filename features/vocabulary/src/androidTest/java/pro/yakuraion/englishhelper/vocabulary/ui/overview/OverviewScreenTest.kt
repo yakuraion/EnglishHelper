@@ -2,7 +2,6 @@ package pro.yakuraion.englishhelper.vocabulary.ui.overview
 
 import org.junit.Test
 import pro.yakuraion.englishhelper.commontestsui.ComposeTest
-import pro.yakuraion.englishhelper.vocabulary.ui.overview.pages.overview
 
 class OverviewScreenTest : ComposeTest() {
 

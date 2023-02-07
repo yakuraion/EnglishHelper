@@ -1,4 +1,4 @@
-package pro.yakuraion.englishhelper.vocabulary.ui.overview.pages
+package pro.yakuraion.englishhelper.vocabulary.ui.overview
 
 import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.test.assertIsDisplayed
