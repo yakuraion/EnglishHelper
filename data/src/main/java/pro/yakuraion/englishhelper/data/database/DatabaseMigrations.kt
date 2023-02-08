@@ -23,3 +23,10 @@ val MIGRATION_1_2 = object : Migration(1, 2) {
     columnName = "examplesJson"
 )
 class Migration_2_3_Spec : AutoMigrationSpec
+
+val MIGRATION_3_4 = object : Migration(3, 4) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("ALTER TABLE word_extra RENAME COLUMN soundUri TO localSoundUri")
+        database.execSQL("ALTER TABLE word_extra ADD COLUMN remoteSoundUri text NOT NULL DEFAULT ''")
+    }
+}

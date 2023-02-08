@@ -4,10 +4,11 @@ import kotlinx.collections.immutable.toImmutableList
 import pro.yakuraion.englishhelper.domain.entities.WooordhuntWord
 import pro.yakuraion.englishhelper.domain.entities.WordExtra
 
-fun getWordExtra(word: WooordhuntWord, soundFileUri: String): WordExtra {
+fun getWordExtra(word: WooordhuntWord, localSoundUri: String): WordExtra {
     return WordExtra(
         name = word.name,
-        soundUri = soundFileUri,
+        remoteSoundUri = word.soundUri,
+        localSoundUri = localSoundUri,
         examples = word.examples.mapNotNull { getWordExtraExample(it, word.wordForms) }.toImmutableList()
     )
 }

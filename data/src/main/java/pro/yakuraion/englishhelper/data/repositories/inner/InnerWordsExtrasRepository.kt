@@ -18,6 +18,6 @@ internal class InnerWordsExtrasRepository @Inject constructor(
 
     suspend fun addWord(word: WordExtra, html: String) {
         val entity = getWordExtraEntity(word, html)
-        wordsExtrasDao.insert(entity)
+        wordsExtrasDao.insertOrReplace(entity)
     }
 }

@@ -15,9 +15,10 @@ import androidx.room.PrimaryKey
         )
     ]
 )
-internal class WordExtraEntity(
+internal data class WordExtraEntity(
     @PrimaryKey val name: String,
     val html: String,
-    val soundUri: String,
+    val remoteSoundUri: String,
+    val localSoundUri: String,
     val examplesJson: String
 )

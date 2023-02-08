@@ -12,7 +12,12 @@ internal class DatabaseUpdateRepositoryImpl @Inject constructor(
     private val databaseUpdaters: @JvmSuppressWildcards Map<Int, DatabaseUpdater>
 ) : DatabaseUpdateRepository {
 
+    @Suppress("MagicNumber")
     override fun getIsNeedToUpdateDatabase(): Boolean {
+        if (databaseInfoPreferences.lastDatabaseVersion > 3 && !databaseInfoPreferences.updatedTo_4) {
+            databaseInfoPreferences.lastDatabaseVersion = 3
+            databaseInfoPreferences.updatedTo_4 = true
+        }
         return databaseUpdaters.any { it.key > databaseInfoPreferences.lastDatabaseVersion }
     }
 

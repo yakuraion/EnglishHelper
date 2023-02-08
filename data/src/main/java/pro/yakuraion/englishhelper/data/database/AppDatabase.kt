@@ -25,7 +25,7 @@ import pro.yakuraion.englishhelper.data.database.entities.WordExtraEntity
     autoMigrations = [
         AutoMigration(from = 2, to = 3, spec = Migration_2_3_Spec::class)
     ],
-    version = 3
+    version = 4
 )
 internal abstract class AppDatabase : RoomDatabase() {
 

@@ -8,6 +8,7 @@ import dagger.multibindings.IntKey
 import dagger.multibindings.IntoMap
 import pro.yakuraion.englishhelper.data.repositories.dbupdaters.DatabaseUpdater
 import pro.yakuraion.englishhelper.data.repositories.dbupdaters.DatabaseUpdaterTo_3
+import pro.yakuraion.englishhelper.data.repositories.dbupdaters.DatabaseUpdaterTo_4
 
 @Suppress("FunctionName")
 @Module
@@ -17,4 +18,9 @@ internal interface DatabaseUpdatersModule {
     @IntoMap
     @IntKey(3)
     fun binds_3(impl: DatabaseUpdaterTo_3): DatabaseUpdater
+
+    @Binds
+    @IntoMap
+    @IntKey(4)
+    fun binds_4(impl: DatabaseUpdaterTo_4): DatabaseUpdater
 }

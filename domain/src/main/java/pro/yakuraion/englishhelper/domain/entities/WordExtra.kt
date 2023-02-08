@@ -4,7 +4,8 @@ import kotlinx.collections.immutable.ImmutableList
 
 data class WordExtra(
     val name: String,
-    val soundUri: String,
+    val remoteSoundUri: String,
+    val localSoundUri: String,
     val examples: ImmutableList<Example>
 ) {
 

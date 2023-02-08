@@ -116,7 +116,8 @@ private fun TestingRegularPreview() {
                 0,
                 wordExtra = WordExtra(
                     name = "word",
-                    soundUri = "",
+                    remoteSoundUri = "",
+                    localSoundUri = "",
                     examples = persistentListOf()
                 ),
                 dictionaryUrl = "",
@@ -141,7 +142,8 @@ private fun TestingRegularAnsweredPreview() {
                 0,
                 wordExtra = WordExtra(
                     name = "word",
-                    soundUri = "",
+                    remoteSoundUri = "",
+                    localSoundUri = "",
                     examples = persistentListOf()
                 ),
                 dictionaryUrl = "",

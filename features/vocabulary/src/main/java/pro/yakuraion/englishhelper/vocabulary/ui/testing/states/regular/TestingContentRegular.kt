@@ -73,7 +73,7 @@ fun TestingContentRegular(
                 }
         ) {
             TestingContentRegularPlaySoundButton(
-                soundUri = state.uiState.wordExtra.soundUri,
+                soundUri = state.uiState.wordExtra.localSoundUri,
                 modifier = Modifier
                     .size(playButtonSize)
                     .align(playButtonAlignment)
@@ -140,7 +140,7 @@ fun TestingContentRegular(
         }
     }
 
-    PlaySoundEffect(state.uiState.queueId, state.uiState.wordExtra.soundUri)
+    PlaySoundEffect(state.uiState.queueId, state.uiState.wordExtra.localSoundUri)
 }
 
 @Composable

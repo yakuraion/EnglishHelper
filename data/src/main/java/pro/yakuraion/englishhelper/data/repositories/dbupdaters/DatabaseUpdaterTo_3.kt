@@ -21,12 +21,12 @@ internal class DatabaseUpdaterTo_3 @Inject constructor(
         innerWordsRepository.getAllWords().forEach { word ->
             wooordhuntHtmlDownloader.downloadHtml(word.name)?.let { html ->
                 wooordhuntHtmlParser.parse(word.name, html)?.let { wooordhuntWord ->
-                    val localFileSoundUri = wordsSoundsRepository
+                    val localSoundUri = wordsSoundsRepository
                         .downloadSoundForWorld(word.name, wooordhuntWord.soundUri)
                         ?.toURI()
                         ?.toString()
-                    if (localFileSoundUri != null) {
-                        val wordExtra = getWordExtra(wooordhuntWord, localFileSoundUri)
+                    if (localSoundUri != null) {
+                        val wordExtra = getWordExtra(wooordhuntWord, localSoundUri)
                         innerWordsExtrasRepository.addWord(wordExtra, html)
                     }
                 }
