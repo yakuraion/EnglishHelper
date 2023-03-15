@@ -2,7 +2,6 @@ package pro.yakuraion.englishhelper.domain.usecases
 
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
-import pro.yakuraion.englishhelper.common.coroutines.Dispatchers
 import pro.yakuraion.englishhelper.domain.entities.WooordhuntWord
 import pro.yakuraion.englishhelper.domain.entities.converters.getWordExtra
 import pro.yakuraion.englishhelper.domain.repositories.LearningRepository

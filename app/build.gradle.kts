@@ -62,7 +62,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":common"))
     implementation(project(":common-ui"))
     implementation(project(":domain"))
     implementation(project(":data"))

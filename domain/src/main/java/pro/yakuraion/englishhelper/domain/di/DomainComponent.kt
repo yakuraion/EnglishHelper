@@ -2,7 +2,7 @@ package pro.yakuraion.englishhelper.domain.di
 
 import dagger.BindsInstance
 import dagger.Component
-import pro.yakuraion.englishhelper.common.coroutines.Dispatchers
+import pro.yakuraion.englishhelper.domain.usecases.Dispatchers
 import javax.inject.Singleton
 
 @Singleton

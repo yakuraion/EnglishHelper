@@ -1,19 +1,26 @@
 package pro.yakuraion.englishhelper.data.repositories
 
 import android.content.Context
-import pro.yakuraion.englishhelper.common.downloadFile
+import pro.yakuraion.androidcommon.network.downloadFile
 import pro.yakuraion.englishhelper.domain.repositories.WordsSoundsRepository
 import java.io.File
+import java.net.URL
 import javax.inject.Inject
 
 internal class WordsSoundsRepositoryImpl @Inject constructor(
     private val context: Context
 ) : WordsSoundsRepository {
 
+    @Suppress("TooGenericExceptionCaught")
     override suspend fun downloadSoundForWorld(name: String, soundUri: String): File? {
         val file = getSoundFile(name)
-        val result = downloadFile(soundUri, file)
-        return if (result) file else null
+        return try {
+            val url = URL(soundUri)
+            downloadFile(url, file)
+            file
+        } catch (e: Exception) {
+            null
+        }
     }
 
     private fun getSoundFile(name: String): File {

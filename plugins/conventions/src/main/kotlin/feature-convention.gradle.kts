@@ -9,7 +9,6 @@ android {
 }
 
 dependencies {
-    add("implementation", project(":common"))
     add("implementation", project(":common-ui"))
     add("androidTestImplementation", project(":common-tests-ui"))
     add("implementation", project(":domain"))

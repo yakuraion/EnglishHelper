@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import pro.yakuraion.englishhelper.common.applyIf
+import pro.yakuraion.androidcommon.kotlin.applyIf
 
 @Composable
 fun OverviewCard(

@@ -1,6 +1,6 @@
 package pro.yakuraion.englishhelper.domain.entities.learning
 
-import pro.yakuraion.englishhelper.common.pow
+import pro.yakuraion.androidcommon.kotlin.pow
 
 data class MemorizationLevel(val level: Int) {
 

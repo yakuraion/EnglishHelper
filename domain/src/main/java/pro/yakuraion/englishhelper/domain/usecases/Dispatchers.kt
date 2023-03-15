@@ -1,4 +1,4 @@
-package pro.yakuraion.englishhelper.common.coroutines
+package pro.yakuraion.englishhelper.domain.usecases
 
 import kotlinx.coroutines.CoroutineDispatcher
 

@@ -3,7 +3,6 @@ package pro.yakuraion.englishhelper.di
 import android.content.Context
 import dagger.Component
 import pro.yakuraion.englishhelper.BuildConfig
-import pro.yakuraion.englishhelper.common.coroutines.Dispatchers
 import pro.yakuraion.englishhelper.data.DataConfiguration
 import pro.yakuraion.englishhelper.data.di.DaggerDataComponent
 import pro.yakuraion.englishhelper.data.di.DataComponent
@@ -11,6 +10,7 @@ import pro.yakuraion.englishhelper.domain.di.DaggerDomainComponent
 import pro.yakuraion.englishhelper.domain.di.DomainComponent
 import pro.yakuraion.englishhelper.domain.di.RepositoriesProvider
 import pro.yakuraion.englishhelper.domain.di.UseCasesProvider
+import pro.yakuraion.englishhelper.domain.usecases.Dispatchers
 import javax.inject.Singleton
 
 @Singleton

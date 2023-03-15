@@ -74,6 +74,10 @@ androidx-test-runner = { module = "androidx.test:runner", version = "1.5.0" }
 
 androidx-test-espresso = { module = "androidx.test.espresso:espresso-core", version = "3.5.0" }
 
+yakuraion-android-common-kotlin = { module = "pro.yakuraion.android-common:kotlin", version = "1" }
+yakuraion-android-common-coroutines = { module = "pro.yakuraion.android-common:coroutines", version = "1" }
+yakuraion-android-common-network = { module = "pro.yakuraion.android-common:network", version = "1" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android" }
 android-library = { id = "com.android.library", version.ref = "android" }

@@ -7,4 +7,6 @@ dependencies {
     add("androidTestImplementation", versionCatalog.findLibrary("room-testing").get())
 
     add("implementation", versionCatalog.findLibrary("volley").get())
+
+    add("implementation", versionCatalog.findLibrary("yakuraion-android-common-network").get())
 }

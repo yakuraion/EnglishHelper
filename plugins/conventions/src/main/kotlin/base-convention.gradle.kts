@@ -87,4 +87,7 @@ dependencies {
     add("androidTestImplementation", versionCatalog.findLibrary("androidx-test-junit").get())
     add("androidTestImplementation", versionCatalog.findLibrary("androidx-test-junit-ktx").get())
     add("androidTestImplementation", versionCatalog.findLibrary("androidx-test-runner").get())
+
+    add("implementation", versionCatalog.findLibrary("yakuraion-android-common-kotlin").get())
+    add("implementation", versionCatalog.findLibrary("yakuraion-android-common-coroutines").get())
 }

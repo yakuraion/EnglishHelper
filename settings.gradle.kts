@@ -19,7 +19,6 @@ rootProject.name = "EnglishHelper"
 include(":app")
 include(":data")
 include(":domain")
-include(":common")
 include(":common-ui")
 include(":common-tests")
 include(":common-tests-ui")
@@ -27,3 +26,15 @@ include(":features:startup")
 include(":features:vocabulary")
 
 includeBuild("plugins/conventions")
+
+includeBuild("libs/android-common") {
+    dependencySubstitution {
+        substitute(module("pro.yakuraion.android-common:kotlin")).using(project(":kotlin"))
+    }
+    dependencySubstitution {
+        substitute(module("pro.yakuraion.android-common:coroutines")).using(project(":coroutines"))
+    }
+    dependencySubstitution {
+        substitute(module("pro.yakuraion.android-common:network")).using(project(":network"))
+    }
+}

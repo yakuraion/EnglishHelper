@@ -43,7 +43,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import pro.yakuraion.englishhelper.common.applyIf
+import pro.yakuraion.androidcommon.kotlin.applyIf
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 
 @Composable

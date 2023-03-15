@@ -8,7 +8,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
-import pro.yakuraion.englishhelper.common.coroutines.Dispatchers
 import pro.yakuraion.englishhelper.domain.fakes.WooordhuntWords
 import pro.yakuraion.englishhelper.domain.repositories.LearningRepository
 import pro.yakuraion.englishhelper.domain.repositories.WordsRepository

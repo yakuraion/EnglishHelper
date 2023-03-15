@@ -1,3 +1,6 @@
 [submodule "plugins/code-check"]
 	path = plugins/code-check
 	url = https://github.com/yakuraion/plugin-code-check.git
+[submodule "libs/android-common"]
+	path = libs/android-common
+	url = https://github.com/yakuraion/android-common.git
