@@ -20,7 +20,6 @@ include(":app")
 include(":data")
 include(":domain")
 include(":common-ui")
-include(":common-tests")
 include(":common-tests-ui")
 include(":features:startup")
 include(":features:vocabulary")
@@ -33,6 +32,9 @@ includeBuild("libs/android-common") {
     }
     dependencySubstitution {
         substitute(module("pro.yakuraion.android-common:coroutines")).using(project(":coroutines"))
+    }
+    dependencySubstitution {
+        substitute(module("pro.yakuraion.android-common:coroutines-tests")).using(project(":coroutines-tests"))
     }
     dependencySubstitution {
         substitute(module("pro.yakuraion.android-common:network")).using(project(":network"))

@@ -90,4 +90,5 @@ dependencies {
 
     add("implementation", versionCatalog.findLibrary("yakuraion-android-common-kotlin").get())
     add("implementation", versionCatalog.findLibrary("yakuraion-android-common-coroutines").get())
+    add("testImplementation", versionCatalog.findLibrary("yakuraion-android-common-coroutines-tests").get())
 }

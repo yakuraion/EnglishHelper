@@ -76,6 +76,7 @@ androidx-test-espresso = { module = "androidx.test.espresso:espresso-core", vers
 
 yakuraion-android-common-kotlin = { module = "pro.yakuraion.android-common:kotlin", version = "1" }
 yakuraion-android-common-coroutines = { module = "pro.yakuraion.android-common:coroutines", version = "1" }
+yakuraion-android-common-coroutines-tests = { module = "pro.yakuraion.android-common:coroutines-tests", version = "1" }
 yakuraion-android-common-network = { module = "pro.yakuraion.android-common:network", version = "1" }
 
 [plugins]

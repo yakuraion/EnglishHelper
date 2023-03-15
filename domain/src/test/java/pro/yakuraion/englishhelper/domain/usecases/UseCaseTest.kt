@@ -2,7 +2,7 @@ package pro.yakuraion.englishhelper.domain.usecases
 
 import org.junit.Before
 import org.junit.Rule
-import pro.yakuraion.englishhelper.commontests.MainDispatcherRule
+import pro.yakuraion.androidcommon.coroutinestests.MainDispatcherRule
 
 abstract class UseCaseTest<T : Any> {
 
