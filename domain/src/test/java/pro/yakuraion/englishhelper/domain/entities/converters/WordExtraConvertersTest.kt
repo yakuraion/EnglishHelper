@@ -10,13 +10,13 @@ class WordExtraConvertersTest {
 
     @Test
     fun `get word extra`() {
-        val actual = getWordExtra(WOOORDHUNT_WORD, SOUND_FILE_URI)
+        val actual = getWordExtra(WOOORDHUNT_WORD, LOCAL_SOUND_URI)
         assertEquals(WORD_EXTRA, actual)
     }
 
     companion object {
 
-        private const val SOUND_FILE_URI = ""
+        private const val LOCAL_SOUND_URI = ""
 
         private val WOOORDHUNT_WORD = WooordhuntWord(
             "pierce",
@@ -41,7 +41,8 @@ class WordExtraConvertersTest {
 
         private val WORD_EXTRA = WordExtra(
             "pierce",
-            SOUND_FILE_URI,
+            "",
+            LOCAL_SOUND_URI,
             persistentListOf(
                 WordExtra.Example(
                     "Your drill is the drill that will %s the Heavens!",
