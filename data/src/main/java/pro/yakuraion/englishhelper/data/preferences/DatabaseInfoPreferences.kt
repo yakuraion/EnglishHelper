@@ -25,7 +25,7 @@ internal class DatabaseInfoPreferences @Inject constructor(
             sharedPreferences.edit().putInt(DATABASE_LAST_DATABASE_VERSION, value).apply()
         }
 
-    var updatedTo_4: Boolean
+    var updatedTo4: Boolean
         get() = sharedPreferences.getBoolean(DATABASE_UPDATED_TO_4, false)
         set(value) {
             sharedPreferences.edit().putBoolean(DATABASE_UPDATED_TO_4, value).apply()

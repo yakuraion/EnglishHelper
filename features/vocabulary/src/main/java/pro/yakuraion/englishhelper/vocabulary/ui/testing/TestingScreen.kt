@@ -49,7 +49,7 @@ private fun TestingScreen(
     onRegularWordCheck: () -> Unit,
     onLiteWordCheckSuccess: () -> Unit,
     onLiteWordCheckFailed: () -> Unit,
-    onContinueClick: () -> Unit
+    onContinueClick: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -68,27 +68,22 @@ private fun TestingScreen(
             contentAlignment = Alignment.Center
         ) {
             when (uiState) {
-                is TestingUiState.Loading -> {
-                    TestingContentLoading()
-                }
-                is TestingUiState.NoMoreWords -> {
-                    TestingContentNoMoreWords(onReturnClick = onBackClick)
-                }
-                is TestingUiState.Lite -> {
-                    TestingContentLite(
-                        state = uiState,
-                        onWordCheckSuccess = onLiteWordCheckSuccess,
-                        onWordCheckFailed = onLiteWordCheckFailed
-                    )
-                }
-                is TestingUiState.Regular -> {
-                    TestingContentRegular(
-                        uiState = uiState,
-                        onVisitedDictionary = onRegularVisitedDictionary,
-                        onWordTested = onRegularWordCheck,
-                        onContinueClick = onContinueClick
-                    )
-                }
+                is TestingUiState.Loading -> TestingContentLoading()
+
+                is TestingUiState.NoMoreWords -> TestingContentNoMoreWords(onReturnClick = onBackClick)
+
+                is TestingUiState.Lite -> TestingContentLite(
+                    state = uiState,
+                    onWordCheckSuccess = onLiteWordCheckSuccess,
+                    onWordCheckFailed = onLiteWordCheckFailed
+                )
+
+                is TestingUiState.Regular -> TestingContentRegular(
+                    uiState = uiState,
+                    onVisitedDictionary = onRegularVisitedDictionary,
+                    onWordTested = onRegularWordCheck,
+                    onContinueClick = onContinueClick
+                )
             }
         }
     }

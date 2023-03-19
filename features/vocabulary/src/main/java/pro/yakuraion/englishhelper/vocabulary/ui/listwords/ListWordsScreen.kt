@@ -30,7 +30,7 @@ import pro.yakuraion.englishhelper.vocabulary.ui.listwords.wordspage.rememberLis
 @Composable
 fun ListWordsScreen(
     viewModel: ListWordsViewModel = daggerViewModel(),
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     ListWordsScreen(
         inProgressWords = viewModel.inProgressWords,
@@ -52,7 +52,7 @@ private fun ListWordsScreen(
     onDeleteInProgressWords: (List<LearningWord>) -> Unit,
     onResetCompletedWords: (List<CompletedWord>) -> Unit,
     onDeleteCompletedWords: (List<CompletedWord>) -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     Scaffold(
         topBar = { TopBar(onBackClick = onBackClick) }
@@ -71,34 +71,31 @@ private fun ListWordsScreen(
                 }
             ) { pageNumber ->
                 when (Page.values()[pageNumber]) {
-                    Page.IN_PROGRESS -> {
-                        ListWordsInProgressPage(
-                            state = inProgressPageState,
-                            onResetInProgressWords = { words ->
-                                onResetInProgressWords.invoke(words)
-                                inProgressPageState.deselectAll()
-                            },
-                            onDeleteInProgressWords = { words ->
-                                onDeleteInProgressWords.invoke(words)
-                                inProgressPageState.deselectAll()
-                            },
-                            modifier = Modifier.fillMaxSize()
-                        )
-                    }
-                    Page.COMPLETED -> {
-                        ListWordsCompletedPage(
-                            state = completedPageState,
-                            onResetCompletedWords = { words ->
-                                onResetCompletedWords.invoke(words)
-                                completedPageState.deselectAll()
-                            },
-                            onDeleteCompletedWords = { words ->
-                                onDeleteCompletedWords.invoke(words)
-                                completedPageState.deselectAll()
-                            },
-                            modifier = Modifier.fillMaxSize()
-                        )
-                    }
+                    Page.IN_PROGRESS -> ListWordsInProgressPage(
+                        state = inProgressPageState,
+                        onResetInProgressWords = { words ->
+                            onResetInProgressWords.invoke(words)
+                            inProgressPageState.deselectAll()
+                        },
+                        onDeleteInProgressWords = { words ->
+                            onDeleteInProgressWords.invoke(words)
+                            inProgressPageState.deselectAll()
+                        },
+                        modifier = Modifier.fillMaxSize()
+                    )
+
+                    Page.COMPLETED -> ListWordsCompletedPage(
+                        state = completedPageState,
+                        onResetCompletedWords = { words ->
+                            onResetCompletedWords.invoke(words)
+                            completedPageState.deselectAll()
+                        },
+                        onDeleteCompletedWords = { words ->
+                            onDeleteCompletedWords.invoke(words)
+                            completedPageState.deselectAll()
+                        },
+                        modifier = Modifier.fillMaxSize()
+                    )
                 }
             }
         }

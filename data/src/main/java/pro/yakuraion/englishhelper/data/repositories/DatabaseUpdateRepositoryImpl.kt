@@ -14,9 +14,9 @@ internal class DatabaseUpdateRepositoryImpl @Inject constructor(
 
     @Suppress("MagicNumber")
     override fun getIsNeedToUpdateDatabase(): Boolean {
-        if (databaseInfoPreferences.lastDatabaseVersion > 3 && !databaseInfoPreferences.updatedTo_4) {
+        if (databaseInfoPreferences.lastDatabaseVersion > 3 && !databaseInfoPreferences.updatedTo4) {
             databaseInfoPreferences.lastDatabaseVersion = 3
-            databaseInfoPreferences.updatedTo_4 = true
+            databaseInfoPreferences.updatedTo4 = true
         }
         return databaseUpdaters.any { it.key > databaseInfoPreferences.lastDatabaseVersion }
     }

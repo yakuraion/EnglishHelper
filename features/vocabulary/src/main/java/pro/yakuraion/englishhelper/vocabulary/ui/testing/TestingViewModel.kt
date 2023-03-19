@@ -28,7 +28,7 @@ class TestingViewModel @AssistedInject constructor(
     private val getNextWordToLearnTodayUseCase: GetNextWordToLearnTodayUseCase,
     private val getWordExtraUseCase: GetWordExtraUseCase,
     private val moveLearningWordToNextLevelUseCase: MoveLearningWordToNextLevelUseCase,
-    private val moveLearningWordToPreviousLevelUseCase: MoveLearningWordToPreviousLevelUseCase
+    private val moveLearningWordToPreviousLevelUseCase: MoveLearningWordToPreviousLevelUseCase,
 ) : ViewModel() {
 
     var uiState: TestingUiState by mutableStateOf(TestingUiState.Loading)
@@ -58,23 +58,19 @@ class TestingViewModel @AssistedInject constructor(
 
     private fun getUiState(learningWord: LearningWord?, wordExtra: WordExtra?): TestingUiState {
         return when {
-            learningWord == null -> {
-                TestingUiState.NoMoreWords
-            }
-            wordExtra == null -> {
-                TestingUiState.Lite(
-                    queueId = Random.nextLong(),
-                    word = learningWord.name,
-                    dictionaryUrl = DictionaryUtils.getDictionaryUrl(learningWord.name)
-                )
-            }
-            else -> {
-                TestingUiState.Regular(
-                    queueId = Random.nextLong(),
-                    wordExtra = wordExtra,
-                    dictionaryUrl = DictionaryUtils.getDictionaryUrl(wordExtra.name)
-                )
-            }
+            learningWord == null -> TestingUiState.NoMoreWords
+
+            wordExtra == null -> TestingUiState.Lite(
+                queueId = Random.nextLong(),
+                word = learningWord.name,
+                dictionaryUrl = DictionaryUtils.getDictionaryUrl(learningWord.name)
+            )
+
+            else -> TestingUiState.Regular(
+                queueId = Random.nextLong(),
+                wordExtra = wordExtra,
+                dictionaryUrl = DictionaryUtils.getDictionaryUrl(wordExtra.name)
+            )
         }
     }
 

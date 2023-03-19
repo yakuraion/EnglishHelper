@@ -3,6 +3,7 @@ package pro.yakuraion.englishhelper.data.repositories
 import android.content.Context
 import pro.yakuraion.androidcommon.network.downloadFile
 import pro.yakuraion.englishhelper.domain.repositories.WordsSoundsRepository
+import timber.log.Timber
 import java.io.File
 import java.net.URL
 import javax.inject.Inject
@@ -19,6 +20,7 @@ internal class WordsSoundsRepositoryImpl @Inject constructor(
             downloadFile(url, file)
             file
         } catch (e: Exception) {
+            Timber.e(e)
             null
         }
     }

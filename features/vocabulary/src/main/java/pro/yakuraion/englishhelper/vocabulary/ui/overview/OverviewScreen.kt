@@ -51,7 +51,7 @@ fun OverviewScreen(
     uiState: OverviewUiState,
     onAddWordsClick: () -> Unit,
     onStartTestingClick: () -> Unit,
-    onListWordsClick: () -> Unit
+    onListWordsClick: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -76,37 +76,34 @@ fun OverviewScreen(
                 .padding(paddingValues)
         ) {
             when (uiState) {
-                OverviewUiState.Loading -> {
-                    CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                }
-                is OverviewUiState.Content -> {
-                    Column {
-                        val padding = 16.dp
-                        val paddingModifier = Modifier.padding(horizontal = 16.dp)
+                OverviewUiState.Loading -> CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center)
+                )
 
-                        if (uiState.numberOfWordsToLearnToday > 0) {
-                            OverviewTestingCard(
-                                wordsNumber = uiState.numberOfWordsToLearnToday,
-                                onClick = onStartTestingClick,
-                                modifier = paddingModifier
-                            )
-                        } else {
-                            OverviewEmptyTestingCard(
-                                modifier = paddingModifier
-                            )
-                        }
+                is OverviewUiState.Content -> Column {
+                    val padding = 16.dp
+                    val paddingModifier = Modifier.padding(horizontal = 16.dp)
 
-                        Spacer(modifier = Modifier.height(padding))
-
-                        OverviewWordsTotalCard(
-                            numberOfInProgressWords = uiState.totalNumberOfInProgressWords,
-                            numberOfCompletedWords = uiState.totalNumberOfCompletedWords,
-                            onClick = onListWordsClick,
+                    if (uiState.numberOfWordsToLearnToday > 0) {
+                        OverviewTestingCard(
+                            wordsNumber = uiState.numberOfWordsToLearnToday,
+                            onClick = onStartTestingClick,
+                            modifier = paddingModifier
+                        )
+                    } else {
+                        OverviewEmptyTestingCard(
                             modifier = paddingModifier
                         )
                     }
+
+                    Spacer(modifier = Modifier.height(padding))
+
+                    OverviewWordsTotalCard(
+                        numberOfInProgressWords = uiState.totalNumberOfInProgressWords,
+                        numberOfCompletedWords = uiState.totalNumberOfCompletedWords,
+                        onClick = onListWordsClick,
+                        modifier = paddingModifier
+                    )
                 }
             }
         }
@@ -116,7 +113,7 @@ fun OverviewScreen(
 @Composable
 private fun AddWordsButton(
     onAddWordsClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     FloatingActionButton(
         onClick = onAddWordsClick,
