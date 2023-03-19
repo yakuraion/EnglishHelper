@@ -72,8 +72,6 @@ androidx-test-junit = { module = "androidx.test.ext:junit", version = "1.1.4" }
 androidx-test-junit-ktx = { module = "androidx.test.ext:junit-ktx", version = "1.1.4" }
 androidx-test-runner = { module = "androidx.test:runner", version = "1.5.0" }
 
-androidx-test-espresso = { module = "androidx.test.espresso:espresso-core", version = "3.5.0" }
-
 yakuraion-android-common-kotlin = { module = "pro.yakuraion.android-common:kotlin", version = "1" }
 yakuraion-android-common-coroutines = { module = "pro.yakuraion.android-common:coroutines", version = "1" }
 yakuraion-android-common-coroutines-tests = { module = "pro.yakuraion.android-common:coroutines-tests", version = "1" }

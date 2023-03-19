@@ -17,8 +17,6 @@ dependencies {
     add("implementation", versionCatalog.findLibrary("androidx-core-ktx").get())
     add("implementation", versionCatalog.findLibrary("android-lifecycle").get())
 
-    add("androidTestImplementation", versionCatalog.findLibrary("androidx-test-espresso").get())
-
     val composeBom = platform(versionCatalog.findLibrary("compose-bom").get())
     add("implementation", composeBom)
     add("debugImplementation", composeBom)
