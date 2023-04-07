@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
-    id("base-convention")
-    id("ui-uses-convention")
+    id("common")
+    id("common-ui")
 }
 
 android {
@@ -11,5 +11,6 @@ android {
 dependencies {
     add("implementation", project(":common-ui"))
     add("androidTestImplementation", project(":common-tests-ui"))
+
     add("implementation", project(":domain"))
 }

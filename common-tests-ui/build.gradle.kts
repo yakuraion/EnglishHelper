@@ -2,8 +2,8 @@ import utils.versionCatalog
 
 plugins {
     id("com.android.library")
-    id("base-convention")
-    id("ui-uses-convention")
+    id("common")
+    id("common-ui")
 }
 
 android {
@@ -13,14 +13,9 @@ android {
 dependencies {
     val composeBom = platform(versionCatalog.findLibrary("compose-bom").get())
     implementation(composeBom)
-
-    implementation(libs.androidx.test.core)
-    implementation(libs.androidx.test.core.ktx)
-    implementation(libs.androidx.test.junit)
-    implementation(libs.androidx.test.junit.ktx)
-    implementation(libs.androidx.test.runner)
-
     implementation(libs.compose.junit)
+
+    implementation(libs.bundles.androidx.test)
 
     implementation(project(":common-ui"))
 }

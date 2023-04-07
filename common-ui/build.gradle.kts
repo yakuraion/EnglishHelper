@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
-    id("base-convention")
-    id("ui-uses-convention")
+    id("common")
+    id("common-ui")
 }
 
 android {

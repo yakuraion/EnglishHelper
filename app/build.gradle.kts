@@ -3,9 +3,8 @@ import java.util.*
 
 plugins {
     id("com.android.application")
-    id("base-convention")
-    id("ui-uses-convention")
-    id("data-uses-convention")
+    id("common")
+    id("common-ui")
 }
 
 val customProperties = Properties()
@@ -38,14 +37,11 @@ android {
 
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = true
             signingConfig = signingConfigs.getByName("release")
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
 
             resValue("string", "app_name", "EnglishHelper")
         }
         getByName("debug") {
-            isDebuggable = true
             applicationIdSuffix = ".debug"
 
             resValue("string", "app_name", "EnglishHelper (debug)")

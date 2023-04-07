@@ -4,11 +4,6 @@ import com.android.build.gradle.BaseExtension
 import utils.versionCatalog
 
 configure<BaseExtension> {
-
-    defaultConfig {
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
     buildFeatures.compose = true
     composeOptions.kotlinCompilerExtensionVersion = "1.4.0"
 }

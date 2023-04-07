@@ -77,6 +77,9 @@ yakuraion-android-common-coroutines = { module = "pro.yakuraion.android-common:c
 yakuraion-android-common-coroutines-tests = { module = "pro.yakuraion.android-common:coroutines-tests", version = "1" }
 yakuraion-android-common-network = { module = "pro.yakuraion.android-common:network", version = "1" }
 
+[bundles]
+androidx-test = ["androidx-test-core", "androidx-test-core-ktx", "androidx-test-junit", "androidx-test-junit-ktx", "androidx-test-runner"]
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android" }
 android-library = { id = "com.android.library", version.ref = "android" }

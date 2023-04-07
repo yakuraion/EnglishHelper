@@ -1,7 +1,6 @@
 plugins {
     id("com.android.library")
-    id("base-convention")
-    id("data-uses-convention")
+    id("common")
 }
 
 android {
@@ -27,4 +26,13 @@ dependencies {
 
     implementation(libs.gson)
     implementation(libs.jsoup)
+
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    kapt(libs.room.compiler)
+    androidTestImplementation(libs.room.testing)
+
+    implementation(libs.volley)
+
+    implementation(libs.yakuraion.android.common.network)
 }
