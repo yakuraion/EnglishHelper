@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import utils.configsDir
 import utils.enableComposeCompilerMetrics
 import utils.enableComposeCompilerReports
+import utils.isCI
 import utils.optIn
 import utils.versionCatalog
 
@@ -62,6 +63,7 @@ configure<KotlinAndroidProjectExtension> {
 
 codeCheck {
     jvmTarget.set(JavaVersion.VERSION_11.toString())
+    openFailedReport.set(!isCI)
 
     detekt {
         config.from(files("$configsDir/detekt/detekt.yml"))

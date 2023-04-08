@@ -1,5 +1,4 @@
-import java.io.FileInputStream
-import java.util.*
+import utils.getPropertiesOrNull
 
 plugins {
     id("com.android.application")
@@ -7,8 +6,7 @@ plugins {
     id("common-ui")
 }
 
-val customProperties = Properties()
-customProperties.load(FileInputStream(rootProject.file("custom.properties")))
+val customProperties = getPropertiesOrNull("custom.properties")
 
 android {
     namespace = "pro.yakuraion.englishhelper"
@@ -18,26 +16,33 @@ android {
         versionCode = 6
         versionName = "0.6.0"
 
-        buildConfigField("String", "NETWORK_WORDS_HOST", "\"${customProperties["network.words.host"]}\"")
-        buildConfigField("String", "NETWORK_WORDS_KEY", "\"${customProperties["network.words.key"]}\"")
+        buildConfigField(
+            "String", "NETWORK_WORDS_HOST",
+            "\"${customProperties?.get("network.words.host")}\""
+        )
+        buildConfigField(
+            "String", "NETWORK_WORDS_KEY",
+            "\"${customProperties?.get("network.words.key")}\""
+        )
     }
 
-    val releaseKeystorePropertiesFile = file(
-        "${System.getProperty("user.home")}/keystores/EnglishHelper/credentials.properties"
-    )
-    val releaseKeystoreProperties = Properties().apply { load(FileInputStream(releaseKeystorePropertiesFile)) }
     signingConfigs {
-        create("release") {
-            keyAlias = releaseKeystoreProperties.getProperty("keyAlias")
-            keyPassword = releaseKeystoreProperties.getProperty("keyPassword")
-            storeFile = file(releaseKeystoreProperties.getProperty("keystorePath"))
-            storePassword = releaseKeystoreProperties.getProperty("keystorePassword")
+        val releaseKeystoreProperties = getPropertiesOrNull(
+            "${System.getProperty("user.home")}/keystores/EnglishHelper/credentialds.properties"
+        )
+        if (releaseKeystoreProperties != null) {
+            create("release") {
+                keyAlias = releaseKeystoreProperties.getProperty("keyAlias")
+                keyPassword = releaseKeystoreProperties.getProperty("keyPassword")
+                storeFile = file(releaseKeystoreProperties.getProperty("keystorePath"))
+                storePassword = releaseKeystoreProperties.getProperty("keystorePassword")
+            }
         }
     }
 
     buildTypes {
         getByName("release") {
-            signingConfig = signingConfigs.getByName("release")
+            signingConfig = signingConfigs.findByName("release")
 
             resValue("string", "app_name", "EnglishHelper")
         }
