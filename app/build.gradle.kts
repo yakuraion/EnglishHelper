@@ -66,6 +66,5 @@ dependencies {
     implementation(project(":common-ui"))
     implementation(project(":domain"))
     implementation(project(":data"))
-    implementation(project(":features:startup"))
-    implementation(project(":features:vocabulary"))
+    implementation(project(":features:main"))
 }

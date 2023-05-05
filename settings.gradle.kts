@@ -21,6 +21,7 @@ include(":data")
 include(":domain")
 include(":common-ui")
 include(":common-tests-ui")
+include(":features:main")
 include(":features:startup")
 include(":features:vocabulary")
 

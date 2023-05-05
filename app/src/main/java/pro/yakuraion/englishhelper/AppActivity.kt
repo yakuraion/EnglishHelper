@@ -9,16 +9,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.toArgb
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import pro.yakuraion.englishhelper.commonui.compose.compositionlocal.LocalUseCasesProvider
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
-import pro.yakuraion.englishhelper.startup.ui.StartUpScreen
-import pro.yakuraion.englishhelper.vocabulary.ui.VocabularyScreen
+import pro.yakuraion.englishhelper.main.ui.MainScreen
 
 class AppActivity : ComponentActivity() {
 
@@ -30,8 +25,7 @@ class AppActivity : ComponentActivity() {
                 AppTheme {
                     SetUpStatusBarColorEffect()
                     SetUpActivityBackgroundEffect()
-
-                    AppScreen()
+                    MainScreen()
                 }
             }
         }
@@ -58,19 +52,6 @@ class AppActivity : ComponentActivity() {
         LaunchedEffect(backgroundColor) {
             val drawable = ColorDrawable(backgroundColor.toArgb())
             window.setBackgroundDrawable(drawable)
-        }
-    }
-
-    @Composable
-    private fun AppScreen() {
-        val useCasesProvider = LocalUseCasesProvider.current!!
-        val isNeedToUpdate = useCasesProvider.provideUpdateDatabaseAfterMigrationsUseCase().getIsNeedToUpdateDatabase()
-        var isUpdated by remember { mutableStateOf(!isNeedToUpdate) }
-
-        if (isUpdated) {
-            VocabularyScreen()
-        } else {
-            StartUpScreen(onUpdated = { isUpdated = true })
         }
     }
 }

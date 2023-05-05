@@ -37,7 +37,7 @@ fun StartUpScreen(
 }
 
 @Composable
-fun StartUpScreen() {
+internal fun StartUpScreen() {
     Scaffold { paddingValues ->
         Box(
             modifier = Modifier

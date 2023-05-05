@@ -9,4 +9,4 @@ import pro.yakuraion.englishhelper.startup.di.viewmodel.ViewModelFactoriesModule
     dependencies = [UseCasesProvider::class],
     modules = [ViewModelFactoriesModule::class]
 )
-interface StartUpComponent : FeatureComponent
+internal interface StartUpComponent : FeatureComponent
