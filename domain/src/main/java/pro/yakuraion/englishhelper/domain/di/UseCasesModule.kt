@@ -26,18 +26,10 @@ import pro.yakuraion.englishhelper.domain.usecases.MoveLearningWordToPreviousLev
 import pro.yakuraion.englishhelper.domain.usecases.MoveLearningWordToPreviousLevelUseCaseImpl
 import pro.yakuraion.englishhelper.domain.usecases.ResetLearningWordProgressUseCase
 import pro.yakuraion.englishhelper.domain.usecases.ResetLearningWordProgressUseCaseImpl
-import pro.yakuraion.englishhelper.domain.usecases.UpdateDatabaseAfterMigrationsUseCase
-import pro.yakuraion.englishhelper.domain.usecases.UpdateDatabaseAfterMigrationsUseCaseImpl
 import javax.inject.Singleton
 
 @Module
 internal interface UseCasesModule {
-
-    @Singleton
-    @Binds
-    fun bindsUpdateDatabaseAfterMigrationsUseCaseImpl(
-        impl: UpdateDatabaseAfterMigrationsUseCaseImpl
-    ): UpdateDatabaseAfterMigrationsUseCase
 
     @Singleton
     @Binds
@@ -74,24 +66,24 @@ internal interface UseCasesModule {
     @Singleton
     @Binds
     fun bindsMoveLearningWordToNextLevelUseCase(
-        impl: MoveLearningWordToNextLevelUseCaseImpl
+        impl: MoveLearningWordToNextLevelUseCaseImpl,
     ): MoveLearningWordToNextLevelUseCase
 
     @Singleton
     @Binds
     fun bindsMoveLearningWordToPreviousLevelUseCase(
-        impl: MoveLearningWordToPreviousLevelUseCaseImpl
+        impl: MoveLearningWordToPreviousLevelUseCaseImpl,
     ): MoveLearningWordToPreviousLevelUseCase
 
     @Singleton
     @Binds
     fun bindsResetLearningWordProgressUseCase(
-        impl: ResetLearningWordProgressUseCaseImpl
+        impl: ResetLearningWordProgressUseCaseImpl,
     ): ResetLearningWordProgressUseCase
 
     @Singleton
     @Binds
     fun bindsLearnCompletedWordAgainUseCase(
-        impl: LearnCompletedWordAgainUseCaseImpl
+        impl: LearnCompletedWordAgainUseCaseImpl,
     ): LearnCompletedWordAgainUseCase
 }

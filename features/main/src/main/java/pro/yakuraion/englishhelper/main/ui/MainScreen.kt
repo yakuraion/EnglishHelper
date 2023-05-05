@@ -5,29 +5,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 import pro.yakuraion.englishhelper.main.di.viewmodel.featureDaggerViewModel
-import pro.yakuraion.englishhelper.startup.ui.StartUpScreen
 import pro.yakuraion.englishhelper.vocabulary.ui.VocabularyScreen
 
 @Composable
 fun MainScreen(
     viewModel: MainViewModel = featureDaggerViewModel(),
 ) {
-    MainScreen(
-        isUpdated = viewModel.isUpdated,
-        onUpdated = { viewModel.onUpdated() }
-    )
+    MainScreen()
 }
 
 @Composable
-internal fun MainScreen(
-    isUpdated: Boolean,
-    onUpdated: () -> Unit,
-) {
-    if (isUpdated) {
-        VocabularyScreen()
-    } else {
-        StartUpScreen(onUpdated = onUpdated)
-    }
+internal fun MainScreen() {
+    VocabularyScreen()
 }
 
 @Preview
@@ -35,9 +24,6 @@ internal fun MainScreen(
 @Composable
 private fun Preview() {
     AppTheme {
-        MainScreen(
-            isUpdated = false,
-            onUpdated = {},
-        )
+        MainScreen()
     }
 }
