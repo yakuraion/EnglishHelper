@@ -18,7 +18,7 @@ import pro.yakuraion.englishhelper.commonui.compose.widgets.AppTopAppBar
 import pro.yakuraion.englishhelper.commonui.compose.widgets.buttons.AppArrowBackButton
 import pro.yakuraion.englishhelper.domain.entities.WordExtra
 import pro.yakuraion.englishhelper.vocabulary.R
-import pro.yakuraion.englishhelper.vocabulary.di.viewmodel.daggerViewModel
+import pro.yakuraion.englishhelper.vocabulary.di.viewmodel.featureDaggerViewModel
 import pro.yakuraion.englishhelper.vocabulary.ui.testing.states.TestingContentLite
 import pro.yakuraion.englishhelper.vocabulary.ui.testing.states.TestingContentLoading
 import pro.yakuraion.englishhelper.vocabulary.ui.testing.states.TestingContentNoMoreWords
@@ -28,7 +28,7 @@ import pro.yakuraion.englishhelper.vocabulary.ui.testing.states.regular.TestingC
 @Composable
 fun TestingScreen(
     onBackClick: () -> Unit,
-    viewModel: TestingViewModel = daggerViewModel(),
+    viewModel: TestingViewModel = featureDaggerViewModel(),
 ) {
     TestingScreen(
         uiState = viewModel.uiState,

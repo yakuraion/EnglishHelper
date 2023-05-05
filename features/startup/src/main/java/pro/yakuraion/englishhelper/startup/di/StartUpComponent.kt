@@ -1,7 +1,7 @@
 package pro.yakuraion.englishhelper.startup.di
 
 import dagger.Component
-import pro.yakuraion.englishhelper.commonui.di.viewmodel.InjectingSavedStateViewModelFactory
+import pro.yakuraion.englishhelper.commonui.di.viewmodel.FeatureComponent
 import pro.yakuraion.englishhelper.domain.di.UseCasesProvider
 import pro.yakuraion.englishhelper.startup.di.viewmodel.ViewModelFactoriesModule
 
@@ -9,7 +9,4 @@ import pro.yakuraion.englishhelper.startup.di.viewmodel.ViewModelFactoriesModule
     dependencies = [UseCasesProvider::class],
     modules = [ViewModelFactoriesModule::class]
 )
-interface StartUpComponent {
-
-    fun getViewModelFactory(): InjectingSavedStateViewModelFactory
-}
+interface StartUpComponent : FeatureComponent

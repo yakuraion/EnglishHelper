@@ -20,12 +20,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 import pro.yakuraion.englishhelper.startup.R
-import pro.yakuraion.englishhelper.startup.di.viewmodel.daggerViewModel
+import pro.yakuraion.englishhelper.startup.di.viewmodel.featureDaggerViewModel
 
 @Composable
 fun StartUpScreen(
-    viewModel: StartUpViewModel = daggerViewModel(),
-    onUpdated: () -> Unit
+    viewModel: StartUpViewModel = featureDaggerViewModel(),
+    onUpdated: () -> Unit,
 ) {
     StartUpScreen()
 

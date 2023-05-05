@@ -1,7 +1,7 @@
 package pro.yakuraion.englishhelper.vocabulary.di
 
 import dagger.Component
-import pro.yakuraion.englishhelper.commonui.di.viewmodel.InjectingSavedStateViewModelFactory
+import pro.yakuraion.englishhelper.commonui.di.viewmodel.FeatureComponent
 import pro.yakuraion.englishhelper.domain.di.UseCasesProvider
 import pro.yakuraion.englishhelper.vocabulary.di.viewmodel.ViewModelFactoriesModule
 
@@ -9,7 +9,4 @@ import pro.yakuraion.englishhelper.vocabulary.di.viewmodel.ViewModelFactoriesMod
     dependencies = [UseCasesProvider::class],
     modules = [ViewModelFactoriesModule::class]
 )
-interface VocabularyComponent {
-
-    fun getViewModelFactory(): InjectingSavedStateViewModelFactory
-}
+interface VocabularyComponent : FeatureComponent

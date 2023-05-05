@@ -22,14 +22,14 @@ import pro.yakuraion.englishhelper.domain.entities.CompletedWord
 import pro.yakuraion.englishhelper.domain.entities.learning.LearningWord
 import pro.yakuraion.englishhelper.domain.entities.learning.MemorizationLevel
 import pro.yakuraion.englishhelper.vocabulary.R
-import pro.yakuraion.englishhelper.vocabulary.di.viewmodel.daggerViewModel
+import pro.yakuraion.englishhelper.vocabulary.di.viewmodel.featureDaggerViewModel
 import pro.yakuraion.englishhelper.vocabulary.ui.listwords.wordspage.ListWordsCompletedPage
 import pro.yakuraion.englishhelper.vocabulary.ui.listwords.wordspage.ListWordsInProgressPage
 import pro.yakuraion.englishhelper.vocabulary.ui.listwords.wordspage.rememberListWordsPageState
 
 @Composable
 fun ListWordsScreen(
-    viewModel: ListWordsViewModel = daggerViewModel(),
+    viewModel: ListWordsViewModel = featureDaggerViewModel(),
     onBackClick: () -> Unit,
 ) {
     ListWordsScreen(

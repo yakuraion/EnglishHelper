@@ -26,14 +26,14 @@ import androidx.compose.ui.unit.dp
 import pro.yakuraion.englishhelper.commonui.compose.theme.AppTheme
 import pro.yakuraion.englishhelper.commonui.compose.widgets.AppTopAppBar
 import pro.yakuraion.englishhelper.vocabulary.R
-import pro.yakuraion.englishhelper.vocabulary.di.viewmodel.daggerViewModel
+import pro.yakuraion.englishhelper.vocabulary.di.viewmodel.featureDaggerViewModel
 import pro.yakuraion.englishhelper.vocabulary.ui.overview.cards.OverviewEmptyTestingCard
 import pro.yakuraion.englishhelper.vocabulary.ui.overview.cards.OverviewTestingCard
 import pro.yakuraion.englishhelper.vocabulary.ui.overview.cards.OverviewWordsTotalCard
 
 @Composable
 fun OverviewScreen(
-    viewModel: OverviewViewModel = daggerViewModel(),
+    viewModel: OverviewViewModel = featureDaggerViewModel(),
     onAddWordsClick: () -> Unit,
     onStartTestingClick: () -> Unit,
     onListWordsClick: () -> Unit,

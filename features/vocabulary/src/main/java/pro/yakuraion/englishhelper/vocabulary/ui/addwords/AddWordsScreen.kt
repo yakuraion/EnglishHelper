@@ -34,12 +34,12 @@ import pro.yakuraion.englishhelper.commonui.compose.widgets.buttons.AppOutlinedB
 import pro.yakuraion.englishhelper.commonui.openLink
 import pro.yakuraion.englishhelper.domain.utils.DictionaryUtils
 import pro.yakuraion.englishhelper.vocabulary.R
-import pro.yakuraion.englishhelper.vocabulary.di.viewmodel.daggerViewModel
+import pro.yakuraion.englishhelper.vocabulary.di.viewmodel.featureDaggerViewModel
 
 @Composable
 fun AddWordsScreen(
-    viewModel: AddWordsViewModel = daggerViewModel(),
-    onBackClick: () -> Unit
+    viewModel: AddWordsViewModel = featureDaggerViewModel(),
+    onBackClick: () -> Unit,
 ) {
     AddWordsScreen(
         uiState = viewModel.uiState,
@@ -58,7 +58,7 @@ private fun AddWordsScreen(
     onAddWordsClick: () -> Unit,
     onBackClick: () -> Unit,
     onWordNotFoundDialogDismiss: () -> Unit,
-    onWordNotFoundDialogAddClick: () -> Unit
+    onWordNotFoundDialogAddClick: () -> Unit,
 ) {
     Scaffold(
         topBar = { TopBar(onBackClick = onBackClick) }
@@ -93,7 +93,7 @@ private fun AddWordsScreen(
 @Composable
 private fun OpenDictionaryButton(
     word: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
 
@@ -128,7 +128,7 @@ private fun EnterWordTextField(
     uiState: AddWordsUiState,
     onWordChanged: (String) -> Unit,
     onAddWordsClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val focusRequester = remember { FocusRequester() }
 
